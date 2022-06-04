@@ -1,0 +1,63 @@
+\hypertarget{euler_8f90}{}\doxysection{/home/nlgnico@ad.\+vtt.\+fi/\+Documents/\+N\+E\+G\+Fs/gkba/src/libsrc/euler.f90 File Reference}
+\label{euler_8f90}\index{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/libsrc/euler.f90@{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/libsrc/euler.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{Indent}\textbf{ E\+U\+L\+ER}\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{euler_8f90_a922d62118ca33984941b100516e017ef}{euler}} (dt, ham, ro, t, cint)
+\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{euler_8f90_a922d62118ca33984941b100516e017ef}\label{euler_8f90_a922d62118ca33984941b100516e017ef}} 
+\index{euler.f90@{euler.f90}!euler@{euler}}
+\index{euler@{euler}!euler.f90@{euler.f90}}
+\doxysubsubsection{\texorpdfstring{euler()}{euler()}}
+{\footnotesize\ttfamily subroutine euler (\begin{DoxyParamCaption}\item[{double precision}]{dt,  }\item[{double complex, dimension(\+:,\+:)}]{ham,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{ro,  }\item[{integer}]{t,  }\item[{double complex, dimension(\+:,\+:)}]{cint }\end{DoxyParamCaption})}
+
+\begin{DoxyParagraph}{Description}
+\begin{DoxyVerb} \end{DoxyVerb}
+ param\mbox{[}\mbox{]} dt \begin{DoxyVerb} \end{DoxyVerb}
+ param\mbox{[}\mbox{]} ham \begin{DoxyVerb} \end{DoxyVerb}
+ param\mbox{[}\mbox{]} ro \begin{DoxyVerb} \end{DoxyVerb}
+ param\mbox{[}\mbox{]} t \begin{DoxyVerb} \end{DoxyVerb}
+ param\mbox{[}\mbox{]} cint \begin{DoxyVerb} \end{DoxyVerb}
+
+\end{DoxyParagraph}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyAuthor}{Authors}
+Cosco F., Lo Gullo N., Talarico W. 
+\end{DoxyAuthor}
+
+
+Definition at line 35 of file euler.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{35     }
+\DoxyCodeLine{36     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{37 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{38     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{39     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{40     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{41 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{42     \textcolor{keywordtype}{integer} :: t}
+\DoxyCodeLine{43     \textcolor{keywordtype}{double precision} :: dt}
+\DoxyCodeLine{44     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: ham}
+\DoxyCodeLine{45     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: ro}
+\DoxyCodeLine{46     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: cint}
+\DoxyCodeLine{47 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{48     \textcolor{keywordtype}{integer} :: ns,i,j,tt}
+\DoxyCodeLine{49     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 d=shape(ham)}
+\DoxyCodeLine{52 ns=d(1)}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 ro(t+1,:,:)=ro(t,:,:)-\/dt*ci*(matmul(ham(:,:),ro(t,:,:))-\/matmul(ro(t,:,:),ham(:,:)))-\/dt*cint(:,:)}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 }
+
+\end{DoxyCode}

@@ -1,0 +1,108 @@
+\hypertarget{momdist_8f90}{}\doxysection{/home/nlgnico@ad.\+vtt.\+fi/\+Documents/\+N\+E\+G\+Fs/gkba/src/libsrc/momdist.f90 File Reference}
+\label{momdist_8f90}\index{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/libsrc/momdist.f90@{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/libsrc/momdist.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{Indent}\textbf{ M\+O\+M\+D\+I\+ST}\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{momdist_8f90_a475e90e7e6bd5045a243e409fdddbd6a}{momdist}} (d, npx, npy, t, y, md)
+\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{momdist_8f90_a475e90e7e6bd5045a243e409fdddbd6a}\label{momdist_8f90_a475e90e7e6bd5045a243e409fdddbd6a}} 
+\index{momdist.f90@{momdist.f90}!momdist@{momdist}}
+\index{momdist@{momdist}!momdist.f90@{momdist.f90}}
+\doxysubsubsection{\texorpdfstring{momdist()}{momdist()}}
+{\footnotesize\ttfamily subroutine momdist (\begin{DoxyParamCaption}\item[{integer}]{d,  }\item[{integer}]{npx,  }\item[{integer}]{npy,  }\item[{integer}]{t,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{y,  }\item[{double complex, dimension(\+:)}]{md }\end{DoxyParamCaption})}
+
+\begin{DoxyParagraph}{Description}
+\begin{DoxyVerb} \end{DoxyVerb}
+ param\mbox{[}\mbox{]} d \begin{DoxyVerb} \end{DoxyVerb}
+ param\mbox{[}\mbox{]} npx \begin{DoxyVerb} \end{DoxyVerb}
+ param\mbox{[}\mbox{]} npy \begin{DoxyVerb} \end{DoxyVerb}
+ param\mbox{[}\mbox{]} t \begin{DoxyVerb} \end{DoxyVerb}
+ param\mbox{[}\mbox{]} y \begin{DoxyVerb} \end{DoxyVerb}
+ param\mbox{[}\mbox{]} md \begin{DoxyVerb} \end{DoxyVerb}
+
+\end{DoxyParagraph}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyAuthor}{Authors}
+Cosco F., Lo Gullo N., Talarico W. 
+\end{DoxyAuthor}
+
+
+Definition at line 39 of file momdist.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{39     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{40 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{41     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = dacos(-\/1.0d0)       \textcolor{comment}{! Pi greco}}
+\DoxyCodeLine{42     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{43     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{44     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{45 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{46 \textcolor{comment}{!   character(*) :: filenameout}}
+\DoxyCodeLine{47     \textcolor{keywordtype}{integer} :: d,npx,npy,t}
+\DoxyCodeLine{48     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: y}
+\DoxyCodeLine{49 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{50     \textcolor{keywordtype}{integer} :: i,ix,iy,k,kkx,kky,nps}
+\DoxyCodeLine{51     \textcolor{keywordtype}{double precision} :: kx,ky}
+\DoxyCodeLine{52     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:)} :: md}
+\DoxyCodeLine{53     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: expk,ymom}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{keywordflow}{if} (d==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{56     nps=npx}
+\DoxyCodeLine{57 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (d==2) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{58     nps=npx*npy}
+\DoxyCodeLine{59 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{keyword}{allocate}(expk(nps,nps),ymom(nps,nps))}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 md=zero}
+\DoxyCodeLine{64 expk=zero}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 \textcolor{comment}{!Fourier transform in momentum}}
+\DoxyCodeLine{67 \textcolor{keywordflow}{if} (d==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{68     \textcolor{keywordflow}{do} k=1,npx}
+\DoxyCodeLine{69     \textcolor{keywordflow}{do} i=1,npx}
+\DoxyCodeLine{70         kx=-\/pi+2*pi*(k-\/1)/npx}
+\DoxyCodeLine{71         expk(k,i)=exp(-\/ci*kx*i)/sqrt(1.d0*nps)}
+\DoxyCodeLine{72 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{73 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{74 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (d==2) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{75     k=1}
+\DoxyCodeLine{76     \textcolor{keywordflow}{do} kky=1,npy}
+\DoxyCodeLine{77     \textcolor{keywordflow}{do} kkx=1,npx}
+\DoxyCodeLine{78     i=1}
+\DoxyCodeLine{79     kx=-\/pi+2*pi*(kkx-\/1)/npx}
+\DoxyCodeLine{80     ky=-\/pi+2*pi*(kky-\/1)/npy}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82     \textcolor{keywordflow}{do} iy=1,npy}
+\DoxyCodeLine{83     \textcolor{keywordflow}{do} ix=1,npx}
+\DoxyCodeLine{84         expk(k,i)=exp(-\/ci*(kx*ix+ky*iy))/(1.d0*nps)}
+\DoxyCodeLine{85     i=i+1}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{88 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90     k=k+1}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{93 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 ymom(:,:)=matmul(expk,matmul(y(t,1:nps,1:nps),conjg(transpose(expk))))}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{100     md(i)=ymom(i,i)}
+\DoxyCodeLine{101 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 \textcolor{keyword}{deallocate}(expk)}
+\DoxyCodeLine{104 }
+
+\end{DoxyCode}

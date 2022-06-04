@@ -1,0 +1,108 @@
+\hypertarget{slfEMBtime_8f90}{}\doxysection{/home/nlgnico@ad.\+vtt.\+fi/\+Documents/\+N\+E\+G\+Fs/gkba/src/libsrc/slf\+E\+M\+Btime.f90 File Reference}
+\label{slfEMBtime_8f90}\index{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/libsrc/slfEMBtime.f90@{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/libsrc/slfEMBtime.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{Indent}\textbf{ S\+L\+F\+E\+M\+B\+T\+I\+ME}\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{slfEMBtime_8f90_a8a278b7a02dad065c45772d3966f5ba8}{slfembtime}} (D\+T\+I\+ME, T\+I\+ME, E\+M\+B\+S\+L\+FL, E\+M\+B\+S\+L\+FG, S\+L\+FL, S\+L\+FG)
+\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{slfEMBtime_8f90_a8a278b7a02dad065c45772d3966f5ba8}\label{slfEMBtime_8f90_a8a278b7a02dad065c45772d3966f5ba8}} 
+\index{slfEMBtime.f90@{slfEMBtime.f90}!slfembtime@{slfembtime}}
+\index{slfembtime@{slfembtime}!slfEMBtime.f90@{slfEMBtime.f90}}
+\doxysubsubsection{\texorpdfstring{slfembtime()}{slfembtime()}}
+{\footnotesize\ttfamily subroutine slfembtime (\begin{DoxyParamCaption}\item[{double precision, intent(in)}]{D\+T\+I\+ME,  }\item[{integer, intent(in)}]{T\+I\+ME,  }\item[{double complex, dimension(\+:,\+:,\+:), intent(in)}]{E\+M\+B\+S\+L\+FL,  }\item[{double complex, dimension(\+:,\+:,\+:), intent(in)}]{E\+M\+B\+S\+L\+FG,  }\item[{double complex, dimension(\+:,\+:,\+:), intent(out)}]{S\+L\+FL,  }\item[{double complex, dimension(\+:,\+:,\+:), intent(out)}]{S\+L\+FG }\end{DoxyParamCaption})}
+
+\begin{DoxyParagraph}{Description}
+\begin{DoxyVerb}    !!!!!Not sure what it does!!!!!\end{DoxyVerb}
+ 
+\end{DoxyParagraph}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em D\+T\+I\+ME} & \begin{DoxyVerb}      DOUBLE PRECISION
+      The time step\end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ in}}  & {\em T\+I\+ME} & \begin{DoxyVerb}      INTEGER
+      The current time step\end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ out}}  & {\em E\+M\+B\+S\+L\+FL} & \begin{DoxyVerb}      DOUBLE COMPLEX, rank-3 array
+      The first index if the time one
+      The second and thid index coincide with those of GAMMA
+      On exit the LESSER component of the embedding self-energy\end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ out}}  & {\em E\+M\+B\+S\+L\+FL} & \begin{DoxyVerb}      DOUBLE COMPLEX, rank-3 array
+      The first index if the time one
+      The second and thid index coincide with those of GAMMA
+      On exit the GREATER component of the embedding self-energy\end{DoxyVerb}
+ param\mbox{[}out\mbox{]} S\+L\+FL \begin{DoxyVerb}      DOUBLE COMPLEX, rank-3 array
+      The first index if the time one
+      The second and thid index coincide with those of GAMMA
+    On exit the time-reversed LESSER component 
+    of the embedding self-energy \end{DoxyVerb}
+ param\mbox{[}out\mbox{]} S\+L\+FG \begin{DoxyVerb}      DOUBLE COMPLEX, rank-3 array
+      The first index if the time one
+      The second and thid index coincide with those of GAMMA
+    On exit the time-reversed GREATER component 
+    of the embedding self-energy \end{DoxyVerb}
+\\
+\hline
+\end{DoxyParams}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyAuthor}{Authors}
+Cosco F., Lo Gullo N., Talarico W. 
+\end{DoxyAuthor}
+
+
+Definition at line 54 of file slf\+E\+M\+Btime.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{56 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{57     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{58     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{59 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{60     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{intent(in)} :: TIME}
+\DoxyCodeLine{61     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{intent(in)} :: DTIME}
+\DoxyCodeLine{62     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)}, \textcolor{keywordtype}{intent(in)} :: EMBSLFL}
+\DoxyCodeLine{63     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)}, \textcolor{keywordtype}{intent(in)} :: EMBSLFG}
+\DoxyCodeLine{64 \textcolor{comment}{!Output variables}}
+\DoxyCodeLine{65     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)}, \textcolor{keywordtype}{intent(out)} :: SLFL}
+\DoxyCodeLine{66     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)}, \textcolor{keywordtype}{intent(out)} :: SLFG}
+\DoxyCodeLine{67 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{68     \textcolor{keywordtype}{integer} :: ns,i,j,tt}
+\DoxyCodeLine{69     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{70     }
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 d=shape(slfl(1,:,:))}
+\DoxyCodeLine{73 ns=d(1)}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 slfl=zero}
+\DoxyCodeLine{76 slfg=zero}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!LESSER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{keywordflow}{do} tt=1,time}
+\DoxyCodeLine{81     slfl(tt,1:ns,1:ns)=embslfl(time-\/tt+1,1:ns,1:ns)}
+\DoxyCodeLine{82 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{83 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!GREATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{86 \textcolor{keywordflow}{do} tt=1,time}
+\DoxyCodeLine{87     slfg(tt,1:ns,1:ns)=embslfg(time-\/tt+1,1:ns,1:ns)}
+\DoxyCodeLine{88 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{89 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 }
+
+\end{DoxyCode}

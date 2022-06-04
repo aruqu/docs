@@ -1,0 +1,80 @@
+\hypertarget{slfMBpEMB_8f90}{}\doxysection{/home/nlgnico@ad.\+vtt.\+fi/\+Documents/\+N\+E\+G\+Fs/gkba/src/libsrc/slf\+M\+Bp\+E\+MB.f90 File Reference}
+\label{slfMBpEMB_8f90}\index{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/libsrc/slfMBpEMB.f90@{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/libsrc/slfMBpEMB.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{Indent}\textbf{ S\+L\+F\+M\+B\+P\+E\+MB}\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{slfMBpEMB_8f90_ae82b4411e6c5c5d1a3815a9b607388a9}{slfmbpemb}} (dt, t, slfl\+\_\+emb, slfg\+\_\+emb, slfl, slfg)
+\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{slfMBpEMB_8f90_ae82b4411e6c5c5d1a3815a9b607388a9}\label{slfMBpEMB_8f90_ae82b4411e6c5c5d1a3815a9b607388a9}} 
+\index{slfMBpEMB.f90@{slfMBpEMB.f90}!slfmbpemb@{slfmbpemb}}
+\index{slfmbpemb@{slfmbpemb}!slfMBpEMB.f90@{slfMBpEMB.f90}}
+\doxysubsubsection{\texorpdfstring{slfmbpemb()}{slfmbpemb()}}
+{\footnotesize\ttfamily subroutine slfmbpemb (\begin{DoxyParamCaption}\item[{double precision}]{dt,  }\item[{integer}]{t,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfl\+\_\+emb,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfg\+\_\+emb,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfl,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfg }\end{DoxyParamCaption})}
+
+\begin{DoxyParagraph}{Description}
+\begin{DoxyVerb} \end{DoxyVerb}
+ param\mbox{[}\mbox{]} dt \begin{DoxyVerb} \end{DoxyVerb}
+ param\mbox{[}\mbox{]} t \begin{DoxyVerb} \end{DoxyVerb}
+ param\mbox{[}\mbox{]} slfl\+\_\+emb \begin{DoxyVerb} \end{DoxyVerb}
+ param\mbox{[}\mbox{]} slfg\+\_\+emb \begin{DoxyVerb} \end{DoxyVerb}
+ param\mbox{[}\mbox{]} slfl \begin{DoxyVerb} \end{DoxyVerb}
+ param\mbox{[}\mbox{]} slfg \begin{DoxyVerb} \end{DoxyVerb}
+
+\end{DoxyParagraph}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyAuthor}{Authors}
+Cosco F., Lo Gullo N., Talarico W. 
+\end{DoxyAuthor}
+
+
+Definition at line 39 of file slf\+M\+Bp\+E\+M\+B.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{39     }
+\DoxyCodeLine{40     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{41 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{42     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{43     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{44     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{45 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{46     \textcolor{keywordtype}{integer} :: t}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double precision} :: dt}
+\DoxyCodeLine{48     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfl}
+\DoxyCodeLine{49     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfg}
+\DoxyCodeLine{50 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{51     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfl\_emb}
+\DoxyCodeLine{52     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfg\_emb}
+\DoxyCodeLine{53     }
+\DoxyCodeLine{54 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{55     \textcolor{keywordtype}{integer} :: ns,i,j,tt}
+\DoxyCodeLine{56     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{57     }
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 d=shape(slfl(1,:,:))}
+\DoxyCodeLine{60 ns=d(1)}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!LESSER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{64 \textcolor{keywordflow}{do} tt=1,t}
+\DoxyCodeLine{65     slfl(tt,1:ns,1:ns)=slfl(tt,1:ns,1:ns)+slfl\_emb(t-\/tt+1,1:ns,1:ns)}
+\DoxyCodeLine{66 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{67 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!GREATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{70 \textcolor{keywordflow}{do} tt=1,t}
+\DoxyCodeLine{71     slfg(tt,1:ns,1:ns)=slfg(tt,1:ns,1:ns)+slfg\_emb(t-\/tt+1,1:ns,1:ns)}
+\DoxyCodeLine{72 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{73 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 }
+
+\end{DoxyCode}

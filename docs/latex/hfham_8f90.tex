@@ -1,0 +1,106 @@
+\hypertarget{hfham_8f90}{}\doxysection{/home/nlgnico@ad.\+vtt.\+fi/\+Documents/\+N\+E\+G\+Fs/gkba/src/libsrc/hfham.f90 File Reference}
+\label{hfham_8f90}\index{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/libsrc/hfham.f90@{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/libsrc/hfham.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{Indent}\textbf{ H\+F\+H\+AM}\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{hfham_8f90_a074d745adadbedfa674bf4bc38cf264d}{hfham}} (H\+AM, RO, T\+I\+ME, V, V\+D\+R\+I\+VE, M\+F\+H\+AM)
+\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{hfham_8f90_a074d745adadbedfa674bf4bc38cf264d}\label{hfham_8f90_a074d745adadbedfa674bf4bc38cf264d}} 
+\index{hfham.f90@{hfham.f90}!hfham@{hfham}}
+\index{hfham@{hfham}!hfham.f90@{hfham.f90}}
+\doxysubsubsection{\texorpdfstring{hfham()}{hfham()}}
+{\footnotesize\ttfamily subroutine hfham (\begin{DoxyParamCaption}\item[{double precision, dimension(\+:,\+:), intent(in)}]{H\+AM,  }\item[{double complex, dimension(\+:,\+:,\+:), intent(in)}]{RO,  }\item[{integer, intent(in)}]{T\+I\+ME,  }\item[{double precision, dimension(\+:,\+:), intent(in)}]{V,  }\item[{double precision, dimension(\+:), intent(in), optional}]{V\+D\+R\+I\+VE,  }\item[{double complex, dimension(\+:,\+:), intent(out)}]{M\+F\+H\+AM }\end{DoxyParamCaption})}
+
+\begin{DoxyParagraph}{Description}
+\begin{DoxyVerb}    Computes the one-body Hamiltonian at the Hartree-Fock level\end{DoxyVerb}
+ param\mbox{[}in\mbox{]} H\+AM \begin{DoxyVerb}    DOUBLE PRECISION, rank-2 array
+    On entry the one-body Hamiltonian of the system\end{DoxyVerb}
+ param\mbox{[}in\mbox{]} RO \begin{DoxyVerb}    DOUBLE PRECISION, rank-3 array
+    The density matrix of the system\end{DoxyVerb}
+ param\mbox{[}in\mbox{]} T\+I\+ME \begin{DoxyVerb}    DOUBLE PRECISION
+    The current time-step\end{DoxyVerb}
+ param\mbox{[}in\mbox{]} V \begin{DoxyVerb}    DOUBLE PRECISION, rank-2 array
+    A matrix containing the two-body density-density interaction \end{DoxyVerb}
+ param\mbox{[}in\mbox{]} V\+D\+R\+I\+VE \begin{DoxyVerb}    DOUBLE PRECISION, rank-1 array
+    OPTIONAL, An array with a temporal profile 
+    To be used to avoid sudden switching on of the interaction\end{DoxyVerb}
+ param\mbox{[}out\mbox{]} M\+F\+H\+AM \begin{DoxyVerb}    DOUBLE COMPLEX, rank-2 array
+    On exit the new Hamiltonian of the system which includes the
+    Hartree-Fock terms\end{DoxyVerb}
+
+\end{DoxyParagraph}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyAuthor}{Authors}
+Cosco F., Lo Gullo N., Talarico W. 
+\end{DoxyAuthor}
+
+
+Definition at line 46 of file hfham.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{46     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{47 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{48     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{49     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: one = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{50     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{51 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{52     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{intent(in)} :: TIME}
+\DoxyCodeLine{53     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{intent(in)} :: HAM}
+\DoxyCodeLine{54     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)}, \textcolor{keywordtype}{intent(in)} :: RO}
+\DoxyCodeLine{55     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{intent(in)} :: V}
+\DoxyCodeLine{56     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{intent(in)}, \textcolor{keywordtype}{optional} :: VDRIVE}
+\DoxyCodeLine{57     }
+\DoxyCodeLine{58 \textcolor{comment}{!Output variables}}
+\DoxyCodeLine{59     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{intent(out)} :: MFHAM}
+\DoxyCodeLine{60 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{61     \textcolor{keywordtype}{integer} :: ns,i,j,tt}
+\DoxyCodeLine{62     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{63     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: hrt,fck}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 d=shape(ham)}
+\DoxyCodeLine{66 ns=d(1)}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{keyword}{allocate}(hrt(d(1),d(2)),fck(d(1),d(2)))}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 \textcolor{comment}{!Calculating the Hartree term}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 hrt=zero}
+\DoxyCodeLine{73 \textcolor{keywordflow}{do} i=1,ns}
+\DoxyCodeLine{74 \textcolor{keywordflow}{do} j=1,ns}
+\DoxyCodeLine{75     \textcolor{keywordflow}{if} (\textcolor{keyword}{present}(vdrive)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{76         hrt(i,i)=hrt(i,i)+v(i,j)*ro(time,j,j)*vdrive(time)}
+\DoxyCodeLine{77     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{78         hrt(i,i)=hrt(i,i)+v(i,j)*ro(time,j,j)}
+\DoxyCodeLine{79 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{80 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{81 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \textcolor{comment}{!Calculating the Fock term}}
+\DoxyCodeLine{84 \textcolor{comment}{! É zero perché non c'é lo spin! (Nicola)}}
+\DoxyCodeLine{85 \textcolor{comment}{!fck=zero}}
+\DoxyCodeLine{86 \textcolor{comment}{!do i=1,ns}}
+\DoxyCodeLine{87 \textcolor{comment}{!do j=1,ns}}
+\DoxyCodeLine{88 \textcolor{comment}{!   if (present(VDRIVE)) then}}
+\DoxyCodeLine{89 \textcolor{comment}{!       fck(i,j)=-\/V(i,j)*RO(TIME,i,j)*VDRIVE(TIME)}}
+\DoxyCodeLine{90 \textcolor{comment}{!   else}}
+\DoxyCodeLine{91 \textcolor{comment}{!       fck(i,j)=-\/V(i,j)*RO(TIME,i,j)}}
+\DoxyCodeLine{92 \textcolor{comment}{!   end if}}
+\DoxyCodeLine{93 \textcolor{comment}{!end do}}
+\DoxyCodeLine{94 \textcolor{comment}{!end do}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 \textcolor{comment}{!Calculating the effective Hamiltonian}}
+\DoxyCodeLine{97 mfham=one*ham+hrt\textcolor{comment}{!+fck}}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 \textcolor{keyword}{deallocate}(hrt,fck)}
+\DoxyCodeLine{101 }
+
+\end{DoxyCode}

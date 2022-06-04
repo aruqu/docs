@@ -1,0 +1,104 @@
+\hypertarget{HFU_8f90}{}\doxysection{/home/nlgnico@ad.\+vtt.\+fi/\+Documents/\+N\+E\+G\+Fs/gkba/src/libsrc/\+H\+FU.f90 File Reference}
+\label{HFU_8f90}\index{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/libsrc/HFU.f90@{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/libsrc/HFU.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{Indent}\textbf{ H\+FU}\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{HFU_8f90_a128f421e01539e1b25677069362f4c75}{hfu}} (D\+T\+I\+ME, H\+E\+FF, T\+I\+ME, Y)
+\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{HFU_8f90_a128f421e01539e1b25677069362f4c75}\label{HFU_8f90_a128f421e01539e1b25677069362f4c75}} 
+\index{HFU.f90@{HFU.f90}!hfu@{hfu}}
+\index{hfu@{hfu}!HFU.f90@{HFU.f90}}
+\doxysubsubsection{\texorpdfstring{hfu()}{hfu()}}
+{\footnotesize\ttfamily subroutine hfu (\begin{DoxyParamCaption}\item[{double precision, intent(in)}]{D\+T\+I\+ME,  }\item[{double complex, dimension(\+:,\+:), intent(in)}]{H\+E\+FF,  }\item[{integer, intent(in)}]{T\+I\+ME,  }\item[{double complex, dimension(\+:,\+:,\+:), intent(out)}]{Y }\end{DoxyParamCaption})}
+
+\begin{DoxyParagraph}{Description}
+\begin{DoxyVerb}    It returns the time evolution operator Y in the Hartree-Fock
+    approximation which is used in the HF GKBA approximation\end{DoxyVerb}
+ param\mbox{[}in\mbox{]} D\+T\+I\+ME \begin{DoxyVerb}    DOUBLE PRECISION
+    The time step\end{DoxyVerb}
+ param\mbox{[}in\mbox{]} H\+E\+FF \begin{DoxyVerb}    DOUBLE COMPLEX, rank-2 array
+    The total Hamiltonian of the system
+    In general is made of three terms:
+    H0 = Free on-body Hamiltonian of the system
+    HHF = The mean-field part of the interaction (Hartree-Fock)
+    HL = Accounts for the dissipation induced by the leads,
+         a non-hermitian term\end{DoxyVerb}
+ param\mbox{[}in\mbox{]} T\+I\+ME \begin{DoxyVerb}    INTEGER
+    The current time step\end{DoxyVerb}
+ param\mbox{[}out\mbox{]} Y \begin{DoxyVerb}      DOUBLE COMPLEX, rank-3 array
+      The first index if the time one
+      The second and thid index are the spatial/momentum/spin ones
+      The evolution operator in the GKBA approach\end{DoxyVerb}
+
+\end{DoxyParagraph}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyAuthor}{Authors}
+Cosco F., Lo Gullo N., Talarico W. 
+\end{DoxyAuthor}
+
+
+Definition at line 42 of file H\+F\+U.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{42     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{43 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{44     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{45     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: one = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{46     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{47 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{48     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{intent(in)} :: TIME}
+\DoxyCodeLine{49     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{intent(in)} :: DTIME}
+\DoxyCodeLine{50     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{intent(in)} :: HEFF}
+\DoxyCodeLine{51 \textcolor{comment}{!Output variables}}
+\DoxyCodeLine{52     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)}, \textcolor{keywordtype}{intent(out)} :: Y}
+\DoxyCodeLine{53 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{54     \textcolor{keywordtype}{integer} :: ns,i,j,tt}
+\DoxyCodeLine{55     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{56     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: u}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 d=shape(heff)}
+\DoxyCodeLine{59 ns=d(1)}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{keyword}{allocate}(u(d(1),d(2)))}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{comment}{! !Calculating the infinitesimal evolution operator u}}
+\DoxyCodeLine{65 \textcolor{comment}{! !suzuki trotter standard}}
+\DoxyCodeLine{66 \textcolor{keyword}{call }\mbox{\hyperlink{matrexp__t_8f90_a10214dbcd6dc8c173753efac51a0ad59}{matrexp\_t}}(dtime,heff,u) \textcolor{comment}{!matrexp o matrex\_t}}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 y(time,:,:)=y(time,:,:)}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 \textcolor{comment}{!\$omp parallel}}
+\DoxyCodeLine{71 \textcolor{comment}{!\$omp do private(tt)}}
+\DoxyCodeLine{72 \textcolor{keywordflow}{do} tt=1,time}
+\DoxyCodeLine{73     y(tt,:,:)=matmul(u,y(tt,:,:))}
+\DoxyCodeLine{74 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{75 \textcolor{comment}{!\$omp end do}}
+\DoxyCodeLine{76 \textcolor{comment}{!\$omp end parallel}}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 \textcolor{comment}{! !suzuki trotter di ordine 2}}
+\DoxyCodeLine{79 \textcolor{comment}{! call matrexp(dt/2,heff,U) !matrexp o matrex\_t}}
+\DoxyCodeLine{80 \textcolor{comment}{!}}
+\DoxyCodeLine{81 \textcolor{comment}{! y(t,:,:)=y(t,:,:)}}
+\DoxyCodeLine{82 \textcolor{comment}{!}}
+\DoxyCodeLine{83 \textcolor{comment}{! do tt=1,t}}
+\DoxyCodeLine{84 \textcolor{comment}{!   y(tt,:,:)=matmul(matmul(U,y(tt,:,:)),U)}}
+\DoxyCodeLine{85 \textcolor{comment}{! end do}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 y(time+1,:,:)=zero}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 \textcolor{keywordflow}{do} i=1, ns}
+\DoxyCodeLine{90     y(time+1,i,i)=one}
+\DoxyCodeLine{91 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 }
+
+\end{DoxyCode}
