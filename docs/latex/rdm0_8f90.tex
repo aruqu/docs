@@ -28,35 +28,3 @@ subroutine \mbox{\hyperlink{rdm0_8f90_aec9fac5cc271b2355f28aecf12cbd13e}{rdm0}} 
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
-
-
-Definition at line 23 of file rdm0.\+f90.
-
-
-\begin{DoxyCode}{0}
-\DoxyCodeLine{23     \textcolor{keywordtype}{implicit none}}
-\DoxyCodeLine{24     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:)} :: ain}
-\DoxyCodeLine{25     \textcolor{keywordtype}{character(*)} :: filename}
-\DoxyCodeLine{26     \textcolor{keywordtype}{integer} :: ns}
-\DoxyCodeLine{27     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(1)} :: d}
-\DoxyCodeLine{28     \textcolor{keywordtype}{integer} :: i,j,ierr}
-\DoxyCodeLine{29 }
-\DoxyCodeLine{30 d=shape(ain)}
-\DoxyCodeLine{31 ns=d(1)}
-\DoxyCodeLine{32 }
-\DoxyCodeLine{33 \textcolor{keyword}{open}(unit=21,file=filename//\textcolor{stringliteral}{'\_r.dat'},access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
-\DoxyCodeLine{34 \textcolor{keyword}{open}(unit=22,file=filename//\textcolor{stringliteral}{'\_i.dat'},access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
-\DoxyCodeLine{35 \textcolor{keyword}{call }fseek(21, 0, 2, ierr)}
-\DoxyCodeLine{36 \textcolor{keyword}{call }fseek(22, 0, 2, ierr)}
-\DoxyCodeLine{37 }
-\DoxyCodeLine{38 \textcolor{keywordflow}{do} i=1, ns}
-\DoxyCodeLine{39     \textcolor{keyword}{write}(21,\textcolor{stringliteral}{'(F12.6)'}) real(ain(i))}
-\DoxyCodeLine{40     \textcolor{keyword}{write}(22,\textcolor{stringliteral}{'(F12.6)'}) aimag(ain(i))}
-\DoxyCodeLine{41 \textcolor{keywordflow}{end do}}
-\DoxyCodeLine{42 }
-\DoxyCodeLine{43 \textcolor{keyword}{close}(21)}
-\DoxyCodeLine{44 \textcolor{keyword}{close}(22)}
-\DoxyCodeLine{45 }
-\DoxyCodeLine{46 }
-
-\end{DoxyCode}

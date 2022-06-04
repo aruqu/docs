@@ -29,32 +29,3 @@ subroutine \mbox{\hyperlink{rdmc_8f90_aba85697ee65f21f6ee3f01aca1833ce4}{rdmc}} 
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
-
-
-Definition at line 27 of file rdmc.\+f90.
-
-
-\begin{DoxyCode}{0}
-\DoxyCodeLine{27     \textcolor{keywordtype}{implicit none}}
-\DoxyCodeLine{28     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:)} :: ain}
-\DoxyCodeLine{29     \textcolor{keywordtype}{character(*)} :: filename}
-\DoxyCodeLine{30     \textcolor{keywordtype}{integer} :: t,ns}
-\DoxyCodeLine{31     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(3)} :: d}
-\DoxyCodeLine{32     \textcolor{keywordtype}{integer} :: i,j,ierr}
-\DoxyCodeLine{33 }
-\DoxyCodeLine{34 \textcolor{comment}{!d=shape(ain)}}
-\DoxyCodeLine{35 }
-\DoxyCodeLine{36 \textcolor{keyword}{open}(unit=23,file=filename//\textcolor{stringliteral}{'.dat'},access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
-\DoxyCodeLine{37 \textcolor{comment}{!open(unit=24,file=filename//'\_i.dat',access = 'append',status='unknown')}}
-\DoxyCodeLine{38 \textcolor{comment}{!call fseek(23, 0, 2, ierr)}}
-\DoxyCodeLine{39 \textcolor{comment}{!call fseek(24, 0, 2, ierr)}}
-\DoxyCodeLine{40 }
-\DoxyCodeLine{41     \textcolor{keyword}{write}(23,\textcolor{stringliteral}{'(F12.6)'}) real(ain(t))}
-\DoxyCodeLine{42     \textcolor{comment}{!write(24,*) Aimag(ain(t))}}
-\DoxyCodeLine{43 }
-\DoxyCodeLine{44 \textcolor{keyword}{close}(23)}
-\DoxyCodeLine{45 \textcolor{comment}{!close(24)}}
-\DoxyCodeLine{46 }
-\DoxyCodeLine{47 }
-
-\end{DoxyCode}

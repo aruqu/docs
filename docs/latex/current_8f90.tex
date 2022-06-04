@@ -31,37 +31,3 @@ i param\mbox{[}in\mbox{]} C\+L\+E\+AD \begin{DoxyVerb}    DOUBLE COMPLEX
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
-
-
-Definition at line 25 of file current.\+f90.
-
-
-\begin{DoxyCode}{0}
-\DoxyCodeLine{25 }
-\DoxyCodeLine{26     \textcolor{keywordtype}{implicit none}}
-\DoxyCodeLine{27 \textcolor{comment}{!Useful numerical parameters}}
-\DoxyCodeLine{28     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
-\DoxyCodeLine{29 \textcolor{comment}{!Input variables}}
-\DoxyCodeLine{30     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{intent(in)} :: CINT}
-\DoxyCodeLine{31 \textcolor{comment}{!Output variables}}
-\DoxyCodeLine{32     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{intent(out)} :: CLEAD}
-\DoxyCodeLine{33 \textcolor{comment}{!Dummy variables}}
-\DoxyCodeLine{34     \textcolor{keywordtype}{integer} :: ns,i,j,tt}
-\DoxyCodeLine{35     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
-\DoxyCodeLine{36     \textcolor{keywordtype}{double complex} :: tmp}
-\DoxyCodeLine{37     }
-\DoxyCodeLine{38     }
-\DoxyCodeLine{39 }
-\DoxyCodeLine{40 d=shape(cint)}
-\DoxyCodeLine{41 ns=d(1)}
-\DoxyCodeLine{42 }
-\DoxyCodeLine{43 tmp = zero}
-\DoxyCodeLine{44 }
-\DoxyCodeLine{45 \textcolor{keywordflow}{do} i=1, ns}
-\DoxyCodeLine{46     tmp = tmp+cint(i,i)}
-\DoxyCodeLine{47 \textcolor{keywordflow}{end do}}
-\DoxyCodeLine{48 }
-\DoxyCodeLine{49 clead=tmp}
-\DoxyCodeLine{50 }
-
-\end{DoxyCode}
