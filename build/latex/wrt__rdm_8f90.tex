@@ -1,0 +1,57 @@
+\hypertarget{wrt__rdm_8f90}{}\doxysection{/home/nlgnico@ad.\+vtt.\+fi/\+Documents/\+N\+E\+G\+Fs/gkba/src/wrt\+\_\+rdm.f90 File Reference}
+\label{wrt__rdm_8f90}\index{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/wrt\_rdm.f90@{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/wrt\_rdm.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{Indent}\textbf{ W\+R\+T\+\_\+\+R\+D\+MP}\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{wrt__rdm_8f90_a77afed56d093bfa30ff9fde5c72dad50}{wrt\+\_\+rdm}} (T\+I\+ME, F\+I\+L\+E\+N\+A\+ME, OP, A\+I\+N1, A\+I\+N3)
+\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{wrt__rdm_8f90_a77afed56d093bfa30ff9fde5c72dad50}\label{wrt__rdm_8f90_a77afed56d093bfa30ff9fde5c72dad50}} 
+\index{wrt\_rdm.f90@{wrt\_rdm.f90}!wrt\_rdm@{wrt\_rdm}}
+\index{wrt\_rdm@{wrt\_rdm}!wrt\_rdm.f90@{wrt\_rdm.f90}}
+\doxysubsubsection{\texorpdfstring{wrt\_rdm()}{wrt\_rdm()}}
+{\footnotesize\ttfamily subroutine wrt\+\_\+rdm (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{T\+I\+ME,  }\item[{character($\ast$), dimension(\+:), intent(in), optional}]{F\+I\+L\+E\+N\+A\+ME,  }\item[{character($\ast$), dimension(\+:), intent(in), optional}]{OP,  }\item[{double complex, dimension(\+:), intent(in), optional}]{A\+I\+N1,  }\item[{double complex, dimension(\+:,\+:,\+:), intent(in), optional}]{A\+I\+N3 }\end{DoxyParamCaption})}
+
+\begin{DoxyParagraph}{Description}
+\begin{DoxyVerb}    Writes the real and imaginary part of the element 
+    A(TIME,:,:) in two files FILENAME_r.dat and FILENAME_i.dat \end{DoxyVerb}
+ 
+\end{DoxyParagraph}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em T\+I\+ME} & \begin{DoxyVerb}    INTEGER
+    The current time step\end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ in}}  & {\em A\+IN} & \begin{DoxyVerb}    DOUBLE COMPLEX, rank-3 array
+    OPTIONAL, The first index if the time one
+    The second and thid index are the spatial/momentum/spin ones\end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ in}}  & {\em F\+I\+L\+E\+N\+A\+ME} & \begin{DoxyVerb}    CHARACTER, rank-1 array
+    OPTIONAL, It contain the file names in which the outcomes will be written
+    It is assumed that the order is the same as the one of the operations in OP \end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ in}}  & {\em OP} & \begin{DoxyVerb}    CHARACTER, rank-1 array
+    OPTIONAL, It contains the list of operations to be performed
+    'r' -> Real part of                AIN1(TIME)
+    'c' -> Real and imaginary part of  AIN1(TIME)
+    'd' -> Diagonals of                AIN3(TIME,:,:)
+    'a' -> The whole                   AIN3(TIME,:,:)
+    If no operation is provided the DEFAULT is to print:
+    Real part of     AIN1(TIME)      in   "real.dat"
+    Diagonal part of AIN3(TIME,:,:)  in   "diagonal.dat"\end{DoxyVerb}
+\\
+\hline
+\end{DoxyParams}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyAuthor}{Authors}
+Cosco F., Lo Gullo N., Talarico W. 
+\end{DoxyAuthor}

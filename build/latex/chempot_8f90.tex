@@ -1,0 +1,55 @@
+\hypertarget{chempot_8f90}{}\doxysection{/home/nlgnico@ad.\+vtt.\+fi/\+Documents/\+N\+E\+G\+Fs/gkba/src/chempot.f90 File Reference}
+\label{chempot_8f90}\index{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/chempot.f90@{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/chempot.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{Indent}\textbf{ C\+H\+E\+M\+P\+OT}\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{chempot_8f90_abe9b1f5252c53ac8ec52e9d83768c8f8}{chempot}} (N, W, B\+E\+TA, N\+U\+M\+P\+A\+RT, S\+T\+AT, MU)
+\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{chempot_8f90_abe9b1f5252c53ac8ec52e9d83768c8f8}\label{chempot_8f90_abe9b1f5252c53ac8ec52e9d83768c8f8}} 
+\index{chempot.f90@{chempot.f90}!chempot@{chempot}}
+\index{chempot@{chempot}!chempot.f90@{chempot.f90}}
+\doxysubsubsection{\texorpdfstring{chempot()}{chempot()}}
+{\footnotesize\ttfamily subroutine chempot (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{N,  }\item[{double precision, dimension(\+:), intent(in)}]{W,  }\item[{double precision, intent(in)}]{B\+E\+TA,  }\item[{double precision, intent(inout)}]{N\+U\+M\+P\+A\+RT,  }\item[{integer, intent(in)}]{S\+T\+AT,  }\item[{double precision, intent(inout)}]{MU }\end{DoxyParamCaption})}
+
+\begin{DoxyParagraph}{Description}
+\begin{DoxyVerb}    Computes the chemical potential of a system with
+    eigenvalues W and temperature BETA in order for the
+    system to have exactly NUMPART particles\end{DoxyVerb}
+ 
+\end{DoxyParagraph}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em N} & \begin{DoxyVerb}    Number of eigenstates\end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ in}}  & {\em W} & \begin{DoxyVerb}    Eigenstates of the system\end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ in}}  & {\em B\+E\+TA} & \begin{DoxyVerb}    Inverse temperature\end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em N\+U\+M\+P\+A\+RT} & \begin{DoxyVerb}    Number of particle of the system
+    On entry the desired one
+    On exit the number of particles
+    with the computed chemical potential\end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ in}}  & {\em S\+T\+AT} & \begin{DoxyVerb}      Statistics of the particles
+    1 = Bosons, -1 = Fermions\end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ out}}  & {\em MU} & \begin{DoxyVerb}      Computed chemical potential\end{DoxyVerb}
+\\
+\hline
+\end{DoxyParams}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyAuthor}{Authors}
+Cosco F., Lo Gullo N., Talarico W. 
+\end{DoxyAuthor}

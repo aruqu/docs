@@ -1,0 +1,42 @@
+\hypertarget{hfham_8f90}{}\doxysection{/home/nlgnico@ad.\+vtt.\+fi/\+Documents/\+N\+E\+G\+Fs/gkba/src/hfham.f90 File Reference}
+\label{hfham_8f90}\index{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/hfham.f90@{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/hfham.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{Indent}\textbf{ H\+F\+H\+AM}\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{hfham_8f90_a074d745adadbedfa674bf4bc38cf264d}{hfham}} (H\+AM, RO, T\+I\+ME, V, V\+D\+R\+I\+VE, M\+F\+H\+AM)
+\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{hfham_8f90_a074d745adadbedfa674bf4bc38cf264d}\label{hfham_8f90_a074d745adadbedfa674bf4bc38cf264d}} 
+\index{hfham.f90@{hfham.f90}!hfham@{hfham}}
+\index{hfham@{hfham}!hfham.f90@{hfham.f90}}
+\doxysubsubsection{\texorpdfstring{hfham()}{hfham()}}
+{\footnotesize\ttfamily subroutine hfham (\begin{DoxyParamCaption}\item[{double precision, dimension(\+:,\+:), intent(in)}]{H\+AM,  }\item[{double complex, dimension(\+:,\+:,\+:), intent(in)}]{RO,  }\item[{integer, intent(in)}]{T\+I\+ME,  }\item[{double precision, dimension(\+:,\+:), intent(in)}]{V,  }\item[{double precision, dimension(\+:), intent(in), optional}]{V\+D\+R\+I\+VE,  }\item[{double complex, dimension(\+:,\+:), intent(out)}]{M\+F\+H\+AM }\end{DoxyParamCaption})}
+
+\begin{DoxyParagraph}{Description}
+\begin{DoxyVerb}    Computes the one-body Hamiltonian at the Hartree-Fock level\end{DoxyVerb}
+ param\mbox{[}in\mbox{]} H\+AM \begin{DoxyVerb}    DOUBLE PRECISION, rank-2 array
+    On entry the one-body Hamiltonian of the system\end{DoxyVerb}
+ param\mbox{[}in\mbox{]} RO \begin{DoxyVerb}    DOUBLE PRECISION, rank-3 array
+    The density matrix of the system\end{DoxyVerb}
+ param\mbox{[}in\mbox{]} T\+I\+ME \begin{DoxyVerb}    DOUBLE PRECISION
+    The current time-step\end{DoxyVerb}
+ param\mbox{[}in\mbox{]} V \begin{DoxyVerb}    DOUBLE PRECISION, rank-2 array
+    A matrix containing the two-body density-density interaction \end{DoxyVerb}
+ param\mbox{[}in\mbox{]} V\+D\+R\+I\+VE \begin{DoxyVerb}    DOUBLE PRECISION, rank-1 array
+    OPTIONAL, An array with a temporal profile 
+    To be used to avoid sudden switching on of the interaction\end{DoxyVerb}
+ param\mbox{[}out\mbox{]} M\+F\+H\+AM \begin{DoxyVerb}    DOUBLE COMPLEX, rank-2 array
+    On exit the new Hamiltonian of the system which includes the
+    Hartree-Fock terms\end{DoxyVerb}
+
+\end{DoxyParagraph}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyAuthor}{Authors}
+Cosco F., Lo Gullo N., Talarico W. 
+\end{DoxyAuthor}

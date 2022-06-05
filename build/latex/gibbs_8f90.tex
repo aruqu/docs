@@ -1,0 +1,59 @@
+\hypertarget{gibbs_8f90}{}\doxysection{/home/nlgnico@ad.\+vtt.\+fi/\+Documents/\+N\+E\+G\+Fs/gkba/src/gibbs.f90 File Reference}
+\label{gibbs_8f90}\index{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/gibbs.f90@{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/gibbs.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{Indent}\textbf{ G\+I\+B\+BS}\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{gibbs_8f90_a07e55a904f026496cb339a4d34a79366}{gibbs}} (W, B\+E\+TA, S, MU, S\+T\+AT, R\+O\+\_\+G)
+\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{gibbs_8f90_a07e55a904f026496cb339a4d34a79366}\label{gibbs_8f90_a07e55a904f026496cb339a4d34a79366}} 
+\index{gibbs.f90@{gibbs.f90}!gibbs@{gibbs}}
+\index{gibbs@{gibbs}!gibbs.f90@{gibbs.f90}}
+\doxysubsubsection{\texorpdfstring{gibbs()}{gibbs()}}
+{\footnotesize\ttfamily subroutine gibbs (\begin{DoxyParamCaption}\item[{double precision, dimension(\+:), intent(in)}]{W,  }\item[{double precision, intent(in)}]{B\+E\+TA,  }\item[{double precision, dimension(\+:,\+:), intent(in), optional}]{S,  }\item[{double precision, intent(in)}]{MU,  }\item[{integer, intent(in)}]{S\+T\+AT,  }\item[{double complex, dimension(\+:,\+:), intent(out)}]{R\+O\+\_\+G }\end{DoxyParamCaption})}
+
+\begin{DoxyParagraph}{Description}
+\begin{DoxyVerb}    Computes the Gibbs state of a non-interacting system and
+    returns it in the energy or other representation basis\end{DoxyVerb}
+ 
+\end{DoxyParagraph}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em W} & \begin{DoxyVerb}    DOUBLE PRECISION, rank-1 array
+      Eigenvalues of the system\end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ in}}  & {\em B\+E\+TA} & \begin{DoxyVerb}    DOUBLE PRECISION
+      Inverse temperature of the system\end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ in}}  & {\em S} & \begin{DoxyVerb}    DOUBLE PRECISION, rank-2 array
+    OPTIONAL, the matrix with the eigenvectors
+    of the system. If present the outputed RO_0
+    is in the spatial/momentum basis\end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ in}}  & {\em MU} & \begin{DoxyVerb}    DOUBLE PRECISION
+      The chemical potential of the system\end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ in}}  & {\em S\+T\+AT} & \begin{DoxyVerb}    INTEGER
+    Statistics of the particles
+    1 = Bosons, -1 = Fermions \end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ in}}  & {\em R\+O\+\_\+G} & \begin{DoxyVerb}    DOUBLE PRECISION, rank-2 array
+    The Gibbs state of the system \end{DoxyVerb}
+\\
+\hline
+\end{DoxyParams}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyAuthor}{Authors}
+Cosco F., Lo Gullo N., Talarico W. 
+\end{DoxyAuthor}

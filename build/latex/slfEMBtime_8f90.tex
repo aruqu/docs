@@ -1,0 +1,61 @@
+\hypertarget{slfEMBtime_8f90}{}\doxysection{/home/nlgnico@ad.\+vtt.\+fi/\+Documents/\+N\+E\+G\+Fs/gkba/src/slf\+E\+M\+Btime.f90 File Reference}
+\label{slfEMBtime_8f90}\index{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/slfEMBtime.f90@{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/slfEMBtime.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{Indent}\textbf{ S\+L\+F\+E\+M\+B\+T\+I\+ME}\par
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{slfEMBtime_8f90_a8a278b7a02dad065c45772d3966f5ba8}{slfembtime}} (D\+T\+I\+ME, T\+I\+ME, E\+M\+B\+S\+L\+FL, E\+M\+B\+S\+L\+FG, S\+L\+FL, S\+L\+FG)
+\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{slfEMBtime_8f90_a8a278b7a02dad065c45772d3966f5ba8}\label{slfEMBtime_8f90_a8a278b7a02dad065c45772d3966f5ba8}} 
+\index{slfEMBtime.f90@{slfEMBtime.f90}!slfembtime@{slfembtime}}
+\index{slfembtime@{slfembtime}!slfEMBtime.f90@{slfEMBtime.f90}}
+\doxysubsubsection{\texorpdfstring{slfembtime()}{slfembtime()}}
+{\footnotesize\ttfamily subroutine slfembtime (\begin{DoxyParamCaption}\item[{double precision, intent(in)}]{D\+T\+I\+ME,  }\item[{integer, intent(in)}]{T\+I\+ME,  }\item[{double complex, dimension(\+:,\+:,\+:), intent(in)}]{E\+M\+B\+S\+L\+FL,  }\item[{double complex, dimension(\+:,\+:,\+:), intent(in)}]{E\+M\+B\+S\+L\+FG,  }\item[{double complex, dimension(\+:,\+:,\+:), intent(out)}]{S\+L\+FL,  }\item[{double complex, dimension(\+:,\+:,\+:), intent(out)}]{S\+L\+FG }\end{DoxyParamCaption})}
+
+\begin{DoxyParagraph}{Description}
+\begin{DoxyVerb}    !!!!!Not sure what it does!!!!!\end{DoxyVerb}
+ 
+\end{DoxyParagraph}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em D\+T\+I\+ME} & \begin{DoxyVerb}      DOUBLE PRECISION
+      The time step\end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ in}}  & {\em T\+I\+ME} & \begin{DoxyVerb}      INTEGER
+      The current time step\end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ out}}  & {\em E\+M\+B\+S\+L\+FL} & \begin{DoxyVerb}      DOUBLE COMPLEX, rank-3 array
+      The first index if the time one
+      The second and thid index coincide with those of GAMMA
+      On exit the LESSER component of the embedding self-energy\end{DoxyVerb}
+ \\
+\hline
+\mbox{\texttt{ out}}  & {\em E\+M\+B\+S\+L\+FL} & \begin{DoxyVerb}      DOUBLE COMPLEX, rank-3 array
+      The first index if the time one
+      The second and thid index coincide with those of GAMMA
+      On exit the GREATER component of the embedding self-energy\end{DoxyVerb}
+ param\mbox{[}out\mbox{]} S\+L\+FL \begin{DoxyVerb}      DOUBLE COMPLEX, rank-3 array
+      The first index if the time one
+      The second and thid index coincide with those of GAMMA
+    On exit the time-reversed LESSER component 
+    of the embedding self-energy \end{DoxyVerb}
+ param\mbox{[}out\mbox{]} S\+L\+FG \begin{DoxyVerb}      DOUBLE COMPLEX, rank-3 array
+      The first index if the time one
+      The second and thid index coincide with those of GAMMA
+    On exit the time-reversed GREATER component 
+    of the embedding self-energy \end{DoxyVerb}
+\\
+\hline
+\end{DoxyParams}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyAuthor}{Authors}
+Cosco F., Lo Gullo N., Talarico W. 
+\end{DoxyAuthor}

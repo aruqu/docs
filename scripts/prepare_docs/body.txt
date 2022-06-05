@@ -1,4 +1,4 @@
-!> \param[] SUFX
+!> \param[] rho
 !> \verbatim
 !>      
 !> \endverbatim

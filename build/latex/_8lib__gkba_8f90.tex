@@ -1,0 +1,70 @@
+\hypertarget{_8lib__gkba_8f90}{}\doxysection{/home/nlgnico@ad.\+vtt.\+fi/\+Documents/\+N\+E\+G\+Fs/gkba/src/.lib\+\_\+gkba.\+f90 File Reference}
+\label{_8lib__gkba_8f90}\index{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/.lib\_gkba.f90@{/home/nlgnico"@ad.vtt.fi/Documents/NEGFs/gkba/src/.lib\_gkba.f90}}
+\doxysubsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+module \mbox{\hyperlink{namespacelib__gkba}{lib\+\_\+gkba}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_ac1d73efe9e779b553d9a5d963ec9ab4e}{lib\+\_\+gkba\+::tbham}} (npx, bc, onsite, nnhop, ham)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_a43bb5349f42e9c161e8a39e7408af1c9}{lib\+\_\+gkba\+::momdist}} (d, npx, npy, t, y, md)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_a6584530aae8e71fc65ba9cf657875453}{lib\+\_\+gkba\+::tbham2d}} (npx, npy, bcx, bcy, onsite, gmt, ham)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_aeae68dfe30d90e3c7b1facf961c6e2c9}{lib\+\_\+gkba\+::hamspin}} (npx, bc, onsite, nnhop, ham)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_ad98ace13baa815753ae9c42dc09f49da}{lib\+\_\+gkba\+::hamchain}} (npx, bc, onsite, nnhop, ham)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_a04c6198a824b90a6cf884ecf329de3a9}{lib\+\_\+gkba\+::coupmatrix}} (npx, lds, gamma)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_a0aeeb6e129055f4de2e53d5d4e60798e}{lib\+\_\+gkba\+::chempot}} (n, w, bt, numpart, stat, mu)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_aecac52b02400e43deb11b433369317b3}{lib\+\_\+gkba\+::initial}} (ea, bt, s, mu, stat, ro0)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_a30ac65784a80127699268c98a9ab2cc6}{lib\+\_\+gkba\+::diagsy}} (a, w, s, prnt, suffix)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_a316f7da9e50d2d4639ce683c24d41a79}{lib\+\_\+gkba\+::diaghe}} (a, w, s, prnt, suffix)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_a1df91fa22ddc923dd84f615c2350b8a0}{lib\+\_\+gkba\+::hfu}} (dt, heff, t, y)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_aae1e6c2d021083b02113fa35cf74b8ae}{lib\+\_\+gkba\+::hameff}} (ham, ro, t, v, vdrive, heff)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_a9fffab8ecf631e618f4d37610fdae915}{lib\+\_\+gkba\+::matrexp}} (alpha, a, mexp)
+\item 
+double precision function \mbox{\hyperlink{namespacelib__gkba_a5d65b67a9fbdf49f289b645a914c118a}{lib\+\_\+gkba\+::switch\+\_\+f}} (t)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_ab95bfaeaedf999d5e7d02e9af292a80a}{lib\+\_\+gkba\+::euler}} (dt, ham, ro, t, cint)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_a582a53a1f4396975c94de7d7f3b4c47f}{lib\+\_\+gkba\+::time\+\_\+stepping}} (dt, ham, ro, t, cint)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_a63778c77d3ab3b86cddf94cc3ba7ae14}{lib\+\_\+gkba\+::sndbgkba}} (dt, ro, t, y, v, vdrive, slfl, slfg)
+\item 
+double precision function \mbox{\hyperlink{namespacelib__gkba_abd7974a404000643b4951c9ccb947e48}{lib\+\_\+gkba\+::fermi}} (eps)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_a61fbf22ccb3d359b0ed889461cc4f90b}{lib\+\_\+gkba\+::embgkba}} (dt, nt, ns, beta, mu, gc, gamma, slfl, slfg)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_af680e1c8c1fc284e2489d6dd54276c7a}{lib\+\_\+gkba\+::slfmbpemb}} (dt, t, slfl\+\_\+emb, slfg\+\_\+emb, slfl, slfg)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_a3f373cca6d940b66e0fe4e7a454220ca}{lib\+\_\+gkba\+::slfembtime}} (dt, t, slfl\+\_\+emb, slfg\+\_\+emb, slfl, slfg)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_afc536797c4d32d7f711eb92b9507ae7f}{lib\+\_\+gkba\+::collint}} (dt, ro, t, y, slfl, slfg, cint)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_aecc651c896c669643ed2cb59c29715d3}{lib\+\_\+gkba\+::rdm}} (t, ain, filename)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_ae2d5d30e6650869ed7c02f182519af22}{lib\+\_\+gkba\+::rdm0}} (ain, filename)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_ae275b0983bca019fd1a685f85844e9a4}{lib\+\_\+gkba\+::rdmc}} (t, ain, filename)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_af51698f40c171ab3ab146c0e7131febc}{lib\+\_\+gkba\+::rdmp}} (t, ain, filename)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_aa0c9c050091306f2cb622322499ea2d5}{lib\+\_\+gkba\+::rdms}} (t, ain, filename)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_a4eb6293bfccfb09a17d8ac1e1ae2b38b}{lib\+\_\+gkba\+::matrexp\+\_\+t}} (alpha, a, mexp)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_a1777a1e5a4bbb9a01223cfce974ff791}{lib\+\_\+gkba\+::current}} (cint, clead)
+\item 
+subroutine \mbox{\hyperlink{namespacelib__gkba_aa24854daa37ad4ffd7722197c0c04118}{lib\+\_\+gkba\+::collintextra}} (dt, ro, t, y, slfl, slfg, cint)
+\end{DoxyCompactItemize}
