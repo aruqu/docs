@@ -1,11 +1,13 @@
 var searchData=
 [
-  ['slfembtime_54',['slfembtime',['../namespacelib__gkba.html#a3f373cca6d940b66e0fe4e7a454220ca',1,'lib_gkba::slfembtime()'],['../slfEMBtime_8f90.html#a8a278b7a02dad065c45772d3966f5ba8',1,'slfembtime():&#160;slfEMBtime.f90']]],
-  ['slfembtime_2ef90_55',['slfEMBtime.f90',['../slfEMBtime_8f90.html',1,'']]],
-  ['slfmbpemb_56',['slfmbpemb',['../namespacelib__gkba.html#af680e1c8c1fc284e2489d6dd54276c7a',1,'lib_gkba::slfmbpemb()'],['../slfMBpEMB_8f90.html#ae82b4411e6c5c5d1a3815a9b607388a9',1,'slfmbpemb():&#160;slfMBpEMB.f90']]],
-  ['slfmbpemb_2ef90_57',['slfMBpEMB.f90',['../slfMBpEMB_8f90.html',1,'']]],
-  ['sndbgkba_58',['sndbgkba',['../namespacelib__gkba.html#a63778c77d3ab3b86cddf94cc3ba7ae14',1,'lib_gkba::sndbgkba()'],['../sndBGKBA_8f90.html#a13ad53680e5e7ac3d322a1faa752461d',1,'sndbgkba():&#160;sndBGKBA.f90']]],
-  ['sndbgkba_2ef90_59',['sndBGKBA.f90',['../sndBGKBA_8f90.html',1,'']]],
-  ['switch_5ff_60',['switch_f',['../namespacelib__gkba.html#a5d65b67a9fbdf49f289b645a914c118a',1,'lib_gkba::switch_f()'],['../switch__f_8f90.html#a38ee1de38be0a0e676c7f19adce959a0',1,'switch_f():&#160;switch_f.f90']]],
-  ['switch_5ff_2ef90_61',['switch_f.f90',['../switch__f_8f90.html',1,'']]]
+  ['rdm_58',['rdm',['../namespacelib__gkba.html#aecc651c896c669643ed2cb59c29715d3',1,'lib_gkba::rdm()'],['../rdm_8f90.html#a2c221ffa881e04a7d7fbee01cb7e0f2d',1,'rdm():&#160;rdm.f90']]],
+  ['rdm_2ef90_59',['rdm.f90',['../rdm_8f90.html',1,'']]],
+  ['rdm0_60',['rdm0',['../namespacelib__gkba.html#ae2d5d30e6650869ed7c02f182519af22',1,'lib_gkba::rdm0()'],['../rdm0_8f90.html#aec9fac5cc271b2355f28aecf12cbd13e',1,'rdm0():&#160;rdm0.f90']]],
+  ['rdm0_2ef90_61',['rdm0.f90',['../rdm0_8f90.html',1,'']]],
+  ['rdmc_62',['rdmc',['../namespacelib__gkba.html#ae275b0983bca019fd1a685f85844e9a4',1,'lib_gkba::rdmc()'],['../rdmc_8f90.html#aba85697ee65f21f6ee3f01aca1833ce4',1,'rdmc():&#160;rdmc.f90']]],
+  ['rdmc_2ef90_63',['rdmc.f90',['../rdmc_8f90.html',1,'']]],
+  ['rdmp_64',['rdmp',['../namespacelib__gkba.html#af51698f40c171ab3ab146c0e7131febc',1,'lib_gkba::rdmp()'],['../rdmp_8f90.html#aa90ac2f6ff4010d72593f670b5b90e81',1,'rdmp():&#160;rdmp.f90']]],
+  ['rdmp_2ef90_65',['rdmp.f90',['../rdmp_8f90.html',1,'']]],
+  ['rdms_66',['rdms',['../namespacelib__gkba.html#aa0c9c050091306f2cb622322499ea2d5',1,'lib_gkba::rdms()'],['../rdms_8f90.html#ad8ebd2e91d2a8decbd3f1bd97556f1ef',1,'rdms():&#160;rdms.f90']]],
+  ['rdms_2ef90_67',['rdms.f90',['../rdms_8f90.html',1,'']]]
 ];

@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['rdm_2ef90_91',['rdm.f90',['../rdm_8f90.html',1,'']]],
-  ['rdm0_2ef90_92',['rdm0.f90',['../rdm0_8f90.html',1,'']]],
-  ['rdmc_2ef90_93',['rdmc.f90',['../rdmc_8f90.html',1,'']]],
-  ['rdmp_2ef90_94',['rdmp.f90',['../rdmp_8f90.html',1,'']]],
-  ['rdms_2ef90_95',['rdms.f90',['../rdms_8f90.html',1,'']]]
+  ['pcurr_2ef90_164',['pcurr.f90',['../pcurr_8f90.html',1,'']]],
+  ['pham_2ef90_165',['pham.f90',['../pham_8f90.html',1,'']]],
+  ['phamspin_2ef90_166',['phamspin.f90',['../phamspin_8f90.html',1,'']]],
+  ['phse_2ef90_167',['phse.f90',['../phse_8f90.html',1,'']]]
 ];
