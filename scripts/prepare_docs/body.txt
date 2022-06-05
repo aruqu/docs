@@ -1,4 +1,4 @@
-!> \param[] rho
+!> \param[] w
 !> \verbatim
 !>      
 !> \endverbatim

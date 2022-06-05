@@ -5,7 +5,7 @@
 # and subroutines and add a field in the Dox-comments for each of them
 
 SCPT_DIR=($(pwd))
-SRC_DIR=$HOME/Documents/NEGFs/dyson-freq/src/
+SRC_DIR=$HOME/Documents/NEGFs/dyson-2t/src/
 
 cd $SRC_DIR
 

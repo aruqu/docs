@@ -1,9 +1,13 @@
 var searchData=
 [
-  ['tbham_76',['tbham',['../namespacelib__gkba.html#ac1d73efe9e779b553d9a5d963ec9ab4e',1,'lib_gkba::tbham()'],['../gkba_2src_2tbham_8f90.html#a451ef4ee8e99560e5de03ef15bc3352c',1,'tbham(NPX, BC, ONSITE, NNHOP, HAM):&#160;tbham.f90'],['../dyson-freq_2src_2tbham_8f90.html#a0089e233c6d696d0cd5cd4a875131e89',1,'tbham(npx, bc, onsite, nnhop, ham):&#160;tbham.f90']]],
-  ['tbham_2ef90_77',['tbham.f90',['../gkba_2src_2tbham_8f90.html',1,'(Global Namespace)'],['../dyson-freq_2src_2tbham_8f90.html',1,'(Global Namespace)']]],
-  ['tbham2d_78',['tbham2d',['../namespacelib__gkba.html#a6584530aae8e71fc65ba9cf657875453',1,'lib_gkba::tbham2d()'],['../gkba_2src_2tbham2d_8f90.html#a147355058abbedc370687aeec17d7d51',1,'tbham2d(NPX, NPY, BCX, BCY, ONSITE, GMT, HAM):&#160;tbham2d.f90'],['../dyson-freq_2src_2tbham2d_8f90.html#a39e0f6e3a0266d2b7c36e66c6258e139',1,'tbham2d(npx, npy, bcx, bcy, onsite, gmt, ham):&#160;tbham2d.f90']]],
-  ['tbham2d_2ef90_79',['tbham2d.f90',['../gkba_2src_2tbham2d_8f90.html',1,'(Global Namespace)'],['../dyson-freq_2src_2tbham2d_8f90.html',1,'(Global Namespace)']]],
-  ['time_5fstepping_80',['time_stepping',['../namespacelib__gkba.html#a582a53a1f4396975c94de7d7f3b4c47f',1,'lib_gkba::time_stepping()'],['../time__stepping_8f90.html#a891ba88f1b2cc28eabfba735ff722f82',1,'time_stepping():&#160;time_stepping.f90']]],
-  ['time_5fstepping_2ef90_81',['time_stepping.f90',['../time__stepping_8f90.html',1,'']]]
+  ['pcurr_134',['pcurr',['../pcurr_8f90.html#a47f4c1587ef9773c37d17ed99b8cf5bc',1,'pcurr.f90']]],
+  ['pcurr_2ef90_135',['pcurr.f90',['../pcurr_8f90.html',1,'']]],
+  ['pdiagsy_136',['pdiagsy',['../pdiagsy_8f90.html#ae906837491ff00861884668773462562',1,'pdiagsy.f90']]],
+  ['pdiagsy_2ef90_137',['pdiagsy.f90',['../pdiagsy_8f90.html',1,'']]],
+  ['pham_138',['pham',['../dyson-freq_2src_2pham_8f90.html#a3eb5b8d6f3edc8ef11ba2e4696b5fa85',1,'pham(npx, bc, lham, descham, onsite, nnhop):&#160;pham.f90'],['../dyson-2t_2src_2pham_8f90.html#a3eb5b8d6f3edc8ef11ba2e4696b5fa85',1,'pham(npx, bc, lham, descham, onsite, nnhop):&#160;pham.f90']]],
+  ['pham_2ef90_139',['pham.f90',['../dyson-freq_2src_2pham_8f90.html',1,'(Global Namespace)'],['../dyson-2t_2src_2pham_8f90.html',1,'(Global Namespace)']]],
+  ['phamspin_140',['phamspin',['../dyson-freq_2src_2phamspin_8f90.html#ab6170b1fb713ad0fb0a818bfff8d2165',1,'phamspin(npx, bc, lham, descham, onsite, nnhop):&#160;phamspin.f90'],['../dyson-2t_2src_2phamspin_8f90.html#ab6170b1fb713ad0fb0a818bfff8d2165',1,'phamspin(npx, bc, lham, descham, onsite, nnhop):&#160;phamspin.f90']]],
+  ['phamspin_2ef90_141',['phamspin.f90',['../dyson-freq_2src_2phamspin_8f90.html',1,'(Global Namespace)'],['../dyson-2t_2src_2phamspin_8f90.html',1,'(Global Namespace)']]],
+  ['phse_142',['phse',['../phse_8f90.html#a2ebe1ed7e3933c34828c01348260e7fc',1,'phse.f90']]],
+  ['phse_2ef90_143',['phse.f90',['../phse_8f90.html',1,'']]]
 ];

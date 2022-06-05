@@ -1,11 +1,14 @@
 var searchData=
 [
-  ['pcurr_50',['pcurr',['../pcurr_8f90.html#a47f4c1587ef9773c37d17ed99b8cf5bc',1,'pcurr.f90']]],
-  ['pcurr_2ef90_51',['pcurr.f90',['../pcurr_8f90.html',1,'']]],
-  ['pham_52',['pham',['../pham_8f90.html#a3eb5b8d6f3edc8ef11ba2e4696b5fa85',1,'pham.f90']]],
-  ['pham_2ef90_53',['pham.f90',['../pham_8f90.html',1,'']]],
-  ['phamspin_54',['phamspin',['../phamspin_8f90.html#ab6170b1fb713ad0fb0a818bfff8d2165',1,'phamspin.f90']]],
-  ['phamspin_2ef90_55',['phamspin.f90',['../phamspin_8f90.html',1,'']]],
-  ['phse_56',['phse',['../phse_8f90.html#a2ebe1ed7e3933c34828c01348260e7fc',1,'phse.f90']]],
-  ['phse_2ef90_57',['phse.f90',['../phse_8f90.html',1,'']]]
+  ['lftdyson_93',['lftdyson',['../lftdyson_8f90.html#a3ab9c9e6f5995ff8f17fd126d718efe7',1,'lftdyson.f90']]],
+  ['lftdyson_2ef90_94',['lftdyson.f90',['../lftdyson_8f90.html',1,'']]],
+  ['lftfreeg_95',['lftfreeg',['../lftfreeg_8f90.html#a7867b61c01e0d9620d18756b13db3cd8',1,'lftfreeg.f90']]],
+  ['lftfreeg_2ef90_96',['lftfreeg.f90',['../lftfreeg_8f90.html',1,'']]],
+  ['lftrgt_97',['lftrgt',['../lftrgt_8f90.html#ac2054aa950e72541f98d2b5c7fea1892',1,'lftrgt.f90']]],
+  ['lftrgt_2ef90_98',['lftrgt.f90',['../lftrgt_8f90.html',1,'']]],
+  ['lftsndbrn_99',['lftsndbrn',['../lftsndbrn_8f90.html#aab3d78c02e8340cc121a99653781c31f',1,'lftsndbrn.f90']]],
+  ['lftsndbrn_2ef90_100',['lftsndbrn.f90',['../lftsndbrn_8f90.html',1,'']]],
+  ['lib_5fgkba_101',['lib_gkba',['../namespacelib__gkba.html',1,'']]],
+  ['locinv_102',['locinv',['../dyson-freq_2src_2locinv_8f90.html#a3812907bd0a363733044779bb75b9a5b',1,'locinv(n, a):&#160;locinv.f90'],['../dyson-2t_2src_2locinv_8f90.html#a3812907bd0a363733044779bb75b9a5b',1,'locinv(n, a):&#160;locinv.f90']]],
+  ['locinv_2ef90_103',['locinv.f90',['../dyson-freq_2src_2locinv_8f90.html',1,'(Global Namespace)'],['../dyson-2t_2src_2locinv_8f90.html',1,'(Global Namespace)']]]
 ];

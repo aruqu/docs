@@ -42,7 +42,8 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"HFU_8f90.html"
+"GW_8f90.html",
+"strgfreeg_8f90.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
