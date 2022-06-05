@@ -23,6 +23,13 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "LIBGKBA", "index.html", [
+    [ "Modules", "namespaces.html", [
+      [ "Modules List", "namespaces.html", "namespaces_dup" ],
+      [ "Module Members", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Functions/Subroutines", "namespacemembers_func.html", null ]
+      ] ]
+    ] ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [

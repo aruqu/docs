@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['rdm_2ef90_80',['rdm.f90',['../rdm_8f90.html',1,'']]],
-  ['rdm0_2ef90_81',['rdm0.f90',['../rdm0_8f90.html',1,'']]],
-  ['rdmc_2ef90_82',['rdmc.f90',['../rdmc_8f90.html',1,'']]],
-  ['rdmp_2ef90_83',['rdmp.f90',['../rdmp_8f90.html',1,'']]],
-  ['rdms_2ef90_84',['rdms.f90',['../rdms_8f90.html',1,'']]]
+  ['matrexp_2ef90_88',['matrexp.f90',['../matrexp_8f90.html',1,'']]],
+  ['matrexp_5ft_2ef90_89',['matrexp_t.f90',['../matrexp__t_8f90.html',1,'']]],
+  ['momdist_2ef90_90',['momdist.f90',['../momdist_8f90.html',1,'']]]
 ];
