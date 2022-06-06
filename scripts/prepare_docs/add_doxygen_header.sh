@@ -4,8 +4,9 @@
 # The scripts autodetects the arguments of both functions
 # and subroutines and add a field in the Dox-comments for each of them
 
-SCPT_DIR=($(pwd))
-SRC_DIR=$HOME/Documents/NEGFs/dyson-2t/src/
+
+SCPT_DIR=($(pwd)) #The directory where the script runs
+SRC_DIR=$HOME/Documents/NEGFs/dyson-2t/src/ #The path to directory of the source files the script has to act upon
 
 cd $SRC_DIR
 
@@ -56,7 +57,7 @@ if [ ! -z $start ]; then
 	while [[ $var != '' ]]
 	do
 	echo $i, $var
-		sed -i '1 c !> \\param[] '$var $SCPT_DIR/body.txt
+		sed -i '1 c !> \\param[] '${var^^} $SCPT_DIR/body.txt
 		cat $SCPT_DIR/body.txt >> $SCPT_DIR/tmp.txt
 
 		i=$((i+1))
