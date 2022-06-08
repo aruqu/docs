@@ -87,6 +87,8 @@ $(document).ready(function(){initNavTree('wdyson_8f90.html',''); initResizable()
 <div class="title">wdyson.f90 File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><a href="wdyson_8f90_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
@@ -213,33 +215,118 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section user"><dt>Description</dt><dd><pre class="fragment"> </pre> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">[]</td><td>context <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>nps <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>npw <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>wm <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>vw <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>mu <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>beta <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>stat <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>lg0l <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>lg0g <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>lg0r <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>lsl <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>lsg <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>lsr <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>lnegl <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>lnegg <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>lnegr <pre class="fragment"> </pre></td></tr>
+    <tr><td class="paramname">[]</td><td>CONTEXT <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>NPS <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>NPW <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>WM <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>VW <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>MU <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>BETA <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>STAT <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>LG0L <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>LG0G <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>LG0R <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>LSL <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>LSG <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>LSR <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>LNEGL <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>LNEGG <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>LNEGR <pre class="fragment"> </pre></td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section version"><dt>Version</dt><dd>0.1 </dd></dl>
 <dl class="section author"><dt>Authors</dt><dd>Cosco F., Lo Gullo N., Talarico W. </dd></dl>
 
+<p class="definition">Definition at line <a class="el" href="wdyson_8f90_source.html#l00083">83</a> of file <a class="el" href="wdyson_8f90_source.html">wdyson.f90</a>.</p>
+<div class="fragment"><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">use </span>mpi</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">implicit none</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">!Useful numerical parameters</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">double complex</span>, <span class="keywordtype">parameter</span> :: uno = (1.0d0,0.0d0)        <span class="comment">! Complex one</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">double complex</span>, <span class="keywordtype">parameter</span> :: zero = (0.0d0,0.0d0)       <span class="comment">! Complex zero</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">!Input variables</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">integer</span> :: nps,npt,stat</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">double precision</span> :: wm,mu,beta</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">integer</span>, <span class="keywordtype">dimension (:)</span> :: vw</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordtype">double complex</span>, <span class="keywordtype">dimension(:,:)</span> :: lg0r,lg0l,lg0g</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">!Input/Output variables</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">double complex</span>, <span class="keywordtype">dimension(:,:)</span> :: lnegr,lnegl,lnegg</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordtype">double complex</span>, <span class="keywordtype">dimension(:,:)</span>, <span class="keywordtype">allocatable</span> :: lgrsr</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordtype">double complex</span>, <span class="keywordtype">dimension(:,:)</span> :: lsr,lsl,lsg</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">!Varibles for grid query</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordtype">integer</span> :: context,info,nprow,npcol,nprocs,myrow,mycol</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">!Dummy variables</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordtype">integer</span> :: n,npw,iw,lw,liw,lldwc,numroc</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordtype">double precision</span> :: dalpha,om</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordtype">double complex</span> :: zalpha</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordtype">double complex</span>, <span class="keywordtype">dimension(:,:)</span>, <span class="keywordtype">allocatable</span> :: lnegtmp1, lnegtmp2</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="keyword">call </span>blacs_gridinfo(context,nprow,npcol,myrow,mycol)</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;nprocs=nprow*npcol</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="keyword">allocate</span>(lgrsr(nps,nps))</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword">allocate</span>(lnegtmp1(nps,nps),lnegtmp2(nps,nps))</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;lgrsr=zero</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;lnegtmp1=zero</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;lnegtmp2=zero</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;lldwc=numroc(npw,1,mycol,0,nprocs)</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="keywordflow">do</span> lw=1, lldwc</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;liw=(lw-1)*nps+1</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="keyword">call </span><a class="code" href="wsolver_8f90.html#aa7fa301b664326f8b3c3533f4b92df3c">wsolver</a>(nps,lg0r(:,liw:liw+nps-1),lsr(:,liw:liw+nps-1),lgrsr)</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">!negr = matmul(grsr,g0r)</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;lnegr(1:nps,liw:liw+nps-1) = matmul(lgrsr(1:nps,1:nps),lg0r(1:nps,liw:liw+nps-1))</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment">!--------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="comment">!!+++++++++++++++++++++++++++L/G NE Green&#39;s+++++++++++++++++++++++++++</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="comment">!lnegtmp2(1:nps,1:nps) = conjg(transpose(lnegr(1:nps,liw:liw+nps-1)))</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">!om=-wm+2.d0*wm*(vw(lw)-1)/(npw-1)</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Lesser Green&#39;s function!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment">!dalpha=1.d0*stat*(1.0d0/(exp(beta*(om-mu))-1.0d0*stat))</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment">!lnegtmp1(1:nps,1:nps)=dalpha*(lnegr(1:nps,liw:liw+nps-1)-lnegtmp2(1:nps,1:nps))</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="comment">!lnegl(1:nps,liw:liw+nps-1) = lnegtmp1(1:nps,1:nps)+&amp;</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="comment">!           &amp;matmul(lnegr(1:nps,liw:liw+nps-1),matmul(lsl(1:nps,liw:liw+nps-1),lnegtmp2(1:nps,1:nps)))</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="comment">!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Greater Green&#39;s function!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="comment">!dalpha=1.d0*(1.d0-1.0d0/(exp(beta*(om-mu))-1.0d0*stat))</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="comment">!lnegtmp1(1:nps,1:nps)=dalpha*(lnegr(1:nps,liw:liw+nps-1)-lnegtmp2(1:nps,1:nps))</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">!lnegg(1:nps,liw:liw+nps-1) =  lnegtmp1(1:nps,1:nps)+&amp;</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">!           &amp;matmul(lnegr(1:nps,liw:liw+nps-1),matmul(lsg(1:nps,liw:liw+nps-1),lnegtmp2(1:nps,1:nps)))</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">!!--------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment">!+++++++++++++++++++++++++++L/G NE Green&#39;s+++++++++++++++++++++++++++</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;lnegtmp1(1:nps,1:nps) = conjg(transpose(lgrsr(1:nps,1:nps)))</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;lnegtmp2(1:nps,1:nps) = conjg(transpose(lnegr(1:nps,liw:liw+nps-1)))</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;om=-wm+2.d0*wm*(vw(lw)-1)/(npw-1)</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">!!!!!!!!!!!!!!!!!!!!!!!!!!!!Lesser Green&#39;s function!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;lnegl(1:nps,liw:liw+nps-1) = stat*matmul(lgrsr(1:nps,1:nps),matmul(lg0l(1:nps,liw:liw+nps-1),lnegtmp1(1:nps,1:nps)))+&amp;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            &amp;1.0d0*matmul(lnegr(1:nps,liw:liw+nps-1),matmul(lsl(1:nps,liw:liw+nps-1),lnegtmp2(1:nps,1:nps)))</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">!!!!!!!!!!!!!!!!!!!!!!!!!!!!Greater Green&#39;s function!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;lnegg(1:nps,liw:liw+nps-1) = stat*matmul(lgrsr(1:nps,1:nps),matmul(lg0g(1:nps,liw:liw+nps-1),lnegtmp1(1:nps,1:nps)))+&amp;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            &amp;1.0d0*matmul(lnegr(1:nps,liw:liw+nps-1),matmul(lsg(1:nps,liw:liw+nps-1),lnegtmp2(1:nps,1:nps)))</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">!--------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="keywordflow">end do</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="keyword">call </span>blacs_barrier(context,<span class="stringliteral">&#39;A&#39;</span>)</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
+</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="awsolver_8f90_html_aa7fa301b664326f8b3c3533f4b92df3c"><div class="ttname"><a href="wsolver_8f90.html#aa7fa301b664326f8b3c3533f4b92df3c">wsolver</a></div><div class="ttdeci">subroutine wsolver(nps, lg0, ls, lg0s)</div><div class="ttdef"><b>Definition:</b> <a href="wsolver_8f90_source.html#l00031">wsolver.f90:31</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

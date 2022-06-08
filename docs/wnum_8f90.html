@@ -87,6 +87,8 @@ $(document).ready(function(){initNavTree('wnum_8f90.html',''); initResizable(); 
 <div class="title">wnum.f90 File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><a href="wnum_8f90_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
@@ -129,15 +131,35 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section user"><dt>Description</dt><dd><pre class="fragment"> </pre> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">[]</td><td>context <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>npw <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>lld <pre class="fragment"> </pre></td></tr>
+    <tr><td class="paramname">[]</td><td>CONTEXT <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>NPW <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>LLD <pre class="fragment"> </pre></td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section version"><dt>Version</dt><dd>0.1 </dd></dl>
 <dl class="section author"><dt>Authors</dt><dd>Cosco F., Lo Gullo N., Talarico W. </dd></dl>
 
+<p class="definition">Definition at line <a class="el" href="wnum_8f90_source.html#l00027">27</a> of file <a class="el" href="wnum_8f90_source.html">wnum.f90</a>.</p>
+<div class="fragment"><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordtype">implicit none</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">!Input variables</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordtype">integer</span> :: npw</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">!Output variables</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordtype">integer</span> :: iw,lld</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">!Varibles for grid query</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">integer</span> :: context,nprow,npcol,nprocs,myrow,mycol</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">call </span>blacs_gridinfo(context,nprow,npcol,myrow,mycol)</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;nprocs=nprow*npcol</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;iw=(ceiling(1.d0*npw/nprocs)-1)*nprocs+mycol*nprow+myrow+1</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordflow">if</span> (iw.le.npw) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    lld=ceiling(1.d0*npw/nprocs)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordflow">else</span> </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    lld =floor(1.d0*npw/nprocs)</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordflow">end if</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->

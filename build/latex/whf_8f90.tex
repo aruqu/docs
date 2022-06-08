@@ -22,28 +22,28 @@ subroutine \mbox{\hyperlink{whf_8f90_a4be7133ca5eba33ddfcdcc6eaedca04c}{whf}} (c
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & wm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & WM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & v \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & V \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lnegl \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+N\+E\+GL \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & desc \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+SC \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsr \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SR \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -53,3 +53,50 @@ subroutine \mbox{\hyperlink{whf_8f90_a4be7133ca5eba33ddfcdcc6eaedca04c}{whf}} (c
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 47 of file whf.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{47     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{48     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{49 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{50     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = dacos(-\/1.0d0)       \textcolor{comment}{! Pi greco}}
+\DoxyCodeLine{51     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{52     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{53     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{54 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{55     \textcolor{keywordtype}{integer} :: nps,npw}
+\DoxyCodeLine{56     \textcolor{keywordtype}{double precision} :: wm}
+\DoxyCodeLine{57     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: desc}
+\DoxyCodeLine{58     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension (:,:)} :: v}
+\DoxyCodeLine{59     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegl}
+\DoxyCodeLine{60 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{61     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsr}
+\DoxyCodeLine{62 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{63     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{64 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{65     \textcolor{keywordtype}{integer} :: i,j,lw,liw,lldwc,numroc}
+\DoxyCodeLine{66     \textcolor{keywordtype}{double precision} :: dalpha}
+\DoxyCodeLine{67     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(nps,nps)} :: intg}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{70 nprocs=nprow*npcol}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 lldwc=numroc(npw,1,mycol,0,nprocs)}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{keyword}{call }\mbox{\hyperlink{wint_8f90_a9f702255e0af5953e65e9a6a035f6259}{wint}}(context,nps,npw,wm,lnegl,desc,intg)}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{keywordflow}{do} lw=1,lldwc}
+\DoxyCodeLine{77     liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{78     \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{79     \textcolor{keywordflow}{do} j=1,nps}
+\DoxyCodeLine{80         lsr(i,liw+i-\/1)=lsr(i,liw+i-\/1)+v(i,j)*aimag(intg(j,j))}
+\DoxyCodeLine{81 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{82 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{83 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 }
+
+\end{DoxyCode}

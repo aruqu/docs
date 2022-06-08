@@ -26,3 +26,198 @@ subroutine \mbox{\hyperlink{mcurr_8f90_ae5fbb289a37c56501efc3fd69a425660}{mcurr}
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 16 of file mcurr.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{16     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{17     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{18 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{19     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{20     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{21 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{22     \textcolor{keywordtype}{character(*)} :: scm,filename}
+\DoxyCodeLine{23     \textcolor{keywordtype}{integer} :: nps,npt,prnt}
+\DoxyCodeLine{24     \textcolor{keywordtype}{double precision} :: tf}
+\DoxyCodeLine{25     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descsembl,descsembr}
+\DoxyCodeLine{26     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsembl}
+\DoxyCodeLine{27     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsembr}
+\DoxyCodeLine{28     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descnegl,descnegr}
+\DoxyCodeLine{29     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegl}
+\DoxyCodeLine{30     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegr}
+\DoxyCodeLine{31 \textcolor{comment}{!Output variable}}
+\DoxyCodeLine{32     \textcolor{keywordtype}{integer} :: indxmax}
+\DoxyCodeLine{33     \textcolor{keywordtype}{double precision} :: maxcurr,fcurr,intcurr}
+\DoxyCodeLine{34 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{35     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{36 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{37     \textcolor{keywordtype}{integer} :: n,i,ip,tt,ttp,ltt,lttp,it,itp,lit,litp}
+\DoxyCodeLine{38     \textcolor{keywordtype}{integer} :: mb,nb,pr,pc,lldr,lldc,lldtr,lldtc,rsrc,csrc}
+\DoxyCodeLine{39     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{40     \textcolor{keywordtype}{double precision} :: pdlange}
+\DoxyCodeLine{41     \textcolor{keywordtype}{double precision} :: dt}
+\DoxyCodeLine{42     \textcolor{keywordtype}{double precision} :: dalpha}
+\DoxyCodeLine{43     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descnegtmp1}
+\DoxyCodeLine{44     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: lnegtmp1}
+\DoxyCodeLine{45     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descone}
+\DoxyCodeLine{46     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: lone}
+\DoxyCodeLine{47     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: desccurr}
+\DoxyCodeLine{48     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: lcurr}
+\DoxyCodeLine{49     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtt, vttp}
+\DoxyCodeLine{50     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(1:50)} :: work}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 context = descnegr(2)}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 n = nps*npt}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 mb = descnegr(5) }
+\DoxyCodeLine{60 nb = descnegr(6)}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 lldr=numroc(n,mb,myrow,0,nprow)}
+\DoxyCodeLine{63 lldc=numroc(n,nb,mycol,0,npcol)}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 lldtr=numroc(npt,1,myrow,0,nprow)}
+\DoxyCodeLine{66 lldtc=numroc(npt,1,mycol,0,npcol)}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{keyword}{allocate}(vtt(lldtr),vttp(lldtc))}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 vtt=0}
+\DoxyCodeLine{72 vttp=0}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 i=0}
+\DoxyCodeLine{75 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{76 pr=mod(floor(real(tt-\/1)),nprow)}
+\DoxyCodeLine{77 \textcolor{keywordflow}{if}(myrow==pr) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{78 i=i+1}
+\DoxyCodeLine{79 vtt(i)=tt}
+\DoxyCodeLine{80 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{81 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 i=0}
+\DoxyCodeLine{84 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{85 pc=mod(floor(real(tt-\/1)),npcol)}
+\DoxyCodeLine{86 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{87 i=i+1}
+\DoxyCodeLine{88 vttp(i)=tt}
+\DoxyCodeLine{89 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{90 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{keyword}{allocate}(lnegtmp1(lldtr,lldtc),lone(lldtr,1),lcurr(lldtr,1))}
+\DoxyCodeLine{94 \textcolor{keyword}{call }descinit(descnegtmp1,npt,npt,1,1,0,0,context,lldtr,info)}
+\DoxyCodeLine{95 \textcolor{keyword}{call }descinit(descone,npt,1,1,1,0,0,context,lldtr,info)}
+\DoxyCodeLine{96 \textcolor{keyword}{call }descinit(desccurr,npt,1,1,1,0,0,context,lldtr,info)}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 dt = tf/(npt-\/1)}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 lnegtmp1=zero}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 \textcolor{keywordflow}{do} tt=1,  lldtr  }
+\DoxyCodeLine{104 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{107 litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109     \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{110     \textcolor{keywordflow}{do} ip=1,nps}
+\DoxyCodeLine{111         lnegtmp1(tt,ttp) = lnegtmp1(tt,ttp) + lsembl(lit+i-\/1,litp+ip-\/1)*conjg(lnegr(lit+i-\/1,litp+ip-\/1))\& }
+\DoxyCodeLine{112                             \&-\/lsembr(lit+i-\/1,litp+ip-\/1)*conjg(lnegl(lit+i-\/1,litp+ip-\/1))}
+\DoxyCodeLine{113 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{114 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 \textcolor{keywordflow}{end do} }
+\DoxyCodeLine{117 \textcolor{keywordflow}{end do} }
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 lone=uno}
+\DoxyCodeLine{120 lcurr=zero}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 \textcolor{comment}{!call pzgemv('N',nt,nt,uno*dt,lnegtmp1,1,1,descnegtmp1,lone,1,1,descone,1,zero,lcurr,1,1,desccurr,1)}}
+\DoxyCodeLine{123 \textcolor{keyword}{call }\mbox{\hyperlink{intgrtn_8f90_ae61e4c40452bc8008e91d73f0ea4c960}{intgrtn}} (scm,\textcolor{stringliteral}{'v'},npt,\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{''},npt,npt,npt,uno*dt,1.d0,0,lnegtmp1,1,1,descnegtmp1,lone,1,1,descone,zero,lcurr,1,1,desccurr)}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 \textcolor{comment}{!print current}}
+\DoxyCodeLine{126 \textcolor{keywordflow}{if} (prnt==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128     \textcolor{keywordflow}{if} (myrow==0.and.mycol==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{129         \textcolor{keyword}{open}(unit=21,file=filename//\textcolor{stringliteral}{'.dat'},access = \textcolor{stringliteral}{'sequential'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{130 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132     \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{133         \textcolor{keyword}{call }infog2l(tt,1,desccurr,nprow,npcol,myrow,mycol,ltt,lttp,rsrc,csrc)}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135         \textcolor{keywordflow}{if} (myrow==rsrc.and.mycol==csrc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{136             dalpha = 2.0d0*real(lcurr(ltt,1))}
+\DoxyCodeLine{137             \textcolor{keyword}{call }dgebs2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},1, 1,dalpha,1)}
+\DoxyCodeLine{138         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{139             \textcolor{keyword}{call }dgebr2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},1, 1,dalpha,1,rsrc,csrc)}
+\DoxyCodeLine{140 \textcolor{keywordflow}{        end if}}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142         \textcolor{keywordflow}{if} (myrow==0.and.mycol==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{143             \textcolor{keyword}{write}(21,*) dalpha}
+\DoxyCodeLine{144 \textcolor{keywordflow}{        end if}}
+\DoxyCodeLine{145 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147     \textcolor{keywordflow}{if} (myrow==0.and.mycol==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{148         \textcolor{keyword}{close}(21)}
+\DoxyCodeLine{149 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 \textcolor{comment}{!initial value of the current}}
+\DoxyCodeLine{154 \textcolor{comment}{!call infog2l(1,1,desccurr,nprow,npcol,myrow,mycol,ltt,lttp,rsrc,csrc)}}
+\DoxyCodeLine{155 \textcolor{comment}{!if (myrow==rsrc.and.mycol==csrc) then}}
+\DoxyCodeLine{156 \textcolor{comment}{!   icurr = 2.0d0*Real(lcurr(ltt,1))}}
+\DoxyCodeLine{157 \textcolor{comment}{!   call dgebs2d(context,'A','i-\/ring',1, 1,icurr,1)}}
+\DoxyCodeLine{158 \textcolor{comment}{!else}}
+\DoxyCodeLine{159 \textcolor{comment}{!   call dgebr2d(context,'A','i-\/ring',1, 1,icurr,1,rsrc,csrc)}}
+\DoxyCodeLine{160 \textcolor{comment}{!end if}}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162 \textcolor{comment}{!Integral of current over time}}
+\DoxyCodeLine{163 intcurr=0.d0}
+\DoxyCodeLine{164 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{165     \textcolor{keyword}{call }infog2l(tt,1,desccurr,nprow,npcol,myrow,mycol,ltt,lttp,rsrc,csrc)}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167     \textcolor{keywordflow}{if} (myrow==rsrc.and.mycol==csrc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{168         dalpha = 2.0d0*real(lcurr(ltt,1))}
+\DoxyCodeLine{169         \textcolor{keyword}{call }dgebs2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},1, 1,dalpha,1)}
+\DoxyCodeLine{170     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{171         \textcolor{keyword}{call }dgebr2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},1, 1,dalpha,1,rsrc,csrc)}
+\DoxyCodeLine{172 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{173     intcurr = intcurr + dalpha*dt}
+\DoxyCodeLine{174 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177 \textcolor{comment}{!final value of the current}}
+\DoxyCodeLine{178 \textcolor{keyword}{call }infog2l(npt,1,desccurr,nprow,npcol,myrow,mycol,ltt,lttp,rsrc,csrc)}
+\DoxyCodeLine{179 \textcolor{keywordflow}{if} (myrow==rsrc.and.mycol==csrc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{180     fcurr = 2.0d0*real(lcurr(ltt,1))}
+\DoxyCodeLine{181     \textcolor{keyword}{call }dgebs2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},1, 1,fcurr,1)}
+\DoxyCodeLine{182 \textcolor{keywordflow}{else}}
+\DoxyCodeLine{183     \textcolor{keyword}{call }dgebr2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},1, 1,fcurr,1,rsrc,csrc)}
+\DoxyCodeLine{184 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186 \textcolor{comment}{!Max value of the current}}
+\DoxyCodeLine{187 \textcolor{comment}{!maxcurr = pdlange('M',npt,1,2.0d0*Real(lcurr),1,1,desccurr,work)}}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189 \textcolor{keyword}{call }pdamax(npt,maxcurr,indxmax,2.0d0*real(lcurr),1,1,desccurr,1)}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191 \textcolor{comment}{!call infog2l(indxmax,1,desccurr,nprow,npcol,myrow,mycol,ltt,lttp,rsrc,csrc)}}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193 \textcolor{keywordflow}{if} (myrow==0.and.mycol==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{194     \textcolor{keyword}{call }igebs2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},1, 1,indxmax,1)}
+\DoxyCodeLine{195     \textcolor{keyword}{call }dgebs2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},1, 1,maxcurr,1)}
+\DoxyCodeLine{196 \textcolor{keywordflow}{else}}
+\DoxyCodeLine{197     \textcolor{keyword}{call }igebr2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},1, 1,indxmax,1,0,0)}
+\DoxyCodeLine{198     \textcolor{keyword}{call }dgebr2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},1, 1,maxcurr,1,0,0)}
+\DoxyCodeLine{199 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201 maxcurr=abs(maxcurr)}
+\DoxyCodeLine{202 }
+
+\end{DoxyCode}

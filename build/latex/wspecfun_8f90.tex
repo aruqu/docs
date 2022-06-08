@@ -22,25 +22,25 @@ subroutine \mbox{\hyperlink{wspecfun_8f90_a06b2bb70830e0b68e238f8316f68070c}{wsp
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & d \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npx \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PX \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npy \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PY \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lgr \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+GR \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & specfun \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+P\+E\+C\+F\+UN \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -50,3 +50,137 @@ subroutine \mbox{\hyperlink{wspecfun_8f90_a06b2bb70830e0b68e238f8316f68070c}{wsp
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 43 of file wspecfun.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{43     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{44     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{45 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{46     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = dacos(-\/1.0d0)       \textcolor{comment}{! Pi greco}}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{48     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{49     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{50 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{51 \textcolor{comment}{!   character(*) :: filenameout}}
+\DoxyCodeLine{52     \textcolor{keywordtype}{integer} :: d,npx,npy,npw}
+\DoxyCodeLine{53     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lgr}
+\DoxyCodeLine{54 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{55     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol,rsrc,csrc}
+\DoxyCodeLine{56 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{57     \textcolor{keywordtype}{integer} :: i,ix,iy,k,kkx,kky,iw,lw,lwp,liw,liwp,nps}
+\DoxyCodeLine{58     \textcolor{keywordtype}{integer} :: nb,mb,pr,pc,lldr,lldc,lldwr,lldwc,numroc}
+\DoxyCodeLine{59     \textcolor{keywordtype}{double precision} :: x,y,kx,ky}
+\DoxyCodeLine{60     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (9)} :: descw}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: specfun}
+\DoxyCodeLine{63     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: sf}
+\DoxyCodeLine{64     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: expk,lgrk}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{67 nprocs=nprow*npcol}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{comment}{!mb = desc(5)}}
+\DoxyCodeLine{70 \textcolor{comment}{!nb = desc(6)}}
+\DoxyCodeLine{71 \textcolor{comment}{!n=nps*npw}}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 \textcolor{comment}{!lldr=numroc(nps,mb,myrow,0,1)}}
+\DoxyCodeLine{74 \textcolor{comment}{!lldc=numroc(n,nb,mycol,0,nprocs)}}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 lldwr=numroc(npw,1,myrow,0,1)}
+\DoxyCodeLine{77 lldwc=numroc(npw,1,mycol,0,nprocs)}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 \textcolor{keyword}{call }descinit(descw,1,npw,1,1,0,0,context,lldwr,info)}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{comment}{!if(myrow==0.and.mycol==0) then}}
+\DoxyCodeLine{82 \textcolor{comment}{!       open(unit=21,file=filenameout//'.dat',position='append',status='unknown')}}
+\DoxyCodeLine{83 \textcolor{comment}{!end if}}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{keywordflow}{if} (d==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{86     nps=npx}
+\DoxyCodeLine{87 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (d==2) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{88     nps=npx*npy}
+\DoxyCodeLine{89 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 \textcolor{keyword}{allocate}(sf(nps,nps),expk(nps,nps),lgrk(nps,lldwc*nps))}
+\DoxyCodeLine{92 \mbox{\hyperlink{specfun_8f90_a692112b73c36d8781018aea60a9fc5ff}{specfun}}=0.0d0}
+\DoxyCodeLine{93 expk=zero}
+\DoxyCodeLine{94 \textcolor{comment}{!Fourier transform in momentum}}
+\DoxyCodeLine{95 \textcolor{keywordflow}{if} (d==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{96     \textcolor{keywordflow}{do} k=1,npx}
+\DoxyCodeLine{97     \textcolor{keywordflow}{do} i=1,npx}
+\DoxyCodeLine{98         kx=-\/pi+2*pi*(k-\/1)/npx}
+\DoxyCodeLine{99         expk(k,i)=exp(ci*kx*i)/sqrt(1.d0*nps)}
+\DoxyCodeLine{100 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{101 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{102 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (d==2) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{103     k=1}
+\DoxyCodeLine{104     \textcolor{keywordflow}{do} kky=1,npy}
+\DoxyCodeLine{105     \textcolor{keywordflow}{do} kkx=1,npx}
+\DoxyCodeLine{106     i=1}
+\DoxyCodeLine{107     kx=-\/pi+2*pi*(kkx-\/1)/npx}
+\DoxyCodeLine{108     ky=-\/pi+2*pi*(kky-\/1)/(npy*cos(pi/6.d0))}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110     \textcolor{keywordflow}{do} iy=1,npy}
+\DoxyCodeLine{111     \textcolor{keywordflow}{do} ix=1,npx}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113     \textcolor{keywordflow}{if} (mod(iy,2)==0) \textcolor{keywordflow}{then}  }
+\DoxyCodeLine{114         x=floor(ix*5.d-\/1)*(1+2*sin(pi/6.d0))+(ceiling(ix*5.d-\/1)-\/1)-\/sin(pi/6.d0)}
+\DoxyCodeLine{115     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (mod(iy,2).ne.0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{116         x=floor(ix*5.d-\/1)+(ceiling(ix*5.d-\/1)-\/1)*(1+2*sin(pi/6.d0))}
+\DoxyCodeLine{117 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{118     y=(iy-\/1)*cos(pi/6.d0)}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120     expk(k,i)=exp(ci*(kx*x+ky*y))/sqrt(1.d0*nps)}
+\DoxyCodeLine{121     }
+\DoxyCodeLine{122     i=i+1}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{125 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127     k=k+1}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{130 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 \textcolor{keywordflow}{do} lwp=1,lldwc}
+\DoxyCodeLine{136     liwp=(lwp-\/1)*nps+1}
+\DoxyCodeLine{137     lgrk(:,liwp:liwp+nps-\/1)=matmul(expk,matmul(lgr(:,liwp:liwp+nps-\/1),conjg(transpose(expk))))}
+\DoxyCodeLine{138 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141 \textcolor{comment}{!Frequency part}}
+\DoxyCodeLine{142 \textcolor{keywordflow}{do} iw=1,npw}
+\DoxyCodeLine{143     \textcolor{keyword}{call }infog2l(1,iw,descw,1,nprocs,myrow,mycol,lw,lwp,rsrc,csrc)}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145     \textcolor{keywordflow}{if} (myrow==rsrc.and.mycol==csrc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{146         liwp=(lwp-\/1)*nps+1}
+\DoxyCodeLine{147         sf=0.d0}
+\DoxyCodeLine{148         \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{149             sf(i,i) = -\/aimag(lgrk(i,liwp+i-\/1))/pi}
+\DoxyCodeLine{150 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{151         \textcolor{keyword}{call }dgebs2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},nps,nps,sf,nps)}
+\DoxyCodeLine{152     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{153         \textcolor{keyword}{call }dgebr2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},nps,nps,sf,nps,rsrc,csrc)}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157     \textcolor{keywordflow}{if}(myrow==0.and.mycol==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{158         \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{159             \mbox{\hyperlink{specfun_8f90_a692112b73c36d8781018aea60a9fc5ff}{specfun}}(iw,i)=sf(i,i)}
+\DoxyCodeLine{160 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{161 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165 \textcolor{comment}{!if(myrow==0.and.mycol==0) then}}
+\DoxyCodeLine{166 \textcolor{comment}{!close(21)}}
+\DoxyCodeLine{167 \textcolor{comment}{!end if}}
+\DoxyCodeLine{168 }
+
+\end{DoxyCode}

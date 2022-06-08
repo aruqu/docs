@@ -22,13 +22,13 @@ subroutine \mbox{\hyperlink{wnum_8f90_ae3036cce4f43839ad3b5793c4883da45}{wnum}} 
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lld \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+LD \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -38,3 +38,29 @@ subroutine \mbox{\hyperlink{wnum_8f90_ae3036cce4f43839ad3b5793c4883da45}{wnum}} 
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 27 of file wnum.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{27     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{28 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{29     \textcolor{keywordtype}{integer} :: npw}
+\DoxyCodeLine{30 \textcolor{comment}{!Output variables}}
+\DoxyCodeLine{31     \textcolor{keywordtype}{integer} :: iw,lld}
+\DoxyCodeLine{32 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{33     \textcolor{keywordtype}{integer} :: context,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{36 nprocs=nprow*npcol}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 iw=(ceiling(1.d0*npw/nprocs)-\/1)*nprocs+mycol*nprow+myrow+1}
+\DoxyCodeLine{39 \textcolor{keywordflow}{if} (iw.le.npw) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{40     lld=ceiling(1.d0*npw/nprocs)}
+\DoxyCodeLine{41 \textcolor{keywordflow}{else} }
+\DoxyCodeLine{42     lld =floor(1.d0*npw/nprocs)}
+\DoxyCodeLine{43 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{44 }
+
+\end{DoxyCode}

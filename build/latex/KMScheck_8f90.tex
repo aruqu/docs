@@ -22,19 +22,19 @@ subroutine \mbox{\hyperlink{KMScheck_8f90_afb3ef4b4a8d38f2abd38bfb1f010183a}{kms
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & t0 \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & T0 \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lam \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+AM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descam \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+AM \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -44,3 +44,215 @@ subroutine \mbox{\hyperlink{KMScheck_8f90_afb3ef4b4a8d38f2abd38bfb1f010183a}{kms
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 35 of file K\+M\+Scheck.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{35     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{36 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{37     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{38     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{39     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{40 \textcolor{comment}{!Input variables    }}
+\DoxyCodeLine{41     \textcolor{keywordtype}{integer} :: n,nps,npt,t0}
+\DoxyCodeLine{42     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descam}
+\DoxyCodeLine{43     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lam}
+\DoxyCodeLine{44 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{45     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,myrow,mycol,lldr,lldc,lldtr,lldtc}
+\DoxyCodeLine{46 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{47     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{48     \textcolor{keywordtype}{integer} :: i,pr,pc,mb,nb,lit,litp,tt,ttp}
+\DoxyCodeLine{49     \textcolor{keywordtype}{double precision} :: epsmax, pzlange}
+\DoxyCodeLine{50     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descdelta,desctmp,desctmp2}
+\DoxyCodeLine{51     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: ldelta,ltmp,ltmp2}
+\DoxyCodeLine{52     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(1:10)} :: work}
+\DoxyCodeLine{53     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtt, vttp}
+\DoxyCodeLine{54    }
+\DoxyCodeLine{55 context = descam(2)}
+\DoxyCodeLine{56 \textcolor{keyword}{call }blacs\_gridinfo( context, nprow, npcol, myrow, mycol )   }
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 n=nps*npt}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 lldtr= numroc(npt,1,myrow,0,nprow)}
+\DoxyCodeLine{61 lldtc= numroc(npt,1,mycol,0,npcol)}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{keyword}{allocate}(vtt(lldtr),vttp(lldtc))}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 vtt=0}
+\DoxyCodeLine{66 vttp=0}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 i=0}
+\DoxyCodeLine{69 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{70 pr=mod(floor(real(tt-\/1)),nprow)}
+\DoxyCodeLine{71 \textcolor{keywordflow}{if}(myrow==pr) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{72 i=i+1}
+\DoxyCodeLine{73 vtt(i)=tt}
+\DoxyCodeLine{74 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{75 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 i=0}
+\DoxyCodeLine{78 \textcolor{keywordflow}{do} ttp=1, npt}
+\DoxyCodeLine{79 pc=mod(floor(real(ttp-\/1)),npcol)}
+\DoxyCodeLine{80 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{81 i=i+1}
+\DoxyCodeLine{82 vttp(i)=ttp}
+\DoxyCodeLine{83 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{84 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 mb = descam(5)}
+\DoxyCodeLine{87 nb = descam(6)}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 lldr= numroc(n,mb,myrow,0,nprow)}
+\DoxyCodeLine{90 lldc= numroc(n,nb,mycol,0,npcol)}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 \textcolor{keyword}{allocate}(ldelta(lldr,lldc),ltmp(lldr,lldc),ltmp2(lldr,lldc))}
+\DoxyCodeLine{93 \textcolor{keyword}{call }descinit(descdelta,n,n,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{94 \textcolor{keyword}{call }descinit(desctmp,n,n,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{95 \textcolor{keyword}{call }descinit(desctmp2,n,n,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 ldelta=zero}
+\DoxyCodeLine{98 ltmp=zero}
+\DoxyCodeLine{99 ltmp2=zero}
+\DoxyCodeLine{100 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!KMS G(0,tau)=alpha*G(beta,tau) Condition!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{101 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{102 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{keywordflow}{if} (vtt(tt)==1.and.vttp(ttp)==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106     lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{107     litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109     \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{110         ltmp(lit+i-\/1,litp+i-\/1) = uno}
+\DoxyCodeLine{111 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 \textcolor{keywordflow}{if} (vtt(tt)==1.and.vttp(ttp)==npt) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117     lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{118     litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120     \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{121         ltmp(lit+i-\/1,litp+i-\/1) = uno}
+\DoxyCodeLine{122 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{127 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131 \textcolor{keyword}{call }pzgemm (\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{'N'},n,n,n,uno,ltmp,1,1,desctmp,lam,1,1,descam,zero,ldelta,1,1,descdelta)}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134 ltmp=zero}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{137 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 \textcolor{keywordflow}{if} (vtt(tt)==t0.and.vttp(ttp)==t0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141     lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{142     litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144     \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{145         ltmp(lit+i-\/1,litp+i-\/1) = uno}
+\DoxyCodeLine{146 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{151 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 \textcolor{keyword}{call }pzgemm (\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{'N'},n,n,n,uno,ldelta,1,1,descdelta,ltmp,1,1,desctmp,zero,ltmp2,1,1,desctmp2)}
+\DoxyCodeLine{154 ldelta=ltmp2}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156 epsmax=pzlange(\textcolor{stringliteral}{'M'},n,n,ldelta,1,1,descdelta,work)}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 \textcolor{keywordflow}{if} (epsmax>1.0e-\/10.and.myrow==0.and.mycol==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{159     print*, \textcolor{stringliteral}{'    WARNING!!! KMS G(0,tau)=alpha*G(beta,tau) Condition is violated'}}
+\DoxyCodeLine{160     print*, \textcolor{stringliteral}{'    epsmax= '}, epsmax}
+\DoxyCodeLine{161     print*, \textcolor{stringliteral}{' '}}
+\DoxyCodeLine{162 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166 ldelta=zero}
+\DoxyCodeLine{167 ltmp=zero}
+\DoxyCodeLine{168 ltmp2=zero}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!KMS G(tau,0)=alpha*G(tau,beta) Condition!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{173 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175 \textcolor{keywordflow}{if} (vtt(tt)==1.and.vttp(ttp)==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177     lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{178     litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180     \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{181         ltmp(lit+i-\/1,litp+i-\/1) = uno}
+\DoxyCodeLine{182 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{184 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186 \textcolor{keywordflow}{if} (vtt(tt)==npt.and.vttp(ttp)==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188     lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{189     litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191     \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{192         ltmp(lit+i-\/1,litp+i-\/1) = uno}
+\DoxyCodeLine{193 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{198 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202 \textcolor{keyword}{call }pzgemm (\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{'N'},n,n,n,uno,lam,1,1,descam,ltmp,1,1,desctmp,zero,ldelta,1,1,descdelta)}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204 }
+\DoxyCodeLine{205 ltmp=zero}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{208 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210 \textcolor{keywordflow}{if} (vtt(tt)==t0.and.vttp(ttp)==t0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212     lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{213     litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215     \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{216         ltmp(lit+i-\/1,litp+i-\/1) = uno}
+\DoxyCodeLine{217 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{218 }
+\DoxyCodeLine{219 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{221 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{222 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{223 }
+\DoxyCodeLine{224 \textcolor{keyword}{call }pzgemm (\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{'N'},n,n,n,uno,ltmp,1,1,desctmp,ldelta,1,1,descdelta,zero,ltmp2,1,1,desctmp2)}
+\DoxyCodeLine{225 ldelta=ltmp2}
+\DoxyCodeLine{226 }
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228 epsmax=pzlange(\textcolor{stringliteral}{'M'},n,n,ldelta,1,1,descdelta,work)}
+\DoxyCodeLine{229 }
+\DoxyCodeLine{230 \textcolor{keywordflow}{if} (epsmax>1.0e-\/10.and.myrow==0.and.mycol==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{231     print*, \textcolor{stringliteral}{'    WARNING!!! KMS G(tau,0)=alpha*G(tau,beta) Condition is violated'}}
+\DoxyCodeLine{232     print*, \textcolor{stringliteral}{'    epsmax= '}, epsmax}
+\DoxyCodeLine{233     print*, \textcolor{stringliteral}{' '}}
+\DoxyCodeLine{234 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{235 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{236 }
+\DoxyCodeLine{237 }
+\DoxyCodeLine{238 }
+
+\end{DoxyCode}

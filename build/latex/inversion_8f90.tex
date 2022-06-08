@@ -22,22 +22,22 @@ subroutine \mbox{\hyperlink{inversion_8f90_a1ae6106c92ee3b3e7913123c63905ce9}{in
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & scm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+CM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & delta \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+L\+TA \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & a \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & A \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & desca \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+CA \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -47,3 +47,138 @@ subroutine \mbox{\hyperlink{inversion_8f90_a1ae6106c92ee3b3e7913123c63905ce9}{in
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 39 of file inversion.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{39     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{40     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{41 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{42     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{43 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{44     \textcolor{keywordtype}{character(*)} :: scm}
+\DoxyCodeLine{45     \textcolor{keywordtype}{integer} :: nps,npt}
+\DoxyCodeLine{46     \textcolor{keywordtype}{double complex} :: delta}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: w, tw}
+\DoxyCodeLine{48     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descw, desctw}
+\DoxyCodeLine{49     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: work}
+\DoxyCodeLine{50     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: iwork}
+\DoxyCodeLine{51     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: ipiv}
+\DoxyCodeLine{52 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{53     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(1:9)} :: desca}
+\DoxyCodeLine{54     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: a}
+\DoxyCodeLine{55 \textcolor{comment}{!Variables for grid query}}
+\DoxyCodeLine{56     \textcolor{keywordtype}{integer} :: context,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{57 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{58     \textcolor{keywordtype}{integer} :: n,i,j,tt,ttp,lit,litp}
+\DoxyCodeLine{59     \textcolor{keywordtype}{integer} :: mb,nb,pr,pc,lldr,lldc,lldtr,lldtc}
+\DoxyCodeLine{60     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{61     \textcolor{keywordtype}{integer} :: info1,info2,info,dwork,diwork,dimipiv}
+\DoxyCodeLine{62     \textcolor{keywordtype}{double precision} :: dalpha}
+\DoxyCodeLine{63     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtt, vttp}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 context = desca(2)}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 n=nps*npt}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 mb = desca(5)}
+\DoxyCodeLine{72 nb = desca(6)}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 dimipiv=numroc(n,mb,myrow,0,nprow)+mb}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{keyword}{allocate}(ipiv(dimipiv))}
+\DoxyCodeLine{77 \textcolor{keyword}{allocate} (work(1))}
+\DoxyCodeLine{78 \textcolor{keyword}{allocate} (iwork(1))}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{keyword}{call }pzgetri(n,a,1,1,desca,ipiv,work,-\/1,iwork,-\/1,info1)}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 dwork=max(1,int(work(1)))}
+\DoxyCodeLine{83 diwork=max(1,int(iwork(1)))}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{keyword}{deallocate}(work)}
+\DoxyCodeLine{86 \textcolor{keyword}{deallocate}(iwork)}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 \textcolor{keywordflow}{if} (info1==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{89     \textcolor{keyword}{allocate}(work(dwork))}
+\DoxyCodeLine{90     \textcolor{keyword}{allocate}(iwork(diwork))}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92     \textcolor{keyword}{call }pzgetrf(n,n,a,1,1,desca,ipiv,info2)}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94     \textcolor{keyword}{call }pzgetri(n,a,1,1,desca,ipiv,work,dwork,iwork,diwork,info2)}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96     \textcolor{keyword}{deallocate}(work)}
+\DoxyCodeLine{97     \textcolor{keyword}{deallocate}(iwork)}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (info1/=0.0d0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{100     \textcolor{keywordflow}{if} (myrow==0.and.mycol==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{101         \textcolor{keyword}{write}(*,*) \textcolor{stringliteral}{'ERROR in inversion'}, info1}
+\DoxyCodeLine{102 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{103         stop}
+\DoxyCodeLine{104 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{105         }
+\DoxyCodeLine{106 \textcolor{keywordflow}{if} (info2/=0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{107     \textcolor{keywordflow}{if} (myrow==0.and.mycol==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{108         \textcolor{keyword}{write}(*,*) \textcolor{stringliteral}{'ERROR 2 in inversion'}, info2}
+\DoxyCodeLine{109 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{110     stop}
+\DoxyCodeLine{111 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 lldtr=numroc(npt,1,myrow,0,nprow)}
+\DoxyCodeLine{115 lldtc=numroc(npt,1,mycol,0,npcol)}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117 \textcolor{keyword}{allocate}(vtt(lldtr),vttp(lldtc))}
+\DoxyCodeLine{118 \textcolor{keyword}{allocate}(w(lldtr,lldtc),tw(lldtr,lldtc))}
+\DoxyCodeLine{119 \textcolor{keyword}{call }descinit(descw,npt,npt,1,1,0,0,context,lldtr,info)}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 vtt=0}
+\DoxyCodeLine{122 vttp=0}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 i=0}
+\DoxyCodeLine{125 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{126 pr=mod(floor(real(tt-\/1)),nprow)}
+\DoxyCodeLine{127 \textcolor{keywordflow}{if}(myrow==pr) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{128 i=i+1}
+\DoxyCodeLine{129 vtt(i)=tt}
+\DoxyCodeLine{130 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{131 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 i=0}
+\DoxyCodeLine{134 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{135 pc=mod(floor(real(tt-\/1)),npcol)}
+\DoxyCodeLine{136 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{137 i=i+1}
+\DoxyCodeLine{138 vttp(i)=tt}
+\DoxyCodeLine{139 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{140 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 a=a/(delta*delta)}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 \textcolor{keyword}{call }\mbox{\hyperlink{weights_8f90_a594689ef0872066cbc84bbe582e1b2f0}{weights}}(context,scm,npt,1,w)}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{147 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 \textcolor{keywordflow}{if} (vtt(tt).ge.vttp(ttp)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151     lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{152     litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154     dalpha=1.d0}
+\DoxyCodeLine{155 \textcolor{comment}{!   dalpha=0.5d0}}
+\DoxyCodeLine{156     \textcolor{keywordflow}{if}(vtt(tt)==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{157         dalpha=1.0d0}
+\DoxyCodeLine{158 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160     a(lit:lit+nps-\/1,litp:litp+nps-\/1) = a(lit:lit+nps-\/1,litp:litp+nps-\/1)/(w(tt,ttp)*dalpha)}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{163 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{164 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{165 }
+
+\end{DoxyCode}

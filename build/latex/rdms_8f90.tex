@@ -30,3 +30,31 @@ subroutine \mbox{\hyperlink{rdms_8f90_ad8ebd2e91d2a8decbd3f1bd97556f1ef}{rdms}} 
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 27 of file rdms.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{27     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{28     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:)} :: AIN}
+\DoxyCodeLine{29     \textcolor{keywordtype}{character(*)} :: FILENAME}
+\DoxyCodeLine{30     \textcolor{keywordtype}{integer} :: TIME}
+\DoxyCodeLine{31     \textcolor{keywordtype}{integer} :: ns}
+\DoxyCodeLine{32     \textcolor{keywordtype}{integer} :: i,j,ierr}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{open}(unit=21,file=filename//\textcolor{stringliteral}{'\_r.dat'},access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{36 \textcolor{keyword}{open}(unit=22,file=filename//\textcolor{stringliteral}{'\_i.dat'},access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{37 \textcolor{keyword}{call }fseek(21, 0, 2, ierr)}
+\DoxyCodeLine{38 \textcolor{keyword}{call }fseek(22, 0, 2, ierr)}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keyword}{write}(21,\textcolor{stringliteral}{'(F12.6)'}) real(ain(time))}
+\DoxyCodeLine{41 \textcolor{keyword}{write}(22,\textcolor{stringliteral}{'(F12.6)'}) aimag(ain(time))}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{keyword}{close}(21)}
+\DoxyCodeLine{44 \textcolor{keyword}{close}(22)}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 }
+
+\end{DoxyCode}

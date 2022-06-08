@@ -87,6 +87,8 @@ $(document).ready(function(){initNavTree('gkba_2src_2hamspin_8f90.html',''); ini
 <div class="title">hamspin.f90 File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><a href="gkba_2src_2hamspin_8f90_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
@@ -142,6 +144,50 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section version"><dt>Version</dt><dd>0.1 </dd></dl>
 <dl class="section author"><dt>Authors</dt><dd>Cosco F., Lo Gullo N., Talarico W. </dd></dl>
 
+<p class="definition">Definition at line <a class="el" href="gkba_2src_2hamspin_8f90_source.html#l00035">35</a> of file <a class="el" href="gkba_2src_2hamspin_8f90_source.html">hamspin.f90</a>.</p>
+<div class="fragment"><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">implicit none</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">!Input variables</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">integer</span> :: npx, bc</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">double precision</span>, <span class="keywordtype">dimension(:)</span> :: onsite</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">double precision</span>, <span class="keywordtype">dimension(:)</span> :: nnhop</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">!Input/output variables</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">double precision</span>, <span class="keywordtype">dimension(:,:)</span> :: ham</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">!Dummy variables</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">integer</span> :: i</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;ham=0.0d0</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">!Diagonal elements</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keywordflow">do</span> i=1, npx</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">!up</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    ham(2*i-1,2*i-1) = onsite(i)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">!down       </span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    ham(2*i,2*i) = onsite(i)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordflow">end do</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">!Nearest Neighbour</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keywordflow">do</span> i=1, npx-1</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">!up</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    ham(2*i-1,2*i+1) = nnhop(i)</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    ham(2*i+1,2*i-1) = nnhop(i)</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">!down</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    ham(2*i,2*i+2) = nnhop(i)</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    ham(2*i+2,2*i) = nnhop(i)</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keywordflow">end do</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">!Periodic boundary conditions</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keywordflow">if</span>(bc==1) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">!up</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    ham(2*npx-1,2*1+1) = nnhop(1)</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    ham(2*1+1,2*npx-1) = nnhop(1)</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">!down</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    ham(2*npx,2*1+2) = nnhop(1)</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    ham(2*1+2,2*npx) = nnhop(1)</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keywordflow">end if</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->

@@ -22,55 +22,55 @@ subroutine \mbox{\hyperlink{wdyson_8f90_ac73155f9820d93fc738dad9406cd8759}{wdyso
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & wm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & WM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & vw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & VW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & mu \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & MU \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & beta \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & B\+E\+TA \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & stat \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+T\+AT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lg0l \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+G0L \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lg0g \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+G0G \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lg0r \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+G0R \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsl \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SL \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsg \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SG \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsr \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SR \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lnegl \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+N\+E\+GL \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lnegg \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+N\+E\+GG \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lnegr \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+N\+E\+GR \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -80,3 +80,93 @@ subroutine \mbox{\hyperlink{wdyson_8f90_ac73155f9820d93fc738dad9406cd8759}{wdyso
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 83 of file wdyson.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{83     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{84     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{85 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{86     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{87     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{88 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{89     \textcolor{keywordtype}{integer} :: nps,npt,stat}
+\DoxyCodeLine{90     \textcolor{keywordtype}{double precision} :: wm,mu,beta}
+\DoxyCodeLine{91     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: vw}
+\DoxyCodeLine{92     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lg0r,lg0l,lg0g}
+\DoxyCodeLine{93 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{94     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegr,lnegl,lnegg}
+\DoxyCodeLine{95     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: lgrsr}
+\DoxyCodeLine{96     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsr,lsl,lsg}
+\DoxyCodeLine{97 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{98     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{99 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{100     \textcolor{keywordtype}{integer} :: n,npw,iw,lw,liw,lldwc,numroc}
+\DoxyCodeLine{101     \textcolor{keywordtype}{double precision} :: dalpha,om}
+\DoxyCodeLine{102     \textcolor{keywordtype}{double complex} :: zalpha}
+\DoxyCodeLine{103     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: lnegtmp1, lnegtmp2}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{106 nprocs=nprow*npcol}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 \textcolor{keyword}{allocate}(lgrsr(nps,nps))}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 \textcolor{keyword}{allocate}(lnegtmp1(nps,nps),lnegtmp2(nps,nps))}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 lgrsr=zero}
+\DoxyCodeLine{113 lnegtmp1=zero}
+\DoxyCodeLine{114 lnegtmp2=zero}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 lldwc=numroc(npw,1,mycol,0,nprocs)}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 \textcolor{keyword}{call }\mbox{\hyperlink{wsolver_8f90_aa7fa301b664326f8b3c3533f4b92df3c}{wsolver}}(nps,lg0r(:,liw:liw+nps-\/1),lsr(:,liw:liw+nps-\/1),lgrsr)}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \textcolor{comment}{!negr = matmul(grsr,g0r)}}
+\DoxyCodeLine{125 lnegr(1:nps,liw:liw+nps-\/1) = matmul(lgrsr(1:nps,1:nps),lg0r(1:nps,liw:liw+nps-\/1))}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \textcolor{comment}{!-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 \textcolor{comment}{!!+++++++++++++++++++++++++++L/G NE Green's+++++++++++++++++++++++++++}}
+\DoxyCodeLine{131 \textcolor{comment}{!lnegtmp2(1:nps,1:nps) = conjg(transpose(lnegr(1:nps,liw:liw+nps-\/1)))}}
+\DoxyCodeLine{132 \textcolor{comment}{!om=-\/wm+2.d0*wm*(vw(lw)-\/1)/(npw-\/1)}}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Lesser Green's function!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{135 \textcolor{comment}{!dalpha=1.d0*stat*(1.0d0/(exp(beta*(om-\/mu))-\/1.0d0*stat))}}
+\DoxyCodeLine{136 \textcolor{comment}{!lnegtmp1(1:nps,1:nps)=dalpha*(lnegr(1:nps,liw:liw+nps-\/1)-\/lnegtmp2(1:nps,1:nps))}}
+\DoxyCodeLine{137 \textcolor{comment}{!lnegl(1:nps,liw:liw+nps-\/1) = lnegtmp1(1:nps,1:nps)+\&}}
+\DoxyCodeLine{138 \textcolor{comment}{!           \&matmul(lnegr(1:nps,liw:liw+nps-\/1),matmul(lsl(1:nps,liw:liw+nps-\/1),lnegtmp2(1:nps,1:nps)))}}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Greater Green's function!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{141 \textcolor{comment}{!dalpha=1.d0*(1.d0-\/1.0d0/(exp(beta*(om-\/mu))-\/1.0d0*stat))}}
+\DoxyCodeLine{142 \textcolor{comment}{!lnegtmp1(1:nps,1:nps)=dalpha*(lnegr(1:nps,liw:liw+nps-\/1)-\/lnegtmp2(1:nps,1:nps))}}
+\DoxyCodeLine{143 \textcolor{comment}{!lnegg(1:nps,liw:liw+nps-\/1) =  lnegtmp1(1:nps,1:nps)+\&}}
+\DoxyCodeLine{144 \textcolor{comment}{!           \&matmul(lnegr(1:nps,liw:liw+nps-\/1),matmul(lsg(1:nps,liw:liw+nps-\/1),lnegtmp2(1:nps,1:nps)))}}
+\DoxyCodeLine{145 \textcolor{comment}{!!-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 \textcolor{comment}{!+++++++++++++++++++++++++++L/G NE Green's+++++++++++++++++++++++++++}}
+\DoxyCodeLine{148 lnegtmp1(1:nps,1:nps) = conjg(transpose(lgrsr(1:nps,1:nps)))}
+\DoxyCodeLine{149 lnegtmp2(1:nps,1:nps) = conjg(transpose(lnegr(1:nps,liw:liw+nps-\/1)))}
+\DoxyCodeLine{150 om=-\/wm+2.d0*wm*(vw(lw)-\/1)/(npw-\/1)}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!Lesser Green's function!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{153 lnegl(1:nps,liw:liw+nps-\/1) = stat*matmul(lgrsr(1:nps,1:nps),matmul(lg0l(1:nps,liw:liw+nps-\/1),lnegtmp1(1:nps,1:nps)))+\&}
+\DoxyCodeLine{154             \&1.0d0*matmul(lnegr(1:nps,liw:liw+nps-\/1),matmul(lsl(1:nps,liw:liw+nps-\/1),lnegtmp2(1:nps,1:nps)))}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!Greater Green's function!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{157 lnegg(1:nps,liw:liw+nps-\/1) = stat*matmul(lgrsr(1:nps,1:nps),matmul(lg0g(1:nps,liw:liw+nps-\/1),lnegtmp1(1:nps,1:nps)))+\&}
+\DoxyCodeLine{158             \&1.0d0*matmul(lnegr(1:nps,liw:liw+nps-\/1),matmul(lsg(1:nps,liw:liw+nps-\/1),lnegtmp2(1:nps,1:nps)))}
+\DoxyCodeLine{159 \textcolor{comment}{!-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 \textcolor{keyword}{call }blacs\_barrier(context,\textcolor{stringliteral}{'A'})}
+\DoxyCodeLine{164 }
+
+\end{DoxyCode}

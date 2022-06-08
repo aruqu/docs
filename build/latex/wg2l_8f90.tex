@@ -22,22 +22,22 @@ subroutine \mbox{\hyperlink{wg2l_8f90_a8e0e3f19a1030b078023d63606da07bc}{wg2l}} 
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & iw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & IW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & liw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+IW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & rsrc \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & R\+S\+RC \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & csrc \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+S\+RC \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -47,3 +47,26 @@ subroutine \mbox{\hyperlink{wg2l_8f90_a8e0e3f19a1030b078023d63606da07bc}{wg2l}} 
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 39 of file wg2l.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{39     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{40 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{41     \textcolor{keywordtype}{integer} :: npw,iw}
+\DoxyCodeLine{42 \textcolor{comment}{!Output variables}}
+\DoxyCodeLine{43     \textcolor{keywordtype}{integer} :: liw,rsrc,csrc}
+\DoxyCodeLine{44 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{45     \textcolor{keywordtype}{integer} :: context,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{48 nprocs=nprow*npcol}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 liw=floor((iw-\/1.d0)/nprocs)+1}
+\DoxyCodeLine{51 csrc=floor((iw-\/(liw-\/1)*nprocs-\/1.d0)/nprow)}
+\DoxyCodeLine{52 rsrc=iw-\/(liw-\/1)*nprocs-\/csrc*nprow-\/1}
+\DoxyCodeLine{53 }
+
+\end{DoxyCode}

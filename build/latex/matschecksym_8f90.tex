@@ -22,16 +22,16 @@ subroutine \mbox{\hyperlink{matschecksym_8f90_ad6edeb218ec45cd1a5dea3c0d3342adb}
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lam \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+AM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descam \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+AM \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -41,3 +41,87 @@ subroutine \mbox{\hyperlink{matschecksym_8f90_ad6edeb218ec45cd1a5dea3c0d3342adb}
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 31 of file matschecksym.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{31     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{32 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{33     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{34     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{35     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{36 \textcolor{comment}{!Input variables    }}
+\DoxyCodeLine{37     \textcolor{keywordtype}{integer} :: n,nps,npt}
+\DoxyCodeLine{38     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descam}
+\DoxyCodeLine{39     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lam}
+\DoxyCodeLine{40 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{41     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,myrow,mycol,lldr,lldc,lldtr,lldtc}
+\DoxyCodeLine{42 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{43     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{44     \textcolor{keywordtype}{integer} :: mb,nb,lit,litp,tt,ttp}
+\DoxyCodeLine{45     \textcolor{keywordtype}{double precision} :: epsmax, pzlange}
+\DoxyCodeLine{46     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descdelta}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: ldelta}
+\DoxyCodeLine{48     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(1:10)} :: work}
+\DoxyCodeLine{49    }
+\DoxyCodeLine{50 context = descam(2)}
+\DoxyCodeLine{51 \textcolor{keyword}{call }blacs\_gridinfo( context, nprow, npcol, myrow, mycol )   }
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 n=nps*npt}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 lldtr= numroc(npt,1,myrow,0,nprow)}
+\DoxyCodeLine{56 lldtc= numroc(npt,1,mycol,0,npcol)}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 mb = descam(5)}
+\DoxyCodeLine{60 nb = descam(6)}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 lldr= numroc(n,mb,myrow,0,nprow)}
+\DoxyCodeLine{63 lldc= numroc(n,nb,mycol,0,npcol)}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{keyword}{allocate}(ldelta(lldr,lldc))}
+\DoxyCodeLine{66 \textcolor{keyword}{call }descinit(descdelta,n,n,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{67 ldelta=zero}
+\DoxyCodeLine{68 \textcolor{comment}{!(am+conjg(transpose(aa)))=0}}
+\DoxyCodeLine{69 \textcolor{comment}{!ldelta=lam+congj(transpose(lm))}}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{72 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{75 litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 ldelta(lit:lit+nps-\/1,litp:litp+nps-\/1) = lam(lit:lit+nps-\/1,litp:litp+nps-\/1)+conjg(transpose(lam(lit:lit+nps-\/1,litp:litp+nps-\/1)))}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{80 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 epsmax=pzlange(\textcolor{stringliteral}{'M'},n,n,ldelta,1,1,descdelta,work)}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \textcolor{comment}{!if (epsmax<=1.0E-\/14.and.myrow==0.and.mycol==0) then}}
+\DoxyCodeLine{87 \textcolor{comment}{!   print*, '    ',op, ' Symmetry is OK'}}
+\DoxyCodeLine{88 \textcolor{comment}{!   print*, '    epsmax= ', epsmax}}
+\DoxyCodeLine{89 \textcolor{comment}{!   print*, ' '}}
+\DoxyCodeLine{90 \textcolor{comment}{!else if (epsmax>1.0E-\/14.and.myrow==0.and.mycol==0) then}}
+\DoxyCodeLine{91 \textcolor{comment}{!   print*, '    WARNING!!! ',op,' Symmetry is violated'}}
+\DoxyCodeLine{92 \textcolor{comment}{!   print*, '    epsmax= ', epsmax}}
+\DoxyCodeLine{93 \textcolor{comment}{!   print*, ' '}}
+\DoxyCodeLine{94 \textcolor{comment}{!end if}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 \textcolor{keywordflow}{if} (epsmax>1.0e-\/10.and.myrow==0.and.mycol==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{97     print*, \textcolor{stringliteral}{'    WARNING!!! Matsubara Symmetry is violated'}}
+\DoxyCodeLine{98     print*, \textcolor{stringliteral}{'    epsmax= '}, epsmax}
+\DoxyCodeLine{99     print*, \textcolor{stringliteral}{' '}}
+\DoxyCodeLine{100 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 \textcolor{comment}{!-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{106 }
+
+\end{DoxyCode}

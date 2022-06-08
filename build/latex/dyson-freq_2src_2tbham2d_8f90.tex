@@ -22,25 +22,25 @@ subroutine \mbox{\hyperlink{dyson-freq_2src_2tbham2d_8f90_a39e0f6e3a0266d2b7c36e
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & npx \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PX \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npy \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PY \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & bcx \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & B\+CX \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & bcy \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & B\+CY \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & onsite \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & O\+N\+S\+I\+TE \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & gmt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & G\+MT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & ham \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & H\+AM \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -50,3 +50,335 @@ subroutine \mbox{\hyperlink{dyson-freq_2src_2tbham2d_8f90_a39e0f6e3a0266d2b7c36e
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 43 of file tbham2d.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{43 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{44     \textcolor{keywordtype}{character (*)} :: gmt}
+\DoxyCodeLine{45     \textcolor{keywordtype}{integer} :: npx,npy,bcx,bcy}
+\DoxyCodeLine{46     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: onsite}
+\DoxyCodeLine{47 \textcolor{comment}{!   double precision, dimension(:) :: nnhop}}
+\DoxyCodeLine{48 \textcolor{comment}{!Input/output variables}}
+\DoxyCodeLine{49     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: ham}
+\DoxyCodeLine{50 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{51     \textcolor{keywordtype}{integer} :: ix,iy,i,j}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 ham=0.0d0}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{keywordflow}{if} (gmt==\textcolor{stringliteral}{'sq'}.or.gmt==\textcolor{stringliteral}{'ex'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{56 \textcolor{comment}{!Diagonal elements}}
+\DoxyCodeLine{57 \textcolor{keywordflow}{do} ix=1, npx}
+\DoxyCodeLine{58 \textcolor{keywordflow}{do} iy=1, npy}
+\DoxyCodeLine{59     i=ix+npx*(iy-\/1)}
+\DoxyCodeLine{60     ham(i,i) = onsite(i)}
+\DoxyCodeLine{61 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{62 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{comment}{!Nearest Neighbour along x (ix,iy) <-\/> (ix+1,iy)}}
+\DoxyCodeLine{65 \textcolor{keywordflow}{do} ix=1, npx-\/1}
+\DoxyCodeLine{66 \textcolor{keywordflow}{do} iy=1,npy}
+\DoxyCodeLine{67     i=ix+npx*(iy-\/1)}
+\DoxyCodeLine{68     ham(i,i+1) = -\/0.5d0\textcolor{comment}{!nnhop(i)}}
+\DoxyCodeLine{69     ham(i+1,i) = -\/0.5d0\textcolor{comment}{!nnhop(i)}}
+\DoxyCodeLine{70 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{71 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 \textcolor{comment}{!Nearest Neighbour along y (ix,iy) <-\/> (ix,iy+1)}}
+\DoxyCodeLine{74 \textcolor{keywordflow}{do} ix=1, npx}
+\DoxyCodeLine{75 \textcolor{keywordflow}{do} iy=1,npy-\/1}
+\DoxyCodeLine{76     i=ix+npx*(iy-\/1)}
+\DoxyCodeLine{77     ham(i,i+npx) = -\/0.5d0\textcolor{comment}{!nnhop(i)}}
+\DoxyCodeLine{78     ham(i+npx,i) = -\/0.5d0\textcolor{comment}{!nnhop(i)}}
+\DoxyCodeLine{79 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{80 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{comment}{!Periodic boundary conditions along x (npx,iy) <-\/> (1,iy)}}
+\DoxyCodeLine{83 \textcolor{keywordflow}{if}(bcx==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{84 \textcolor{keywordflow}{do} iy=1, npy}
+\DoxyCodeLine{85     i=1+npx*(iy-\/1)}
+\DoxyCodeLine{86     j=npx+npx*(iy-\/1)}
+\DoxyCodeLine{87     ham(j,i) = -\/0.5d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{88     ham(i,j) = -\/0.5d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{89 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{90 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{comment}{!Periodic boundary conditions along y (ix,npy) <-\/> (ix,1)}}
+\DoxyCodeLine{94 \textcolor{keywordflow}{if}(bcy==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{95 \textcolor{keywordflow}{do} ix=1, npx}
+\DoxyCodeLine{96     i=ix}
+\DoxyCodeLine{97     j=ix+npx*(npy-\/1)}
+\DoxyCodeLine{98     ham(j,i) = -\/0.5d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{99     ham(i,j) = -\/0.5d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{100 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{101 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TRIANGULAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 \textcolor{comment}{!To add the exagonal structure to the square one (ix,iy) <-\/> (ix-\/1,iy+1) }}
+\DoxyCodeLine{109 \textcolor{comment}{!Basically this adds the triangles (\(\backslash\)) to a "square lattice" (-\/ , |)}}
+\DoxyCodeLine{110 \textcolor{comment}{!Vista QUADRATO (aiuta per gli indici)}}
+\DoxyCodeLine{111 \textcolor{comment}{!iy=6   o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{112 \textcolor{comment}{!   | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{113 \textcolor{comment}{!iy=5   o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{114 \textcolor{comment}{!   | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{115 \textcolor{comment}{!iy=4   o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{116 \textcolor{comment}{!   | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{117 \textcolor{comment}{!iy=3   o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{118 \textcolor{comment}{!   | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{119 \textcolor{comment}{!iy=2   o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{120 \textcolor{comment}{!   | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{121 \textcolor{comment}{!iy=1   o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{122 \textcolor{comment}{!}}
+\DoxyCodeLine{123 \textcolor{comment}{!ix=    1   2   3   4   5   6}}
+\DoxyCodeLine{124 \textcolor{comment}{!}}
+\DoxyCodeLine{125 \textcolor{comment}{!Vista ESAGONI (shifti le rige alternate)}}
+\DoxyCodeLine{126 \textcolor{comment}{!iy=6     o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{127 \textcolor{comment}{!    / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) /}}
+\DoxyCodeLine{128 \textcolor{comment}{!iy=5   o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{129 \textcolor{comment}{!        \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) /}}
+\DoxyCodeLine{130 \textcolor{comment}{!iy=4     o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{131 \textcolor{comment}{!    / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) /}}
+\DoxyCodeLine{132 \textcolor{comment}{!iy=3   o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{133 \textcolor{comment}{!        \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) /}}
+\DoxyCodeLine{134 \textcolor{comment}{!iy=2     o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{135 \textcolor{comment}{!    / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) /}}
+\DoxyCodeLine{136 \textcolor{comment}{!iy=1   o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{137 \textcolor{comment}{!}}
+\DoxyCodeLine{138 \textcolor{comment}{!ix=    1   2   3   4   5   6}}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140 \textcolor{keywordflow}{if} (gmt==\textcolor{stringliteral}{'ex'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{141 \textcolor{keywordflow}{do} ix=2, npx}
+\DoxyCodeLine{142 \textcolor{keywordflow}{do} iy=1,npy-\/1}
+\DoxyCodeLine{143     i=ix+npx*(iy-\/1)}
+\DoxyCodeLine{144     j=ix-\/1+npx*(iy-\/1+1)}
+\DoxyCodeLine{145     ham(i,j) = -\/0.5d0\textcolor{comment}{!nnhop(i)}}
+\DoxyCodeLine{146     ham(j,i) = -\/0.5d0\textcolor{comment}{!nnhop(i)}}
+\DoxyCodeLine{147 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{148 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 \textcolor{comment}{!Periodic boundary conditions along x (1,iy) <-\/> (npx,iy+1)}}
+\DoxyCodeLine{151 \textcolor{comment}{!Vista QUADRATO}}
+\DoxyCodeLine{152 \textcolor{comment}{!iy=6   -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{153 \textcolor{comment}{!   \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\)}}
+\DoxyCodeLine{154 \textcolor{comment}{!iy=5   -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{155 \textcolor{comment}{!   \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\)}}
+\DoxyCodeLine{156 \textcolor{comment}{!iy=4   -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{157 \textcolor{comment}{!   \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\)}}
+\DoxyCodeLine{158 \textcolor{comment}{!iy=3   -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{159 \textcolor{comment}{!   \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\)}}
+\DoxyCodeLine{160 \textcolor{comment}{!iy=2   -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{161 \textcolor{comment}{!   \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\)}}
+\DoxyCodeLine{162 \textcolor{comment}{!iy=1   -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{163 \textcolor{comment}{!}}
+\DoxyCodeLine{164 \textcolor{comment}{!ix=      4   5   6   1   2   3}}
+\DoxyCodeLine{165 \textcolor{keywordflow}{if}(bcx==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{166 \textcolor{keywordflow}{do} iy=1, npy-\/1}
+\DoxyCodeLine{167     i=1+npx*(iy-\/1)}
+\DoxyCodeLine{168     j=npx+npx*(iy-\/1+1)}
+\DoxyCodeLine{169     ham(j,i) = -\/0.5d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{170     ham(i,j) = -\/0.5d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{171 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{172 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 \textcolor{comment}{!Periodic boundary conditions along y (ix,npy) <-\/> (ix-\/1,1)}}
+\DoxyCodeLine{175 \textcolor{comment}{!Vista QUADRATO}}
+\DoxyCodeLine{176 \textcolor{comment}{!   | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{177 \textcolor{comment}{!iy=3   o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{178 \textcolor{comment}{!   | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{179 \textcolor{comment}{!iy=2   o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{180 \textcolor{comment}{!   | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{181 \textcolor{comment}{!iy=1   o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{182 \textcolor{comment}{!   | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{183 \textcolor{comment}{!iy=6   o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{184 \textcolor{comment}{!   | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{185 \textcolor{comment}{!iy=5   o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{186 \textcolor{comment}{!   | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{187 \textcolor{comment}{!iy=4   o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{188 \textcolor{comment}{!   | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{189 \textcolor{comment}{!}}
+\DoxyCodeLine{190 \textcolor{comment}{!ix=    1   2   3   4   5   6}}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192 \textcolor{keywordflow}{if}(bcy==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{193 \textcolor{keywordflow}{do} ix=2, npx}
+\DoxyCodeLine{194     i=ix+npx*(npy-\/1)}
+\DoxyCodeLine{195     j=ix-\/1}
+\DoxyCodeLine{196     ham(j,i) = -\/0.5d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{197     ham(i,j) = -\/0.5d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{198 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{199 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204 }
+\DoxyCodeLine{205 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!GRAPHENE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{206 \textcolor{comment}{!The graphene is slightly more complicated,}}
+\DoxyCodeLine{207 \textcolor{comment}{!but it's structure can be recovered by assuming a stack of two different }}
+\DoxyCodeLine{208 \textcolor{comment}{!chains with n\_x and Ceiling(n\_x/2) sites.}}
+\DoxyCodeLine{209 \textcolor{comment}{!In the example below 8 and 5 sites are shown}}
+\DoxyCodeLine{210 \textcolor{comment}{!iy=8   o     o     o     o     o}}
+\DoxyCodeLine{211 \textcolor{comment}{!    \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / }}
+\DoxyCodeLine{212 \textcolor{comment}{!iy=7     o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{213 \textcolor{comment}{!        /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) }}
+\DoxyCodeLine{214 \textcolor{comment}{!iy=6   o     o     o     o     o}}
+\DoxyCodeLine{215 \textcolor{comment}{!    \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / }}
+\DoxyCodeLine{216 \textcolor{comment}{!iy=5     o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{217 \textcolor{comment}{!        /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) }}
+\DoxyCodeLine{218 \textcolor{comment}{!iy=4   o     o     o     o     o}}
+\DoxyCodeLine{219 \textcolor{comment}{!    \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / }}
+\DoxyCodeLine{220 \textcolor{comment}{!iy=3     o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{221 \textcolor{comment}{!        /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) }}
+\DoxyCodeLine{222 \textcolor{comment}{!iy=2   o     o     o     o     o}}
+\DoxyCodeLine{223 \textcolor{comment}{!    \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / }}
+\DoxyCodeLine{224 \textcolor{comment}{!iy=1     o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{225 \textcolor{comment}{!}}
+\DoxyCodeLine{226 \textcolor{comment}{!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228 \textcolor{keywordflow}{if} (gmt==\textcolor{stringliteral}{'grp'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{229 \textcolor{comment}{!Diagonal elements}}
+\DoxyCodeLine{230 \textcolor{keywordflow}{do} ix=1, npx}
+\DoxyCodeLine{231 \textcolor{keywordflow}{do} iy=1, npy}
+\DoxyCodeLine{232     i=ix+npx*(ceiling(iy/2.d0)-\/1)+ceiling(npx/2.d0)*(floor(iy/2.d0)-\/1)}
+\DoxyCodeLine{233     ham(i,i) = onsite(i)}
+\DoxyCodeLine{234 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{235 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{236 }
+\DoxyCodeLine{237 \textcolor{comment}{!Nearest Neighbour along x (ix,iy) <-\/> (ix+1,iy) if ix=2*m-\/1 and iy=2*l-\/1}}
+\DoxyCodeLine{238 \textcolor{comment}{!iy=3     o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{239 \textcolor{comment}{!}}
+\DoxyCodeLine{240 \textcolor{comment}{!iy=2   o     o     o     o     o}}
+\DoxyCodeLine{241 \textcolor{comment}{!}}
+\DoxyCodeLine{242 \textcolor{comment}{!iy=1     o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{243 \textcolor{comment}{!}}
+\DoxyCodeLine{244 \textcolor{comment}{!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{245 \textcolor{keywordflow}{do} iy=1,npy,2}
+\DoxyCodeLine{246 \textcolor{keywordflow}{do} ix=1, npx-\/1}
+\DoxyCodeLine{247 \textcolor{comment}{!   i=local coordinate along x + number of sites on the odd iy * position of the odd iy +}}
+\DoxyCodeLine{248 \textcolor{comment}{!   number of sites along the even iy * position of the even iy}}
+\DoxyCodeLine{249     i=ix+npx*(ceiling(iy/2.d0)-\/1)+ceiling(npx/2.d0)*(floor(iy/2.d0)-\/1)}
+\DoxyCodeLine{250     ham(i,i+1) = -\/0.5d0*mod(ix,2)\textcolor{comment}{!nnhop(i)}}
+\DoxyCodeLine{251     ham(i+1,i) = -\/0.5d0*mod(ix,2)\textcolor{comment}{!nnhop(i)}}
+\DoxyCodeLine{252 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{253 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255 \textcolor{comment}{!Nearest Neighbour along y}}
+\DoxyCodeLine{256 \textcolor{comment}{!iy=3     o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{257 \textcolor{comment}{!}}
+\DoxyCodeLine{258 \textcolor{comment}{!iy=2   o     o     o     o     o}}
+\DoxyCodeLine{259 \textcolor{comment}{!    \(\backslash\)     \(\backslash\)     \(\backslash\)     \(\backslash\)     }}
+\DoxyCodeLine{260 \textcolor{comment}{!iy=1     o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{261 \textcolor{comment}{!}}
+\DoxyCodeLine{262 \textcolor{comment}{!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{263 }
+\DoxyCodeLine{264 \textcolor{keywordflow}{do} iy=2,npy,2}
+\DoxyCodeLine{265 \textcolor{keywordflow}{do} ix=1, ceiling(npx/2.d0)-\/1}
+\DoxyCodeLine{266     i=ix+npx*(ceiling(iy/2.d0)-\/1)+ceiling(npx/2.d0)*(floor(iy/2.d0)-\/1)}
+\DoxyCodeLine{267     j=2*ix-\/1+npx*(ceiling((iy-\/1)/2.d0)-\/1)+ceiling(npx/2.d0)*(floor((iy-\/1)/2.d0)-\/1)}
+\DoxyCodeLine{268     ham(i,j) = -\/0.5d0\textcolor{comment}{!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{269     ham(j,i) = -\/0.5d0\textcolor{comment}{!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{270 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{271 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{272 }
+\DoxyCodeLine{273 }
+\DoxyCodeLine{274 \textcolor{comment}{!iy=3     o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{275 \textcolor{comment}{!}}
+\DoxyCodeLine{276 \textcolor{comment}{!iy=2   o     o     o     o     o}}
+\DoxyCodeLine{277 \textcolor{comment}{!        /     /     /     / }}
+\DoxyCodeLine{278 \textcolor{comment}{!iy=1     o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{279 \textcolor{comment}{!}}
+\DoxyCodeLine{280 \textcolor{comment}{!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{281 }
+\DoxyCodeLine{282 }
+\DoxyCodeLine{283 \textcolor{keywordflow}{do} iy=2,npy,2}
+\DoxyCodeLine{284 \textcolor{keywordflow}{do} ix=2, ceiling(npx/2.d0)}
+\DoxyCodeLine{285     i=ix+npx*(ceiling(iy/2.d0)-\/1)+ceiling(npx/2.d0)*(floor(iy/2.d0)-\/1)}
+\DoxyCodeLine{286     j=2*ix+npx*(ceiling((iy-\/1)/2.d0)-\/1)+ceiling(npx/2.d0)*(floor((iy-\/1)/2.d0)-\/1)}
+\DoxyCodeLine{287     ham(i,j) = -\/0.5d0\textcolor{comment}{!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{288     ham(j,i) = -\/0.5d0\textcolor{comment}{!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{289 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{290 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292 }
+\DoxyCodeLine{293 \textcolor{comment}{!iy=3     o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{294 \textcolor{comment}{!        /     /     /     /     }}
+\DoxyCodeLine{295 \textcolor{comment}{!iy=2   o     o     o     o     o}}
+\DoxyCodeLine{296 \textcolor{comment}{!}}
+\DoxyCodeLine{297 \textcolor{comment}{!iy=1     o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{298 \textcolor{comment}{!}}
+\DoxyCodeLine{299 \textcolor{comment}{!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{300 }
+\DoxyCodeLine{301 \textcolor{keywordflow}{do} iy=2,npy-\/2,2}
+\DoxyCodeLine{302 \textcolor{keywordflow}{do} ix=1, ceiling(npx/2.d0)-\/1}
+\DoxyCodeLine{303     i=ix+npx*(ceiling(iy/2.d0)-\/1)+ceiling(npx/2.d0)*(floor(iy/2.d0)-\/1)}
+\DoxyCodeLine{304     j=2*ix-\/1+npx*(ceiling((iy+1)/2.d0)-\/1)+ceiling(npx/2.d0)*(floor((iy+1)/2.d0)-\/1)}
+\DoxyCodeLine{305     ham(i,j) = -\/0.5d0\textcolor{comment}{!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{306     ham(j,i) = -\/0.5d0\textcolor{comment}{!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{307 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{308 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{309 }
+\DoxyCodeLine{310 }
+\DoxyCodeLine{311 }
+\DoxyCodeLine{312 \textcolor{comment}{!iy=3     o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{313 \textcolor{comment}{!            \(\backslash\)     \(\backslash\)     \(\backslash\)     \(\backslash\) }}
+\DoxyCodeLine{314 \textcolor{comment}{!iy=2   o     o     o     o     o}}
+\DoxyCodeLine{315 \textcolor{comment}{!}}
+\DoxyCodeLine{316 \textcolor{comment}{!iy=1     o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{317 \textcolor{comment}{!}}
+\DoxyCodeLine{318 \textcolor{comment}{!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{319 }
+\DoxyCodeLine{320 \textcolor{keywordflow}{do} iy=2,npy-\/2,2}
+\DoxyCodeLine{321 \textcolor{keywordflow}{do} ix=2, ceiling(npx/2.d0)}
+\DoxyCodeLine{322     i=ix+npx*(ceiling(iy/2.d0)-\/1)+ceiling(npx/2.d0)*(floor(iy/2.d0)-\/1)}
+\DoxyCodeLine{323     j=2*ix+npx*(ceiling((iy+1)/2.d0)-\/1)+ceiling(npx/2.d0)*(floor((iy+1)/2.d0)-\/1)}
+\DoxyCodeLine{324     ham(i,j) = -\/0.5d0\textcolor{comment}{!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{325     ham(j,i) = -\/0.5d0\textcolor{comment}{!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{326 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{327 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{328 }
+\DoxyCodeLine{329 }
+\DoxyCodeLine{330 \textcolor{keywordflow}{if} (bcy==1) \textcolor{keywordflow}{then} }
+\DoxyCodeLine{331 \textcolor{comment}{!Boundary conditions along y}}
+\DoxyCodeLine{332 \textcolor{comment}{!iy=1     o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{333 \textcolor{comment}{!        /     /     /     /     }}
+\DoxyCodeLine{334 \textcolor{comment}{!iy=8   o     o     o     o     o}}
+\DoxyCodeLine{335 \textcolor{comment}{!}}
+\DoxyCodeLine{336 \textcolor{comment}{!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{337 }
+\DoxyCodeLine{338 }
+\DoxyCodeLine{339 \textcolor{keywordflow}{do} ix=1, ceiling(npx/2.d0)-\/1}
+\DoxyCodeLine{340     i=ix+npx*(ceiling(npy/2.d0)-\/1)+ceiling(npx/2.d0)*(floor(npy/2.d0)-\/1)}
+\DoxyCodeLine{341     j=2*ix-\/1}
+\DoxyCodeLine{342     ham(i,j) = -\/0.5d0\textcolor{comment}{!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{343     ham(j,i) = -\/0.5d0\textcolor{comment}{!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{344 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{345 }
+\DoxyCodeLine{346 }
+\DoxyCodeLine{347 \textcolor{comment}{!iy=1     o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{348 \textcolor{comment}{!            \(\backslash\)     \(\backslash\)     \(\backslash\)     \(\backslash\) }}
+\DoxyCodeLine{349 \textcolor{comment}{!iy=8   o     o     o     o     o}}
+\DoxyCodeLine{350 \textcolor{comment}{!}}
+\DoxyCodeLine{351 \textcolor{comment}{!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{352 }
+\DoxyCodeLine{353 }
+\DoxyCodeLine{354 \textcolor{keywordflow}{do} ix=2, ceiling(npx/2.d0)}
+\DoxyCodeLine{355     i=ix+npx*(ceiling(npy/2.d0)-\/1)+ceiling(npx/2.d0)*(floor(npy/2.d0)-\/1)}
+\DoxyCodeLine{356     j=2*ix}
+\DoxyCodeLine{357     ham(i,j) = -\/0.5d0\textcolor{comment}{!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{358     ham(j,i) = -\/0.5d0\textcolor{comment}{!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{359 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{360 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{361 }
+\DoxyCodeLine{362 }
+\DoxyCodeLine{363 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{364 }
+\DoxyCodeLine{365 }
+\DoxyCodeLine{366 }
+
+\end{DoxyCode}

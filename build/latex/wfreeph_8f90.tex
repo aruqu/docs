@@ -22,43 +22,43 @@ subroutine \mbox{\hyperlink{wfreeph_8f90_a87a79381eecae24adeb8542dba11ac88}{wfre
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & wm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & WM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & vw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & VW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & bt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & BT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & om0 \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & O\+M0 \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & sg0 \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+G0 \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & g \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & G \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & ld0l \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+D0L \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & ld0g \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+D0G \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & ld0r \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+D0R \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & desc \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+SC \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -68,3 +68,204 @@ subroutine \mbox{\hyperlink{wfreeph_8f90_a87a79381eecae24adeb8542dba11ac88}{wfre
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 67 of file wfreeph.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{67     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{68     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{69 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{70     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{71     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{72     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{73     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = dacos(-\/1.0d0)       \textcolor{comment}{! Pi greco}}
+\DoxyCodeLine{74 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{75     \textcolor{keywordtype}{integer} :: nps,npw}
+\DoxyCodeLine{76     \textcolor{keywordtype}{double precision} :: wm,bt,om0,sg0,g,eta}
+\DoxyCodeLine{77     \textcolor{keywordtype}{double complex} :: cf}
+\DoxyCodeLine{78     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: vw, desc}
+\DoxyCodeLine{79 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{80     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: ld0l}
+\DoxyCodeLine{81     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: ld0g}
+\DoxyCodeLine{82     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: ld0r}
+\DoxyCodeLine{83 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{84     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol,rsrc,csrc}
+\DoxyCodeLine{85 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{86     \textcolor{keywordtype}{integer} :: n,i,j,iw,lr,lc,lir,lic,lw,liw}
+\DoxyCodeLine{87     \textcolor{keywordtype}{integer} :: mb,nb,pr,pc,lldr,lldc,lldwr,lldwc,lldtr,lldtc,numroc}
+\DoxyCodeLine{88     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)}, \textcolor{keywordtype}{allocatable} :: vr,vc}
+\DoxyCodeLine{89     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension (:)}, \textcolor{keywordtype}{allocatable} :: phdos}
+\DoxyCodeLine{90     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(9)} :: descphdos}
+\DoxyCodeLine{91     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension (:,:)}, \textcolor{keywordtype}{allocatable} :: lexp, ltmp}
+\DoxyCodeLine{92     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(9)} :: descexp, desctmp   }
+\DoxyCodeLine{93     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: sfctp, sfct}
+\DoxyCodeLine{94     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (9)} :: descsfct, descsfctp}
+\DoxyCodeLine{95     \textcolor{keywordtype}{double precision} :: om,tm,dt,t,dw,tp,dalpha}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{98 nprocs=nprow*npcol}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 mb = desc(5)}
+\DoxyCodeLine{101 nb = desc(6)}
+\DoxyCodeLine{102 n=nps*npw}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 lldr=numroc(n,mb,myrow,0,1)}
+\DoxyCodeLine{105 lldc=numroc(n,nb,mycol,0,nprocs)}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 lldtr=numroc(nps,mb,myrow,0,1)}
+\DoxyCodeLine{108 lldtc=numroc(n,nb,mycol,0,nprocs)}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 lldwr=numroc(npw,1,myrow,0,1)}
+\DoxyCodeLine{111 lldwc=numroc(npw,1,mycol,0,nprocs)}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{keyword}{allocate}(phdos(lldwc))}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 \textcolor{keyword}{allocate}(lexp(lldr,lldc))}
+\DoxyCodeLine{116 \textcolor{keyword}{call }descinit(descexp,n,n,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 \textcolor{keyword}{allocate}(ltmp(lldtr,lldtc),sfctp(lldtr,lldtc),sfct(lldtr,lldtc))}
+\DoxyCodeLine{119 \textcolor{keyword}{call }descinit(descsfctp,nps,n,mb,nb,0,0,context,lldtr,info)}
+\DoxyCodeLine{120 \textcolor{keyword}{call }descinit(descsfct,nps,n,mb,nb,0,0,context,lldtr,info)}
+\DoxyCodeLine{121 \textcolor{keyword}{call }descinit(desctmp,nps,n,mb,nb,0,0,context,lldtr,info)}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 dw=2.d0*wm/(npw-\/1)}
+\DoxyCodeLine{125 tm=pi*(npw-\/1)/(2.d0*wm)}
+\DoxyCodeLine{126 dt=pi/wm}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128 \textcolor{keyword}{allocate}(vr(lldwr),vc(lldwc))}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 vr=0}
+\DoxyCodeLine{131 lr=0}
+\DoxyCodeLine{132 \textcolor{keywordflow}{do} iw=1, npw}
+\DoxyCodeLine{133 pr=mod(floor(real(iw-\/1)),1)}
+\DoxyCodeLine{134 \textcolor{keywordflow}{if}(myrow==pr) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{135 lr=lr+1}
+\DoxyCodeLine{136 vr(lr)=iw}
+\DoxyCodeLine{137 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{138 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140 vc=0}
+\DoxyCodeLine{141 lc=0}
+\DoxyCodeLine{142 \textcolor{keywordflow}{do} iw=1, npw}
+\DoxyCodeLine{143 pc=mod(floor(real(iw-\/1)),nprocs)}
+\DoxyCodeLine{144 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{145 lc=lc+1}
+\DoxyCodeLine{146 vc(lc)=iw}
+\DoxyCodeLine{147 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{148 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151 phdos=zero}
+\DoxyCodeLine{152 \textcolor{comment}{!create the spectral density for a phonon bath}}
+\DoxyCodeLine{153 \textcolor{keywordflow}{do} lc = 1, lldwc}
+\DoxyCodeLine{154     om = -\/wm+(vc(lc)-\/1)*dw}
+\DoxyCodeLine{155 \textcolor{comment}{!if(om>0.d0) then}}
+\DoxyCodeLine{156     phdos(lc) = (g**2)*sg0/(pi*((om-\/om0)**2 + sg0**2 ))}
+\DoxyCodeLine{157 \textcolor{comment}{!end if}}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159 \textcolor{comment}{!phdos(lc) = 1.0d0/(exp(-\/0.5d0*om0*om) +1.0d0)*1.0d0/(exp(0.5d0*om0*(om -\/2*om0)) + 1.0d0)\&}}
+\DoxyCodeLine{160 \textcolor{comment}{!       \&*sin(om*pi/(2*om0))*sin(om*pi/(2*om0))/om0 }}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162 \textcolor{comment}{!phdos(lc) = 1.0d0/(exp(-\/sg0*om) +1.0d0)*om*exp(-\/om/om0)}}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164 \textcolor{comment}{!   phdos(lc) = exp(2*(1-\/(om/om0)))*(om/om0)*(om/om0)*(g**2)}}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166 \textcolor{comment}{!   if (2*om0.ge.om) then}}
+\DoxyCodeLine{167 \textcolor{comment}{!       phdos(lc) = (g**2)*sin(pi*om/(2*om0))*sin(pi*om/(2*om0))/om0}}
+\DoxyCodeLine{168 \textcolor{comment}{!   end if}}
+\DoxyCodeLine{169 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 \textcolor{comment}{!!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~STRUCTURE FACTOR\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{172 \textcolor{comment}{!!                    int dom/2pi F(om) n(om) exp[-\/i*om*(t-\/t')]}}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 \textcolor{comment}{!lexp=zero}}
+\DoxyCodeLine{175 \textcolor{comment}{!do lr = 1, lldwr}}
+\DoxyCodeLine{176 \textcolor{comment}{!do lc = 1, lldwc}}
+\DoxyCodeLine{177 \textcolor{comment}{!   lir=(lr-\/1)*nps+1}}
+\DoxyCodeLine{178 \textcolor{comment}{!   lic=(lc-\/1)*nps+1}}
+\DoxyCodeLine{179 \textcolor{comment}{!   om = -\/wm+(vr(lr)-\/1)*dw}}
+\DoxyCodeLine{180 \textcolor{comment}{!   t = -\/tm+(vc(lc)-\/1)*dt}}
+\DoxyCodeLine{181 \textcolor{comment}{!   do i=1,nps}}
+\DoxyCodeLine{182 \textcolor{comment}{!       lexp(lir+i-\/1,lic+i-\/1) = exp(-\/ci*om*t)}}
+\DoxyCodeLine{183 \textcolor{comment}{!   end do}}
+\DoxyCodeLine{184 \textcolor{comment}{!end do}}
+\DoxyCodeLine{185 \textcolor{comment}{!end do}}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187 \textcolor{comment}{!ltmp=zero}}
+\DoxyCodeLine{188 \textcolor{comment}{!do lc = 1, lldwc}}
+\DoxyCodeLine{189 \textcolor{comment}{!   lic=(lc-\/1)*nps+1    }}
+\DoxyCodeLine{190 \textcolor{comment}{!   om = -\/wm+(vc(lc)-\/1)*dw}}
+\DoxyCodeLine{191 \textcolor{comment}{!   if (om.ne.0.d0) then}}
+\DoxyCodeLine{192 \textcolor{comment}{!   ltmp(:,lic:lic+nps-\/1) = phdos(lc)*(1/(exp(bt*om)-\/1.0d0))}}
+\DoxyCodeLine{193 \textcolor{comment}{!   end if}}
+\DoxyCodeLine{194 \textcolor{comment}{!end do}}
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196 \textcolor{comment}{!call pzgemm ('N','N',nps,n,n,dw*uno/(2.0d0*pi),ltmp,1,1,desctmp,lexp,1,1,descexp,zero,sfct,1,1,descsfct)}}
+\DoxyCodeLine{197 }
+\DoxyCodeLine{198 }
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 \textcolor{comment}{!!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~STRUCTURE FACTOR\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{201 \textcolor{comment}{!!                    int dom /2pi F(om) [1+n(om)] exp[-\/i*om*(t-\/t')]}}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203 \textcolor{comment}{!ltmp=zero}}
+\DoxyCodeLine{204 \textcolor{comment}{!do lc = 1, lldwc}}
+\DoxyCodeLine{205 \textcolor{comment}{!   lic=(lc-\/1)*nps+1    }}
+\DoxyCodeLine{206 \textcolor{comment}{!   om = -\/wm+(vc(lc)-\/1)*dw}}
+\DoxyCodeLine{207 \textcolor{comment}{!   if (om.ne.0.d0) then}}
+\DoxyCodeLine{208 \textcolor{comment}{!   ltmp(:,lic:lic+nps-\/1) = phdos(lc)*(1.0d0+1.0d0/(exp(bt*om)-\/1.0d0))}}
+\DoxyCodeLine{209 \textcolor{comment}{!   end if}}
+\DoxyCodeLine{210 \textcolor{comment}{!end do}}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212 \textcolor{comment}{!call pzgemm ('N','N',nps,n,n,dw*uno/(2.0d0*pi),ltmp,1,1,desctmp,lexp,1,1,descexp,zero,sfctp,1,1,descsfctp)}}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214 \textcolor{comment}{!!\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# RETARDED \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# }}
+\DoxyCodeLine{215 }
+\DoxyCodeLine{216 }
+\DoxyCodeLine{217 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{218     liw = (lw-\/1)*nps+1}
+\DoxyCodeLine{219     \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{220     \textcolor{keywordflow}{do} j=1,nps}
+\DoxyCodeLine{221         ld0r(i,liw+j-\/1) = -\/ci*0.5d0*phdos(lw)}
+\DoxyCodeLine{222 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{223 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{224 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{225 \textcolor{comment}{!!\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# RETARDED (single mode) \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# }}
+\DoxyCodeLine{226 }
+\DoxyCodeLine{227 \textcolor{comment}{!eta = 1.d-\/8}}
+\DoxyCodeLine{228 \textcolor{comment}{!do lw=1, lldwc}}
+\DoxyCodeLine{229 \textcolor{comment}{!   liw = (lw-\/1)*nps+1}}
+\DoxyCodeLine{230 \textcolor{comment}{!   om=-\/wm+2.d0*wm*(vw(lw)-\/1)/(npw-\/1)}}
+\DoxyCodeLine{231 \textcolor{comment}{!   ld0r(1:nps,liw:liw+nps-\/1) = 1.d0/(om-\/om0+ci*eta)}}
+\DoxyCodeLine{232 \textcolor{comment}{!end do}}
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235 \textcolor{comment}{!\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# LESSER \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#}}
+\DoxyCodeLine{236 }
+\DoxyCodeLine{237 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{238     liw = (lw-\/1)*nps+1}
+\DoxyCodeLine{239     om=-\/wm+2.d0*wm*(vw(lw)-\/1)/(npw-\/1)}
+\DoxyCodeLine{240     \textcolor{keywordflow}{if} (om.ne.0.d0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{241     dalpha=(1.0d0/(exp(bt*om)-\/1.0d0))}
+\DoxyCodeLine{242     ld0l(1:nps,liw:liw+nps-\/1)=dalpha*(ld0r(1:nps,liw:liw+nps-\/1)-\/transpose(conjg(ld0r(1:nps,liw:liw+nps-\/1))))}
+\DoxyCodeLine{243 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{244 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{245 }
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247 \textcolor{comment}{!\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# GREATER \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# }}
+\DoxyCodeLine{248 }
+\DoxyCodeLine{249 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{250     liw = (lw-\/1)*nps+1}
+\DoxyCodeLine{251     om=-\/wm+2.d0*wm*(vw(lw)-\/1)/(npw-\/1)}
+\DoxyCodeLine{252     \textcolor{keywordflow}{if} (om.ne.0.d0) \textcolor{keywordflow}{then}    }
+\DoxyCodeLine{253     dalpha=(1.0d0+1.0d0/(exp(bt*om)-\/1.0d0))}
+\DoxyCodeLine{254     ld0g(1:nps,liw:liw+nps-\/1)=dalpha*(ld0r(1:nps,liw:liw+nps-\/1)-\/transpose(conjg(ld0r(1:nps,liw:liw+nps-\/1))))}
+\DoxyCodeLine{255 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{256 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{257 }
+\DoxyCodeLine{258 }
+\DoxyCodeLine{259 }
+
+\end{DoxyCode}

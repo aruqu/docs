@@ -22,40 +22,40 @@ subroutine \mbox{\hyperlink{wsndb_8f90_a263a9f32c8b337b80d3bb7ebeb3bc847}{wsndb}
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & wm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & WM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & vw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & VW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & v \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & V \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lnegl \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+N\+E\+GL \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lnegg \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+N\+E\+GG \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & desc \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+SC \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsl \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SL \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsg \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SG \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsr \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SR \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -65,3 +65,106 @@ subroutine \mbox{\hyperlink{wsndb_8f90_a263a9f32c8b337b80d3bb7ebeb3bc847}{wsndb}
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 63 of file wsndb.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{63     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{64     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{65 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{66     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = dacos(-\/1.0d0)       \textcolor{comment}{! Pi greco}}
+\DoxyCodeLine{67     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{68     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{69     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{70 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{71     \textcolor{keywordtype}{integer} :: nps,npw}
+\DoxyCodeLine{72     \textcolor{keywordtype}{double precision} :: wm}
+\DoxyCodeLine{73     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: vw,desc}
+\DoxyCodeLine{74     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension (:,:)} :: v}
+\DoxyCodeLine{75     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegl}
+\DoxyCodeLine{76     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegg}
+\DoxyCodeLine{77 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{78     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsl}
+\DoxyCodeLine{79     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsg}
+\DoxyCodeLine{80     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsr}
+\DoxyCodeLine{81 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{82     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol,rsrc,csrc}
+\DoxyCodeLine{83 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{84     \textcolor{keywordtype}{integer} :: n,i,j,lw,liw,mb,nb,lldc,lldr,lldwc,numroc}
+\DoxyCodeLine{85     \textcolor{keywordtype}{double precision} :: t,dt,tm}
+\DoxyCodeLine{86     \textcolor{keywordtype}{double complex} :: zalpha}
+\DoxyCodeLine{87     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(nps,nps)} :: intg, tmp,pol}
+\DoxyCodeLine{88     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: ltmpl, ltmpg, ltmp}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{91 nprocs=nprow*npcol}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 mb = desc(5)}
+\DoxyCodeLine{94 nb = desc(6)}
+\DoxyCodeLine{95 n=nps*npw}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 lldr=numroc(nps,mb,myrow,0,1)}
+\DoxyCodeLine{98 lldc=numroc(n,nb,mycol,0,nprocs)}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 lldwc=numroc(npw,1,mycol,0,nprocs)}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 \textcolor{keyword}{allocate}(ltmpl(lldr,lldc),ltmpg(lldr,lldc),ltmp(lldr,lldc))}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{keyword}{call }\mbox{\hyperlink{fourierwt_8f90_a233f3212e076010b60b1e0d1d14b7f1b}{fourierwt}}(context,nps,npw,wm,1,lnegl,desc,ltmpl)}
+\DoxyCodeLine{105 \textcolor{keyword}{call }\mbox{\hyperlink{fourierwt_8f90_a233f3212e076010b60b1e0d1d14b7f1b}{fourierwt}}(context,nps,npw,wm,1,lnegg,desc,ltmpg)}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!LESSER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{110     liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{111 \textcolor{comment}{!Polarization diagram}}
+\DoxyCodeLine{112     pol(:,:)=ltmpl(:,liw:liw+nps-\/1)*conjg(ltmpg(:,liw:liw+nps-\/1))}
+\DoxyCodeLine{113     tmp=matmul(v,matmul(pol,v))}
+\DoxyCodeLine{114 \textcolor{comment}{!Self energy}}
+\DoxyCodeLine{115     lsl(:,liw:liw+nps-\/1)=lsl(:,liw:liw+nps-\/1)-\/ltmpl(:,liw:liw+nps-\/1)*tmp}
+\DoxyCodeLine{116 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!GREATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{121     liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{122 \textcolor{comment}{!Polarization diagram}}
+\DoxyCodeLine{123     pol(:,:)=ltmpg(:,liw:liw+nps-\/1)*conjg(ltmpl(:,liw:liw+nps-\/1))}
+\DoxyCodeLine{124     tmp=matmul(v,matmul(pol,v))}
+\DoxyCodeLine{125 \textcolor{comment}{!Self energy}}
+\DoxyCodeLine{126     lsg(:,liw:liw+nps-\/1)=lsg(:,liw:liw+nps-\/1)-\/ltmpg(:,liw:liw+nps-\/1)*tmp}
+\DoxyCodeLine{127 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!RETARDED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{130 ltmp=zero}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 tm=pi*(npw-\/1)/(2.d0*wm)}
+\DoxyCodeLine{133 dt=pi/wm}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{136     liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{137     t=-\/tm+(vw(lw)-\/1)*dt}
+\DoxyCodeLine{138 \textcolor{comment}{!Self energy}}
+\DoxyCodeLine{139     \textcolor{keywordflow}{if} (t.ge.0.d0.and.t<dt) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{140         ltmp(:,liw:liw+nps-\/1)=0.5d0*(lsg(:,liw:liw+nps-\/1)-\/lsl(:,liw:liw+nps-\/1))}
+\DoxyCodeLine{141     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (t>0.d0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{142         ltmp(:,liw:liw+nps-\/1)=(lsg(:,liw:liw+nps-\/1)-\/lsl(:,liw:liw+nps-\/1))}
+\DoxyCodeLine{143 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{144 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 ltmpl=zero}
+\DoxyCodeLine{147 \textcolor{keyword}{call }\mbox{\hyperlink{fourierwt_8f90_a233f3212e076010b60b1e0d1d14b7f1b}{fourierwt}}(context,nps,npw,wm,-\/1,ltmp,desc,ltmpl)}
+\DoxyCodeLine{148 lsr = lsr + ltmpl}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 ltmp=lsl}
+\DoxyCodeLine{151 lsl=zero}
+\DoxyCodeLine{152 \textcolor{keyword}{call }\mbox{\hyperlink{fourierwt_8f90_a233f3212e076010b60b1e0d1d14b7f1b}{fourierwt}}(context,nps,npw,wm,-\/1,ltmp,desc,lsl)}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154 ltmp=lsg}
+\DoxyCodeLine{155 lsg=zero}
+\DoxyCodeLine{156 \textcolor{keyword}{call }\mbox{\hyperlink{fourierwt_8f90_a233f3212e076010b60b1e0d1d14b7f1b}{fourierwt}}(context,nps,npw,wm,-\/1,ltmp,desc,lsg)}
+\DoxyCodeLine{157 }
+
+\end{DoxyCode}

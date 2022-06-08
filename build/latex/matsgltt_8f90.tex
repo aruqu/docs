@@ -22,25 +22,25 @@ subroutine \mbox{\hyperlink{matsgltt_8f90_a7b3e54175b2ed4738f6bbbab250569f6}{mat
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & w \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & W \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & bt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & BT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & s \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & mu \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & MU \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & stat \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+T\+AT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & g0mtt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & G0\+M\+TT \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -50,3 +50,41 @@ subroutine \mbox{\hyperlink{matsgltt_8f90_a7b3e54175b2ed4738f6bbbab250569f6}{mat
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 43 of file matsgltt.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{43     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{44     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{45 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{46     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{47 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{48     \textcolor{keywordtype}{integer} :: nps,stat}
+\DoxyCodeLine{49     \textcolor{keywordtype}{double precision} :: mu,bt}
+\DoxyCodeLine{50     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: w}
+\DoxyCodeLine{51     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: s}
+\DoxyCodeLine{52 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{53     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: g0mtt}
+\DoxyCodeLine{54 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{55     \textcolor{keywordtype}{integer} :: i,j,ip}
+\DoxyCodeLine{56     \textcolor{keywordtype}{double complex} :: zalpha}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 g0mtt=ci*0.d0}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!Matsubara Green's function!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{61 \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{62 \textcolor{keywordflow}{do} ip=1,nps}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{keywordflow}{do} j=1,nps}
+\DoxyCodeLine{65     zalpha=-\/stat*ci*(1.0d0/(exp(bt*(w(j)-\/mu))-\/1.0d0*stat))}
+\DoxyCodeLine{66     g0mtt(i,ip)=g0mtt(i,ip)+s(i,j)*zalpha*s(ip,j)}
+\DoxyCodeLine{67 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{keywordflow}{end do} }
+\DoxyCodeLine{70 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{71 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{72 }
+
+\end{DoxyCode}

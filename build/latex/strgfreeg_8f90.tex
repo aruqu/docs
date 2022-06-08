@@ -22,55 +22,55 @@ subroutine \mbox{\hyperlink{strgfreeg_8f90_a9decdfa7de85f1d3e437d7bbf079d16c}{st
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & tf \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & TF \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & w \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & W \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & s \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
 {\em \mbox{[}$\,$\mbox{]}} & U \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & bt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & BT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & mu \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & MU \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & stat \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+T\+AT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lnegl \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+N\+E\+GL \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descnegl \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+N\+E\+GL \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lnegg \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+N\+E\+GG \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descnegg \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+N\+E\+GG \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lg0l \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+G0L \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descg0l \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+G0L \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lg0g \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+G0G \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descg0g \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+G0G \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -80,3 +80,139 @@ subroutine \mbox{\hyperlink{strgfreeg_8f90_a9decdfa7de85f1d3e437d7bbf079d16c}{st
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 83 of file strgfreeg.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{83     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{84     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{85 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{86     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{87 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{88     \textcolor{keywordtype}{integer} :: nps,npt,stat}
+\DoxyCodeLine{89     \textcolor{keywordtype}{double precision} :: U,bt,mu,tf}
+\DoxyCodeLine{90     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: w}
+\DoxyCodeLine{91     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: s}
+\DoxyCodeLine{92 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{93     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descg0l}
+\DoxyCodeLine{94     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lg0l}
+\DoxyCodeLine{95     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descg0g}
+\DoxyCodeLine{96     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lg0g}
+\DoxyCodeLine{97     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descnegl}
+\DoxyCodeLine{98     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegl}
+\DoxyCodeLine{99     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descnegg}
+\DoxyCodeLine{100     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegg}
+\DoxyCodeLine{101 \textcolor{comment}{!Variables for grid query}}
+\DoxyCodeLine{102     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol,rsrc,csrc}
+\DoxyCodeLine{103 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{104     \textcolor{keywordtype}{integer} :: i,j,ip,tt,ttp,lit,litp,ltt,lttp}
+\DoxyCodeLine{105     \textcolor{keywordtype}{integer} :: pr,pc,lldtr,lldtc}
+\DoxyCodeLine{106     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{107     \textcolor{keywordtype}{double precision} :: dt  }
+\DoxyCodeLine{108     \textcolor{keywordtype}{double precision} :: dalpha,popup,popdown}
+\DoxyCodeLine{109     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: desct}
+\DoxyCodeLine{110     \textcolor{keywordtype}{double complex} :: zalpha,zbeta}
+\DoxyCodeLine{111     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtt, vttp}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 context = descg0l(2)}
+\DoxyCodeLine{114 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 lldtr=numroc(npt,1,myrow,0,nprow)}
+\DoxyCodeLine{117 lldtc=numroc(npt,1,mycol,0,npcol)}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 \textcolor{keyword}{allocate}(vtt(lldtr),vttp(lldtc))}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 vtt=0}
+\DoxyCodeLine{122 vttp=0}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 i=0}
+\DoxyCodeLine{125 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{126 pr=mod(floor(real(tt-\/1)),nprow)}
+\DoxyCodeLine{127 \textcolor{keywordflow}{if}(myrow==pr) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{128 i=i+1}
+\DoxyCodeLine{129 vtt(i)=tt}
+\DoxyCodeLine{130 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{131 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 i=0}
+\DoxyCodeLine{134 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{135 pc=mod(floor(real(tt-\/1)),npcol)}
+\DoxyCodeLine{136 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{137 i=i+1}
+\DoxyCodeLine{138 vttp(i)=tt}
+\DoxyCodeLine{139 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{140 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 dt=tf/(npt-\/1)}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 \textcolor{keyword}{call }descinit(desct,npt,npt,1,1,0,0,context,lldtr,info)}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 \textcolor{keyword}{call }infog2l(npt,npt,desct,nprow,npcol,myrow,mycol,ltt,lttp,rsrc,csrc)}
+\DoxyCodeLine{147 lit=(ltt-\/1)*nps+1}
+\DoxyCodeLine{148 litp=(lttp-\/1)*nps+1}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 \textcolor{keywordflow}{if} (myrow==rsrc.and.mycol==csrc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{151     popup=aimag(lnegl(lit+1-\/1,litp+1-\/1))}
+\DoxyCodeLine{152     popdown=aimag(lnegl(lit+2-\/1,litp+2-\/1))}
+\DoxyCodeLine{153     \textcolor{keyword}{call }dgebs2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},1, 1,popup,1)}
+\DoxyCodeLine{154     \textcolor{keyword}{call }dgebs2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},1, 1,popdown,1)}
+\DoxyCodeLine{155 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (myrow/=rsrc.or.mycol/=csrc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{156     \textcolor{keyword}{call }dgebr2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},1, 1,popup,1,rsrc,csrc)}
+\DoxyCodeLine{157     \textcolor{keyword}{call }dgebr2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},1, 1,popdown,1,rsrc,csrc)}
+\DoxyCodeLine{158 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 lg0l=(0.d0,0.d0)}
+\DoxyCodeLine{162 lg0g=(0.d0,0.d0)}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!Lesser Green's function!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{165 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{166 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168 lit=(tt-\/1)*nps+1}
+\DoxyCodeLine{169 litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 dalpha=1.0d0}
+\DoxyCodeLine{172 \textcolor{keywordflow}{if} (vtt(tt)==vttp(ttp)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{173     dalpha=1.0d0}
+\DoxyCodeLine{174 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{175 lg0l(lit+1-\/1,litp+1-\/1)=lg0l(lit+1-\/1,litp+1-\/1)-\/stat*ci*exp(-\/ci*w(1)*dt*(vtt(tt)-\/vttp(ttp)))\&}
+\DoxyCodeLine{176                 \&*popup*(dalpha-\/popdown)\&}
+\DoxyCodeLine{177                 \&-\/stat*ci*exp(-\/ci*(w(1)+u)*dt*(vtt(tt)-\/vttp(ttp)))*popup*popdown}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179 lg0l(lit+2-\/1,litp+2-\/1)=lg0l(lit+2-\/1,litp+2-\/1)-\/stat*ci*exp(-\/ci*w(2)*dt*(vtt(tt)-\/vttp(ttp)))\&}
+\DoxyCodeLine{180                 \&*popdown*(dalpha-\/popup)\&}
+\DoxyCodeLine{181                 \&-\/stat*ci*exp(-\/ci*(w(2)+u)*dt*(vtt(tt)-\/vttp(ttp)))*popup*popdown}
+\DoxyCodeLine{182 \textcolor{keywordflow}{end do} }
+\DoxyCodeLine{183 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{184 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Greater Green's function!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{189 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{190 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192 lit=(tt-\/1)*nps+1}
+\DoxyCodeLine{193 litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{194 dalpha=1.0d0}
+\DoxyCodeLine{195 \textcolor{keywordflow}{if} (vtt(tt)==vttp(ttp)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{196     dalpha=1.0d0}
+\DoxyCodeLine{197 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{199 lg0g(lit+1-\/1,litp+1-\/1)=lg0g(lit+1-\/1,litp+1-\/1)-\/ci*exp(-\/ci*w(1)*dt*(vtt(tt)-\/vttp(ttp)))\&}
+\DoxyCodeLine{200                 \&*(dalpha-\/popup)*(dalpha-\/popdown)\&}
+\DoxyCodeLine{201                 \&-\/ci*exp(-\/ci*(w(1)+u)*dt*(vtt(tt)-\/vttp(ttp)))*popdown*(dalpha-\/popup)}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203 lg0g(lit+2-\/1,litp+2-\/1)=lg0g(lit+2-\/1,litp+2-\/1)-\/ci*exp(-\/ci*w(2)*dt*(vtt(tt)-\/vttp(ttp)))\&}
+\DoxyCodeLine{204                 \&*(dalpha-\/popup)*(dalpha-\/popdown)\&}
+\DoxyCodeLine{205                 \&-\/ci*exp(-\/ci*(w(2)+u)*dt*(vtt(tt)-\/vttp(ttp)))*popup*(dalpha-\/popdown)}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207 \textcolor{keywordflow}{end do} }
+\DoxyCodeLine{208 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{209 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{210 }
+
+\end{DoxyCode}

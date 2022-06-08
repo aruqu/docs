@@ -72,177 +72,2102 @@ subroutine \mbox{\hyperlink{namespacelib__gkba_aa24854daa37ad4ffd7722197c0c04118
 \doxysubsubsection{\texorpdfstring{chempot()}{chempot()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::chempot (\begin{DoxyParamCaption}\item[{integer}]{n,  }\item[{double precision, dimension(\+:)}]{w,  }\item[{double precision}]{bt,  }\item[{double precision}]{numpart,  }\item[{integer}]{stat,  }\item[{double precision}]{mu }\end{DoxyParamCaption})}
 
+
+
+Definition at line 734 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{734     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{735 \textcolor{comment}{!Input varibles}}
+\DoxyCodeLine{736     \textcolor{keywordtype}{integer} :: n,stat}
+\DoxyCodeLine{737     \textcolor{keywordtype}{double precision} :: bt}
+\DoxyCodeLine{738     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: w}
+\DoxyCodeLine{739 \textcolor{comment}{!Input/output variables}}
+\DoxyCodeLine{740     \textcolor{keywordtype}{double precision} :: numpart,mu}
+\DoxyCodeLine{741 \textcolor{comment}{!Dummy varibales}}
+\DoxyCodeLine{742     \textcolor{keywordtype}{integer} :: i,j,nsteps}
+\DoxyCodeLine{743     \textcolor{keywordtype}{double precision} :: tnpart, dmu}
+\DoxyCodeLine{744 }
+\DoxyCodeLine{745 mu=0.d0}
+\DoxyCodeLine{746 }
+\DoxyCodeLine{747 tnpart=1.0d10}
+\DoxyCodeLine{748 \textcolor{comment}{!Sets the initial chemical potential to be above the highest energy allowed}}
+\DoxyCodeLine{749     \textcolor{keywordflow}{if}(w(n)>0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{750         mu=2*w(n)}
+\DoxyCodeLine{751     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (w(n).le.0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{752         mu=2.d0}
+\DoxyCodeLine{753 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{754 }
+\DoxyCodeLine{755     dmu=1.d0}
+\DoxyCodeLine{756     nsteps=1}
+\DoxyCodeLine{757 }
+\DoxyCodeLine{758     \textcolor{keywordflow}{do} \textcolor{keywordflow}{while} ((abs(tnpart-\/numpart)>=1.0e-\/14.and.nsteps<500000))}
+\DoxyCodeLine{759 }
+\DoxyCodeLine{760         tnpart=0.0d0}
+\DoxyCodeLine{761         \textcolor{keywordflow}{do} i=1,n}
+\DoxyCodeLine{762             tnpart=tnpart+1.0d0/(exp(bt*(w(i)-\/mu))-\/1.d0*stat)}
+\DoxyCodeLine{763 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{764 }
+\DoxyCodeLine{765         \textcolor{keywordflow}{if} (tnpart>numpart) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{766             mu=mu-\/dmu}
+\DoxyCodeLine{767         \textcolor{keywordflow}{else} }
+\DoxyCodeLine{768             mu=mu+dmu}
+\DoxyCodeLine{769             dmu=dmu*0.5d0}
+\DoxyCodeLine{770 \textcolor{keywordflow}{        end if}}
+\DoxyCodeLine{771         }
+\DoxyCodeLine{772         \textcolor{keywordflow}{if} (tnpart<0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{773             mu=0.5d0*(w(int(numpart)+1)+w(int(numpart)))}
+\DoxyCodeLine{774             dmu=dmu*0.5d0}
+\DoxyCodeLine{775             print*, \textcolor{stringliteral}{'Particle number is negative npart= '}, tnpart, \textcolor{stringliteral}{'nsteps = '}, nsteps}
+\DoxyCodeLine{776 \textcolor{keywordflow}{        end if}}
+\DoxyCodeLine{777             nsteps=nsteps+1}
+\DoxyCodeLine{778         tnpart=0.0d0}
+\DoxyCodeLine{779         \textcolor{keywordflow}{do} i=1,n}
+\DoxyCodeLine{780             tnpart=tnpart+1.0d0/(exp(bt*(w(i)-\/mu))-\/1.d0*stat)}
+\DoxyCodeLine{781 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{782 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{783         tnpart=0.0d0}
+\DoxyCodeLine{784         \textcolor{keywordflow}{do} i=1,n}
+\DoxyCodeLine{785             tnpart=tnpart+1.0d0/(exp(bt*(w(i)-\/mu))-\/1.d0*stat)}
+\DoxyCodeLine{786 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{787 }
+\DoxyCodeLine{788 \textcolor{comment}{!Computes the total number of particles with mu}}
+\DoxyCodeLine{789 numpart=0.d0}
+\DoxyCodeLine{790 \textcolor{keywordflow}{do} i=1,n}
+\DoxyCodeLine{791     numpart=numpart+1.0d0/(exp(bt*(w(i)-\/mu))-\/1.d0*stat)}
+\DoxyCodeLine{792 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{793 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_afc536797c4d32d7f711eb92b9507ae7f}\label{namespacelib__gkba_afc536797c4d32d7f711eb92b9507ae7f}} 
 \index{lib\_gkba@{lib\_gkba}!collint@{collint}}
 \index{collint@{collint}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{collint()}{collint()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::collint (\begin{DoxyParamCaption}\item[{double precision}]{dt,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{ro,  }\item[{integer}]{t,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{y,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfl,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfg,  }\item[{double complex, dimension(\+:,\+:)}]{cint }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1618 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1618     \textcolor{keywordtype}{use }omp\_lib}
+\DoxyCodeLine{1619     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1620 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{1621     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{1622     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{1623     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{1624 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{1625     \textcolor{keywordtype}{integer} :: t}
+\DoxyCodeLine{1626     \textcolor{keywordtype}{double precision} :: dt}
+\DoxyCodeLine{1627     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: ro}
+\DoxyCodeLine{1628     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: y}
+\DoxyCodeLine{1629 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{1630     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfl}
+\DoxyCodeLine{1631     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfg}
+\DoxyCodeLine{1632     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}   :: cint}
+\DoxyCodeLine{1633     }
+\DoxyCodeLine{1634 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{1635     \textcolor{keywordtype}{integer} :: ns,i,j,tt}
+\DoxyCodeLine{1636     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{1637     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: tmp1,tmp2,tmpy}
+\DoxyCodeLine{1638     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtmp1,vtmp2}
+\DoxyCodeLine{1639 }
+\DoxyCodeLine{1640 }
+\DoxyCodeLine{1641 d=shape(ro(1,:,:))}
+\DoxyCodeLine{1642 cint=zero}
+\DoxyCodeLine{1643 \textcolor{keyword}{allocate}(tmp1(d(1),d(2)),tmp2(d(1),d(2)),tmpy(d(1),d(2)))}
+\DoxyCodeLine{1644 }
+\DoxyCodeLine{1645 tmp2=zero}
+\DoxyCodeLine{1646 tmp1=zero}
+\DoxyCodeLine{1647 }
+\DoxyCodeLine{1648 }
+\DoxyCodeLine{1649 \textcolor{comment}{! do tt=1,t}}
+\DoxyCodeLine{1650 \textcolor{comment}{!   tmpy=matmul(ro(tt,:,:),conjg(transpose(y(tt,:,:))))}}
+\DoxyCodeLine{1651 \textcolor{comment}{!   tmp1=ci*matmul(slfg(tt,:,:),tmpy(:,:))-\/ci*matmul(slfl(tt,:,:),tmpy(:,:))+\&}}
+\DoxyCodeLine{1652 \textcolor{comment}{!   \&ci*matmul(slfl(tt,:,:),conjg(transpose(y(tt,:,:))))}}
+\DoxyCodeLine{1653 \textcolor{comment}{!   tmp2=tmp2+tmp1}}
+\DoxyCodeLine{1654 \textcolor{comment}{! end do}}
+\DoxyCodeLine{1655 }
+\DoxyCodeLine{1656 }
+\DoxyCodeLine{1657 \textcolor{keywordflow}{if}(t==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{1658     \textcolor{comment}{!do tt=1,t  }}
+\DoxyCodeLine{1659         \textcolor{comment}{!tmpy=matmul(ro(tt,:,:),conjg(transpose(y(tt,:,:))))}}
+\DoxyCodeLine{1660         \textcolor{comment}{!tmp1=ci*matmul(slfg(tt,:,:),tmpy(:,:))-\/ci*matmul(slfl(tt,:,:),tmpy(:,:))+\&}}
+\DoxyCodeLine{1661         \textcolor{comment}{!\&ci*matmul(slfl(tt,:,:),conjg(transpose(y(tt,:,:))))}}
+\DoxyCodeLine{1662         tmp2=zero}
+\DoxyCodeLine{1663         \textcolor{comment}{!end do}}
+\DoxyCodeLine{1664 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (t==2) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{1665     \textcolor{keywordflow}{do} tt=1,t   }
+\DoxyCodeLine{1666         tmpy=matmul(ro(tt,:,:),conjg(transpose(y(tt,:,:))))}
+\DoxyCodeLine{1667         tmp1=ci*matmul(slfg(tt,:,:),tmpy(:,:))-\/ci*matmul(slfl(tt,:,:),tmpy(:,:))+\&}
+\DoxyCodeLine{1668         \&ci*matmul(slfl(tt,:,:),conjg(transpose(y(tt,:,:))))}
+\DoxyCodeLine{1669         tmp2=tmp2+0.5d0*tmp1    }
+\DoxyCodeLine{1670 \textcolor{keywordflow}{    end do}  }
+\DoxyCodeLine{1671 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (t>1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{1672     \textcolor{comment}{!\$omp parallel}}
+\DoxyCodeLine{1673     \textcolor{comment}{!\$omp do reduction(+:tmp2) private(tmpy,tmp1)}}
+\DoxyCodeLine{1674     \textcolor{keywordflow}{do} tt=2,t-\/1 }
+\DoxyCodeLine{1675         tmpy=matmul(ro(tt,:,:),conjg(transpose(y(tt,:,:))))}
+\DoxyCodeLine{1676         tmp1=ci*matmul(slfg(tt,:,:),tmpy(:,:))-\/ci*matmul(slfl(tt,:,:),tmpy(:,:))+\&}
+\DoxyCodeLine{1677         \&ci*matmul(slfl(tt,:,:),conjg(transpose(y(tt,:,:))))}
+\DoxyCodeLine{1678         tmp2=tmp2+tmp1  }
+\DoxyCodeLine{1679 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{1680     \textcolor{comment}{!\$omp end do}}
+\DoxyCodeLine{1681     \textcolor{keywordflow}{if}(t==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{1682     print*, \textcolor{stringliteral}{"num of threads"}, omp\_get\_num\_threads()}
+\DoxyCodeLine{1683 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{1684     \textcolor{comment}{!\$omp end parallel}}
+\DoxyCodeLine{1685     tmpy=matmul(ro(1,:,:),conjg(transpose(y(1,:,:))))}
+\DoxyCodeLine{1686     tmp1=ci*matmul(slfg(1,:,:),tmpy(:,:))-\/ci*matmul(slfl(1,:,:),tmpy(:,:))+\&}
+\DoxyCodeLine{1687     \&ci*matmul(slfl(1,:,:),conjg(transpose(y(1,:,:))))}
+\DoxyCodeLine{1688     tmp2=tmp2+0.5*tmp1}
+\DoxyCodeLine{1689 }
+\DoxyCodeLine{1690     tmpy=matmul(ro(t,:,:),conjg(transpose(y(t,:,:))))}
+\DoxyCodeLine{1691     tmp1=ci*matmul(slfg(t,:,:),tmpy(:,:))-\/ci*matmul(slfl(t,:,:),tmpy(:,:))+\&}
+\DoxyCodeLine{1692     \&ci*matmul(slfl(t,:,:),conjg(transpose(y(t,:,:))))}
+\DoxyCodeLine{1693     tmp2=tmp2+0.5*tmp1  }
+\DoxyCodeLine{1694     }
+\DoxyCodeLine{1695 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{1696 }
+\DoxyCodeLine{1697 }
+\DoxyCodeLine{1698 }
+\DoxyCodeLine{1699 cint = dt*(tmp2+conjg(transpose(tmp2))) }
+\DoxyCodeLine{1700 }
+\DoxyCodeLine{1701 \textcolor{keyword}{deallocate}(tmp1,tmp2,tmpy)}
+\DoxyCodeLine{1702 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_aa24854daa37ad4ffd7722197c0c04118}\label{namespacelib__gkba_aa24854daa37ad4ffd7722197c0c04118}} 
 \index{lib\_gkba@{lib\_gkba}!collintextra@{collintextra}}
 \index{collintextra@{collintextra}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{collintextra()}{collintextra()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::collintextra (\begin{DoxyParamCaption}\item[{double precision}]{dt,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{ro,  }\item[{integer}]{t,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{y,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfl,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfg,  }\item[{double complex, dimension(\+:,\+:)}]{cint }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1984 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1984     }
+\DoxyCodeLine{1985     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1986 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{1987     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{1988     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{1989     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{1990 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{1991     \textcolor{keywordtype}{integer} :: t}
+\DoxyCodeLine{1992     \textcolor{keywordtype}{double precision} :: dt}
+\DoxyCodeLine{1993     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: ro}
+\DoxyCodeLine{1994     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: y}
+\DoxyCodeLine{1995 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{1996     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfl}
+\DoxyCodeLine{1997     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfg}
+\DoxyCodeLine{1998     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}   :: cint}
+\DoxyCodeLine{1999     }
+\DoxyCodeLine{2000 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{2001     \textcolor{keywordtype}{integer} :: ns,i,j,tt}
+\DoxyCodeLine{2002     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{2003     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: tmp1,tmp2,tmpy}
+\DoxyCodeLine{2004     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtmp1,vtmp2}
+\DoxyCodeLine{2005 }
+\DoxyCodeLine{2006 }
+\DoxyCodeLine{2007 d=shape(ro(1,:,:))}
+\DoxyCodeLine{2008 cint=zero}
+\DoxyCodeLine{2009 \textcolor{keyword}{allocate}(tmp1(d(1),d(2)),tmp2(d(1),d(2)),tmpy(d(1),d(2)))}
+\DoxyCodeLine{2010 }
+\DoxyCodeLine{2011 tmp2=zero}
+\DoxyCodeLine{2012 tmp1=zero}
+\DoxyCodeLine{2013 }
+\DoxyCodeLine{2014 tt=t}
+\DoxyCodeLine{2015  }
+\DoxyCodeLine{2016     tmpy=matmul(ro(tt,:,:),conjg(transpose(y(tt,:,:))))}
+\DoxyCodeLine{2017     tmp1=ci*matmul(slfg(tt,:,:),tmpy(:,:))-\/ci*matmul(slfl(tt,:,:),tmpy(:,:))+\&}
+\DoxyCodeLine{2018     \&ci*matmul(slfl(tt,:,:),conjg(transpose(y(tt,:,:))))}
+\DoxyCodeLine{2019     tmp2=tmp2+tmp1}
+\DoxyCodeLine{2020 }
+\DoxyCodeLine{2021 }
+\DoxyCodeLine{2022 }
+\DoxyCodeLine{2023 }
+\DoxyCodeLine{2024 cint = dt*(tmp2+conjg(transpose(tmp2))) }
+\DoxyCodeLine{2025 }
+\DoxyCodeLine{2026 \textcolor{keyword}{deallocate}(tmp1,tmp2,tmpy)}
+\DoxyCodeLine{2027 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_a04c6198a824b90a6cf884ecf329de3a9}\label{namespacelib__gkba_a04c6198a824b90a6cf884ecf329de3a9}} 
 \index{lib\_gkba@{lib\_gkba}!coupmatrix@{coupmatrix}}
 \index{coupmatrix@{coupmatrix}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{coupmatrix()}{coupmatrix()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::coupmatrix (\begin{DoxyParamCaption}\item[{integer}]{npx,  }\item[{integer, dimension(\+:)}]{lds,  }\item[{double precision, dimension(\+:,\+:)}]{gamma }\end{DoxyParamCaption})}
 
+
+
+Definition at line 690 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{690     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{691 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{692     \textcolor{keywordtype}{integer} :: npx}
+\DoxyCodeLine{693     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)} :: lds}
+\DoxyCodeLine{694 \textcolor{comment}{!Input/output variables}}
+\DoxyCodeLine{695     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: gamma}
+\DoxyCodeLine{696 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{697     \textcolor{keywordtype}{integer} :: i,j}
+\DoxyCodeLine{698 }
+\DoxyCodeLine{699 gamma=0.0d0}
+\DoxyCodeLine{700 }
+\DoxyCodeLine{701 \textcolor{comment}{!do i=1, size(lds)}}
+\DoxyCodeLine{702 \textcolor{comment}{!up}}
+\DoxyCodeLine{703     \textcolor{comment}{!gamma(lds(i),lds(i)) = 1.0d0}}
+\DoxyCodeLine{704 }
+\DoxyCodeLine{705     \textcolor{comment}{!end do}}
+\DoxyCodeLine{706 }
+\DoxyCodeLine{707 \textcolor{keywordflow}{do} i=1, \textcolor{keyword}{size}(lds)}
+\DoxyCodeLine{708     \textcolor{keywordflow}{do} j=1, \textcolor{keyword}{size}(lds)}
+\DoxyCodeLine{709 }
+\DoxyCodeLine{710     gamma(lds(i),lds(j)) = 1.0d0}
+\DoxyCodeLine{711     gamma(lds(j),lds(i)) = 1.0d0}
+\DoxyCodeLine{712     }
+\DoxyCodeLine{713 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{714 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{715 }
+\DoxyCodeLine{716 }
+\DoxyCodeLine{717 }
+\DoxyCodeLine{718 \textcolor{comment}{!down       }}
+\DoxyCodeLine{719 \textcolor{comment}{!   gamma(npx+i,npx+i) = 1.0d0}}
+\DoxyCodeLine{720 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_a1777a1e5a4bbb9a01223cfce974ff791}\label{namespacelib__gkba_a1777a1e5a4bbb9a01223cfce974ff791}} 
 \index{lib\_gkba@{lib\_gkba}!current@{current}}
 \index{current@{current}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{current()}{current()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::current (\begin{DoxyParamCaption}\item[{double complex, dimension(\+:,\+:)}]{cint,  }\item[{double complex}]{clead }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1948 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1948     }
+\DoxyCodeLine{1949     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1950 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{1951     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{1952     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{1953     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{1954 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{1955     \textcolor{keywordtype}{double complex} :: clead}
+\DoxyCodeLine{1956     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: cint}
+\DoxyCodeLine{1957     }
+\DoxyCodeLine{1958 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{1959     \textcolor{keywordtype}{integer} :: ns,i,j,tt}
+\DoxyCodeLine{1960     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{1961     \textcolor{keywordtype}{double complex} :: tmp}
+\DoxyCodeLine{1962     }
+\DoxyCodeLine{1963     }
+\DoxyCodeLine{1964 }
+\DoxyCodeLine{1965 d=shape(cint)}
+\DoxyCodeLine{1966 ns=d(1)}
+\DoxyCodeLine{1967 }
+\DoxyCodeLine{1968 tmp = zero}
+\DoxyCodeLine{1969 }
+\DoxyCodeLine{1970 \textcolor{keywordflow}{do} i=1, ns}
+\DoxyCodeLine{1971     tmp = tmp+cint(i,i)}
+\DoxyCodeLine{1972 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1973 }
+\DoxyCodeLine{1974 clead=tmp}
+\DoxyCodeLine{1975 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_a316f7da9e50d2d4639ce683c24d41a79}\label{namespacelib__gkba_a316f7da9e50d2d4639ce683c24d41a79}} 
 \index{lib\_gkba@{lib\_gkba}!diaghe@{diaghe}}
 \index{diaghe@{diaghe}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{diaghe()}{diaghe()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::diaghe (\begin{DoxyParamCaption}\item[{double complex, dimension(\+:,\+:)}]{a,  }\item[{double precision, dimension(\+:)}]{w,  }\item[{double complex, dimension(\+:,\+:)}]{s,  }\item[{integer}]{prnt,  }\item[{character($\ast$)}]{suffix }\end{DoxyParamCaption})}
 
+
+
+Definition at line 933 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{933     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{934 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{935     \textcolor{keywordtype}{character(*)} :: suffix}
+\DoxyCodeLine{936     \textcolor{keywordtype}{integer} :: prnt}
+\DoxyCodeLine{937     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: a}
+\DoxyCodeLine{938 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{939     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: w}
+\DoxyCodeLine{940     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: s}
+\DoxyCodeLine{941 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{942     \textcolor{keywordtype}{double precision} :: dalpha}
+\DoxyCodeLine{943     \textcolor{keywordtype}{integer} :: i,j,ns}
+\DoxyCodeLine{944     \textcolor{keywordtype}{integer} :: info1,info2,lwork,lrwork,liwork}
+\DoxyCodeLine{945     \textcolor{keywordtype}{integer} , \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{946     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: iwork}
+\DoxyCodeLine{947     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: work}
+\DoxyCodeLine{948     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: rwork}
+\DoxyCodeLine{949 }
+\DoxyCodeLine{950 }
+\DoxyCodeLine{951 d=shape(a)}
+\DoxyCodeLine{952 ns=d(1)}
+\DoxyCodeLine{953 }
+\DoxyCodeLine{954 s=a}
+\DoxyCodeLine{955 w=0.d0}
+\DoxyCodeLine{956 }
+\DoxyCodeLine{957 \textcolor{keyword}{allocate} (work(1),rwork(1),iwork(1))}
+\DoxyCodeLine{958 work=0.d0}
+\DoxyCodeLine{959 iwork=0}
+\DoxyCodeLine{960 }
+\DoxyCodeLine{961 \textcolor{keyword}{call }zheevd(\textcolor{stringliteral}{'V'},\textcolor{stringliteral}{'U'},ns,s,ns,w,work,-\/1,rwork,-\/1,iwork,-\/1,info1)}
+\DoxyCodeLine{962 }
+\DoxyCodeLine{963 lwork=max(1,int(work(1)))}
+\DoxyCodeLine{964 lrwork=max(1,int(rwork(1)))}
+\DoxyCodeLine{965 liwork=max(1,int(iwork(1)))}
+\DoxyCodeLine{966 }
+\DoxyCodeLine{967 s=a}
+\DoxyCodeLine{968 \textcolor{keyword}{deallocate}(work,rwork,iwork)}
+\DoxyCodeLine{969 }
+\DoxyCodeLine{970 }
+\DoxyCodeLine{971 }
+\DoxyCodeLine{972 \textcolor{keywordflow}{if} (info1==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{973     w=0.0d0}
+\DoxyCodeLine{974     \textcolor{keyword}{allocate}(work(lwork),rwork(lrwork),iwork(liwork))}
+\DoxyCodeLine{975     \textcolor{keyword}{call }zheevd(\textcolor{stringliteral}{'V'},\textcolor{stringliteral}{'U'},ns,s,ns,w,work,lwork,rwork,lrwork,iwork,liwork,info2)}
+\DoxyCodeLine{976     \textcolor{keyword}{deallocate}(work)}
+\DoxyCodeLine{977 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (info1/=0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{978     \textcolor{keyword}{write}(*,*) \textcolor{stringliteral}{'ERROR 1, info1=  '}, info1}
+\DoxyCodeLine{979         stop}
+\DoxyCodeLine{980 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{981 }
+\DoxyCodeLine{982 \textcolor{keywordflow}{if} (info2/=0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{983     \textcolor{keyword}{write}(*,*) \textcolor{stringliteral}{'ERROR 2, info2= '}, info2}
+\DoxyCodeLine{984     stop}
+\DoxyCodeLine{985 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{986 }
+\DoxyCodeLine{987 \textcolor{comment}{!Print eigenvalues}}
+\DoxyCodeLine{988 \textcolor{keywordflow}{if} (prnt==1) \textcolor{keywordflow}{then} }
+\DoxyCodeLine{989     \textcolor{keyword}{open} (unit=22,file=\textcolor{stringliteral}{'eval'}//trim(suffix)//\textcolor{stringliteral}{'.dat'}, status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{990     \textcolor{keywordflow}{do} i=1, ns}
+\DoxyCodeLine{991         \textcolor{keyword}{write}(22,*) w(i)}
+\DoxyCodeLine{992 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{993         \textcolor{keyword}{close}(22)}
+\DoxyCodeLine{994 }
+\DoxyCodeLine{995 \textcolor{comment}{!Print eigenvectors}}
+\DoxyCodeLine{996 \textcolor{keyword}{open}(unit=22,file=\textcolor{stringliteral}{'evec'}//trim(suffix)//\textcolor{stringliteral}{'.dat'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{997     \textcolor{keywordflow}{do} i=1,ns}
+\DoxyCodeLine{998     \textcolor{keywordflow}{do} j=1,ns}
+\DoxyCodeLine{999         \textcolor{keyword}{write}(22,*) s(i,j)}
+\DoxyCodeLine{1000 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{1001 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{1002 \textcolor{keyword}{close}(22)       }
+\DoxyCodeLine{1003 }
+\DoxyCodeLine{1004 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{1005 }
+\DoxyCodeLine{1006 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_a30ac65784a80127699268c98a9ab2cc6}\label{namespacelib__gkba_a30ac65784a80127699268c98a9ab2cc6}} 
 \index{lib\_gkba@{lib\_gkba}!diagsy@{diagsy}}
 \index{diagsy@{diagsy}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{diagsy()}{diagsy()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::diagsy (\begin{DoxyParamCaption}\item[{double precision, dimension(\+:,\+:)}]{a,  }\item[{double precision, dimension(\+:)}]{w,  }\item[{double precision, dimension(\+:,\+:)}]{s,  }\item[{integer}]{prnt,  }\item[{character($\ast$)}]{suffix }\end{DoxyParamCaption})}
 
+
+
+Definition at line 850 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{850     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{851 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{852     \textcolor{keywordtype}{character(*)} :: suffix}
+\DoxyCodeLine{853     \textcolor{keywordtype}{integer} :: prnt}
+\DoxyCodeLine{854     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: a}
+\DoxyCodeLine{855 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{856     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: w}
+\DoxyCodeLine{857     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: s}
+\DoxyCodeLine{858 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{859     \textcolor{keywordtype}{double precision} :: dalpha}
+\DoxyCodeLine{860     \textcolor{keywordtype}{integer} :: i,j,nps}
+\DoxyCodeLine{861     \textcolor{keywordtype}{integer} :: info1,info2,dwork,diwork}
+\DoxyCodeLine{862     \textcolor{keywordtype}{integer} , \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{863     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: iwork}
+\DoxyCodeLine{864     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: work}
+\DoxyCodeLine{865 }
+\DoxyCodeLine{866 }
+\DoxyCodeLine{867 d=shape(a)}
+\DoxyCodeLine{868 nps=d(1)}
+\DoxyCodeLine{869 }
+\DoxyCodeLine{870 s=a}
+\DoxyCodeLine{871 w=0.d0}
+\DoxyCodeLine{872 }
+\DoxyCodeLine{873 \textcolor{keyword}{allocate} (work(1),iwork(1))}
+\DoxyCodeLine{874 work=0.d0}
+\DoxyCodeLine{875 iwork=0}
+\DoxyCodeLine{876 }
+\DoxyCodeLine{877 \textcolor{keyword}{call }dsyevd(\textcolor{stringliteral}{'V'},\textcolor{stringliteral}{'U'},nps,s,nps,w,work,-\/1,iwork,-\/1,info1)}
+\DoxyCodeLine{878 }
+\DoxyCodeLine{879 dwork=max(1,int(work(1)))}
+\DoxyCodeLine{880 diwork=max(1,int(iwork(1)))}
+\DoxyCodeLine{881 }
+\DoxyCodeLine{882 s=a}
+\DoxyCodeLine{883 \textcolor{keyword}{deallocate}(work,iwork)}
+\DoxyCodeLine{884 }
+\DoxyCodeLine{885 }
+\DoxyCodeLine{886 }
+\DoxyCodeLine{887 \textcolor{keywordflow}{if} (info1==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{888     w=0.0d0}
+\DoxyCodeLine{889     \textcolor{keyword}{allocate}(work(dwork),iwork(diwork))}
+\DoxyCodeLine{890     \textcolor{keyword}{call }dsyevd(\textcolor{stringliteral}{'V'},\textcolor{stringliteral}{'U'},nps,s,nps,w,work,dwork,iwork,diwork,info2)}
+\DoxyCodeLine{891     \textcolor{keyword}{deallocate}(work)}
+\DoxyCodeLine{892 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (info1/=0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{893     \textcolor{keyword}{write}(*,*) \textcolor{stringliteral}{'ERROR 1, info1=  '}, info1}
+\DoxyCodeLine{894         stop}
+\DoxyCodeLine{895 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{896 }
+\DoxyCodeLine{897 \textcolor{keywordflow}{if} (info2/=0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{898     \textcolor{keyword}{write}(*,*) \textcolor{stringliteral}{'ERROR 2, info2= '}, info2}
+\DoxyCodeLine{899     stop}
+\DoxyCodeLine{900 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{901 }
+\DoxyCodeLine{902 \textcolor{comment}{!Print eigenvalues}}
+\DoxyCodeLine{903 \textcolor{keywordflow}{if} (prnt==1) \textcolor{keywordflow}{then} }
+\DoxyCodeLine{904     \textcolor{keyword}{open} (unit=22,file=\textcolor{stringliteral}{'eval'}//trim(suffix)//\textcolor{stringliteral}{'.dat'}, status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{905     \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{906         \textcolor{keyword}{write}(22,*) w(i)}
+\DoxyCodeLine{907 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{908         \textcolor{keyword}{close}(22)}
+\DoxyCodeLine{909 }
+\DoxyCodeLine{910 \textcolor{comment}{!Print eigenvectors}}
+\DoxyCodeLine{911 \textcolor{keyword}{open}(unit=22,file=\textcolor{stringliteral}{'evec'}//trim(suffix)//\textcolor{stringliteral}{'.dat'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{912     \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{913     \textcolor{keywordflow}{do} j=1,nps}
+\DoxyCodeLine{914         \textcolor{keyword}{write}(22,*) s(i,j)}
+\DoxyCodeLine{915 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{916 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{917 \textcolor{keyword}{close}(22)       }
+\DoxyCodeLine{918 }
+\DoxyCodeLine{919 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{920 }
+\DoxyCodeLine{921 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_a61fbf22ccb3d359b0ed889461cc4f90b}\label{namespacelib__gkba_a61fbf22ccb3d359b0ed889461cc4f90b}} 
 \index{lib\_gkba@{lib\_gkba}!embgkba@{embgkba}}
 \index{embgkba@{embgkba}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{embgkba()}{embgkba()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::embgkba (\begin{DoxyParamCaption}\item[{double precision}]{dt,  }\item[{integer}]{nt,  }\item[{integer}]{ns,  }\item[{double precision}]{beta,  }\item[{double precision}]{mu,  }\item[{double precision}]{gc,  }\item[{double precision, dimension(\+:,\+:)}]{gamma,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfl,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfg }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1433 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1433     }
+\DoxyCodeLine{1434     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1435 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{1436     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{1437     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{1438     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{1439     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = acos(-\/1.d0)     }
+\DoxyCodeLine{1440     }
+\DoxyCodeLine{1441 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{1442     \textcolor{keywordtype}{integer} :: nt}
+\DoxyCodeLine{1443     \textcolor{keywordtype}{double precision} :: dt, beta, mu, gc}
+\DoxyCodeLine{1444     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: gamma}
+\DoxyCodeLine{1445     }
+\DoxyCodeLine{1446 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{1447     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfl}
+\DoxyCodeLine{1448     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfg}
+\DoxyCodeLine{1449 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{1450     \textcolor{keywordtype}{integer} :: ns,i,j,tt, npeps, ntt}
+\DoxyCodeLine{1451     \textcolor{keywordtype}{double precision} :: epsmin, epsmax, deps, eps, tau}
+\DoxyCodeLine{1452     \textcolor{keywordtype}{double complex} ::  tmp}
+\DoxyCodeLine{1453     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtmp1,vtmp2}
+\DoxyCodeLine{1454 }
+\DoxyCodeLine{1455 }
+\DoxyCodeLine{1456 \textcolor{keyword}{allocate}(vtmp1(nt+1))}
+\DoxyCodeLine{1457 \textcolor{keyword}{allocate}(vtmp2(nt+1))}
+\DoxyCodeLine{1458 }
+\DoxyCodeLine{1459 \textcolor{comment}{! ntt=2.0d0*(nt-\/1)*10}}
+\DoxyCodeLine{1460 \textcolor{comment}{! deps = 2*pi/(dt*(ntt))}}
+\DoxyCodeLine{1461 \textcolor{comment}{! epsmin = -\/0.5*deps*ntt}}
+\DoxyCodeLine{1462 \textcolor{comment}{! epsmax = 0.5*deps*ntt}}
+\DoxyCodeLine{1463 }
+\DoxyCodeLine{1464 ntt=2.0d0*(nt-\/1)}
+\DoxyCodeLine{1465 deps = 2*pi/(dt*(ntt)) }
+\DoxyCodeLine{1466 epsmin = -\/0.5*deps*ntt}
+\DoxyCodeLine{1467 epsmax = 0.5*deps*ntt}
+\DoxyCodeLine{1468 }
+\DoxyCodeLine{1469 }
+\DoxyCodeLine{1470 slfl=zero}
+\DoxyCodeLine{1471 slfg=zero}
+\DoxyCodeLine{1472 }
+\DoxyCodeLine{1473 vtmp1(:)=zero}
+\DoxyCodeLine{1474 vtmp2(:)=zero}
+\DoxyCodeLine{1475 \textcolor{comment}{! ! lesser}}
+\DoxyCodeLine{1476 \textcolor{keywordflow}{do} tt=1,nt+1}
+\DoxyCodeLine{1477 }
+\DoxyCodeLine{1478     tau=dt*(tt-\/1)}
+\DoxyCodeLine{1479     tmp=zero}
+\DoxyCodeLine{1480     eps=epsmin}
+\DoxyCodeLine{1481     \textcolor{keywordflow}{do} npeps=1, ntt+1}
+\DoxyCodeLine{1482         tmp=tmp+0.5d0*deps/pi*\mbox{\hyperlink{fermi_8f90_a5735b27ace8339bbd7293f003036db74}{fermi}}(beta*(eps-\/mu))*exp(-\/ci*(eps)*tau)}
+\DoxyCodeLine{1483         eps=eps+deps}
+\DoxyCodeLine{1484 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{1485 }
+\DoxyCodeLine{1486     vtmp1(tt)=tmp}
+\DoxyCodeLine{1487 }
+\DoxyCodeLine{1488 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1489 }
+\DoxyCodeLine{1490 }
+\DoxyCodeLine{1491 }
+\DoxyCodeLine{1492 \textcolor{keywordflow}{do} tt=1,nt+1}
+\DoxyCodeLine{1493     slfl(tt,1:ns,1:ns)=gc*gc*ci*vtmp1(tt)*gamma(1:ns,1:ns)}
+\DoxyCodeLine{1494 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1495 }
+\DoxyCodeLine{1496 }
+\DoxyCodeLine{1497 \textcolor{comment}{! greater}}
+\DoxyCodeLine{1498 \textcolor{keywordflow}{do} tt=1,nt+1}
+\DoxyCodeLine{1499 }
+\DoxyCodeLine{1500     tau=dt*(tt-\/1)}
+\DoxyCodeLine{1501     tmp=zero}
+\DoxyCodeLine{1502     eps=epsmin}
+\DoxyCodeLine{1503     \textcolor{keywordflow}{do} npeps=1, ntt+1}
+\DoxyCodeLine{1504         tmp=tmp+0.5d0*deps/pi*(1.0d0-\/\mbox{\hyperlink{fermi_8f90_a5735b27ace8339bbd7293f003036db74}{fermi}}(beta*(eps-\/mu)))*exp(-\/ci*(eps)*tau)}
+\DoxyCodeLine{1505         eps=eps+deps}
+\DoxyCodeLine{1506 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{1507 }
+\DoxyCodeLine{1508     vtmp2(tt)=tmp}
+\DoxyCodeLine{1509 }
+\DoxyCodeLine{1510 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1511 }
+\DoxyCodeLine{1512 }
+\DoxyCodeLine{1513 \textcolor{keywordflow}{do} tt=1,nt+1}
+\DoxyCodeLine{1514     slfg(tt,1:ns,1:ns)=-\/gc*gc*ci*vtmp2(tt)*gamma(1:ns,1:ns)}
+\DoxyCodeLine{1515 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1516 }
+\DoxyCodeLine{1517  \textcolor{keyword}{deallocate}(vtmp1,vtmp2)}
+\DoxyCodeLine{1518 }
+\DoxyCodeLine{1519 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_ab95bfaeaedf999d5e7d02e9af292a80a}\label{namespacelib__gkba_ab95bfaeaedf999d5e7d02e9af292a80a}} 
 \index{lib\_gkba@{lib\_gkba}!euler@{euler}}
 \index{euler@{euler}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{euler()}{euler()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::euler (\begin{DoxyParamCaption}\item[{double precision}]{dt,  }\item[{double complex, dimension(\+:,\+:)}]{ham,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{ro,  }\item[{integer}]{t,  }\item[{double complex, dimension(\+:,\+:)}]{cint }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1199 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1199     }
+\DoxyCodeLine{1200     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1201 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{1202     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{1203     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{1204     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{1205 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{1206     \textcolor{keywordtype}{integer} :: t}
+\DoxyCodeLine{1207     \textcolor{keywordtype}{double precision} :: dt}
+\DoxyCodeLine{1208     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: ham}
+\DoxyCodeLine{1209     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: ro}
+\DoxyCodeLine{1210     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: cint}
+\DoxyCodeLine{1211 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{1212     \textcolor{keywordtype}{integer} :: ns,i,j,tt}
+\DoxyCodeLine{1213     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{1214 }
+\DoxyCodeLine{1215 d=shape(ham)}
+\DoxyCodeLine{1216 ns=d(1)}
+\DoxyCodeLine{1217 }
+\DoxyCodeLine{1218 ro(t+1,:,:)=ro(t,:,:)-\/dt*ci*(matmul(ham(:,:),ro(t,:,:))-\/matmul(ro(t,:,:),ham(:,:)))-\/dt*cint(:,:)}
+\DoxyCodeLine{1219 }
+\DoxyCodeLine{1220 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_abd7974a404000643b4951c9ccb947e48}\label{namespacelib__gkba_abd7974a404000643b4951c9ccb947e48}} 
 \index{lib\_gkba@{lib\_gkba}!fermi@{fermi}}
 \index{fermi@{fermi}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{fermi()}{fermi()}}
 {\footnotesize\ttfamily double precision function lib\+\_\+gkba\+::fermi (\begin{DoxyParamCaption}\item[{double precision, intent(in)}]{eps }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1426 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1426    \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{intent(in)} :: eps \textcolor{comment}{! input}}
+\DoxyCodeLine{1427    \textcolor{keywordtype}{double precision}             :: nfermi \textcolor{comment}{! output}}
+\DoxyCodeLine{1428    nfermi = 1.0d0/(exp(eps)+1.0)}
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_ad98ace13baa815753ae9c42dc09f49da}\label{namespacelib__gkba_ad98ace13baa815753ae9c42dc09f49da}} 
 \index{lib\_gkba@{lib\_gkba}!hamchain@{hamchain}}
 \index{hamchain@{hamchain}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{hamchain()}{hamchain()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::hamchain (\begin{DoxyParamCaption}\item[{integer}]{npx,  }\item[{integer}]{bc,  }\item[{double precision, dimension(\+:)}]{onsite,  }\item[{double precision, dimension(\+:)}]{nnhop,  }\item[{double precision, dimension(\+:,\+:)}]{ham }\end{DoxyParamCaption})}
 
+
+
+Definition at line 636 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{636     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{637 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{638     \textcolor{keywordtype}{integer} :: npx, bc}
+\DoxyCodeLine{639     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: onsite}
+\DoxyCodeLine{640     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: nnhop}
+\DoxyCodeLine{641 \textcolor{comment}{!Input/output variables}}
+\DoxyCodeLine{642     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: ham}
+\DoxyCodeLine{643 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{644     \textcolor{keywordtype}{integer} :: i}
+\DoxyCodeLine{645 }
+\DoxyCodeLine{646 ham=0.0d0}
+\DoxyCodeLine{647 }
+\DoxyCodeLine{648 \textcolor{comment}{!Diagonal elements}}
+\DoxyCodeLine{649 \textcolor{keywordflow}{do} i=1, npx}
+\DoxyCodeLine{650 \textcolor{comment}{!up}}
+\DoxyCodeLine{651     ham(i,i) = onsite(i)}
+\DoxyCodeLine{652 \textcolor{comment}{!down       }}
+\DoxyCodeLine{653     ham(npx+i,npx+i) = onsite(i)}
+\DoxyCodeLine{654 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{655 }
+\DoxyCodeLine{656 \textcolor{comment}{!Nearest Neighbour}}
+\DoxyCodeLine{657 \textcolor{keywordflow}{do} i=1, npx-\/1}
+\DoxyCodeLine{658 \textcolor{comment}{!up}}
+\DoxyCodeLine{659     ham(i,i+1) = nnhop(i)}
+\DoxyCodeLine{660     ham(i+1,i) = nnhop(i)}
+\DoxyCodeLine{661 \textcolor{comment}{!down}}
+\DoxyCodeLine{662     ham(npx+i,npx+i+1) = nnhop(i)}
+\DoxyCodeLine{663     ham(npx+i+1,npx+i) = nnhop(i)}
+\DoxyCodeLine{664 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{665 }
+\DoxyCodeLine{666 }
+\DoxyCodeLine{667 \textcolor{comment}{!Periodic boundary conditions}}
+\DoxyCodeLine{668 }
+\DoxyCodeLine{669 \textcolor{keywordflow}{if}(bc==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{670 \textcolor{comment}{!up}}
+\DoxyCodeLine{671     ham(npx,1) = nnhop(1)}
+\DoxyCodeLine{672     ham(1,npx) = nnhop(1)}
+\DoxyCodeLine{673 \textcolor{comment}{!down}}
+\DoxyCodeLine{674     ham(npx+1,2*npx) = nnhop(1)}
+\DoxyCodeLine{675     ham(2*npx,npx+1) = nnhop(1)}
+\DoxyCodeLine{676 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{677 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_aae1e6c2d021083b02113fa35cf74b8ae}\label{namespacelib__gkba_aae1e6c2d021083b02113fa35cf74b8ae}} 
 \index{lib\_gkba@{lib\_gkba}!hameff@{hameff}}
 \index{hameff@{hameff}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{hameff()}{hameff()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::hameff (\begin{DoxyParamCaption}\item[{double precision, dimension(\+:,\+:)}]{ham,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{ro,  }\item[{integer}]{t,  }\item[{double precision, dimension(\+:,\+:)}]{v,  }\item[{double precision, dimension(\+:)}]{vdrive,  }\item[{double complex, dimension(\+:,\+:)}]{heff }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1074 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1074     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1075 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{1076     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{1077     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{1078     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{1079 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{1080     \textcolor{keywordtype}{integer} :: t}
+\DoxyCodeLine{1081     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: ham}
+\DoxyCodeLine{1082     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: ro}
+\DoxyCodeLine{1083     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: v}
+\DoxyCodeLine{1084     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: vdrive}
+\DoxyCodeLine{1085     }
+\DoxyCodeLine{1086 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{1087     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: heff}
+\DoxyCodeLine{1088 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{1089     \textcolor{keywordtype}{integer} :: ns,i,j,tt}
+\DoxyCodeLine{1090     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{1091     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: hrt,fck}
+\DoxyCodeLine{1092 }
+\DoxyCodeLine{1093 d=shape(ham)}
+\DoxyCodeLine{1094 ns=d(1)}
+\DoxyCodeLine{1095 }
+\DoxyCodeLine{1096 \textcolor{keyword}{allocate}(hrt(d(1),d(2)),fck(d(1),d(2)))}
+\DoxyCodeLine{1097 }
+\DoxyCodeLine{1098 \textcolor{comment}{!Calculating the Hartree term}}
+\DoxyCodeLine{1099 }
+\DoxyCodeLine{1100 hrt=zero}
+\DoxyCodeLine{1101 \textcolor{keywordflow}{do} i=1,ns}
+\DoxyCodeLine{1102 \textcolor{keywordflow}{do} j=1,ns}
+\DoxyCodeLine{1103     hrt(i,i)=hrt(i,i)+v(i,j)*ro(t,j,j)*vdrive(t)}
+\DoxyCodeLine{1104 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1105 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1106 }
+\DoxyCodeLine{1107 \textcolor{comment}{!Calculating the Fock term}}
+\DoxyCodeLine{1108 \textcolor{comment}{! É zero perché non c'é lo spin! (Nicola)}}
+\DoxyCodeLine{1109 \textcolor{comment}{!fck=zero}}
+\DoxyCodeLine{1110 \textcolor{comment}{!do i=1,ns}}
+\DoxyCodeLine{1111 \textcolor{comment}{!do j=1,ns}}
+\DoxyCodeLine{1112 \textcolor{comment}{!   fck(i,j)=-\/v(i,j)*ro(t,i,j)*vdrive(t)}}
+\DoxyCodeLine{1113 \textcolor{comment}{!end do}}
+\DoxyCodeLine{1114 \textcolor{comment}{!end do}}
+\DoxyCodeLine{1115 }
+\DoxyCodeLine{1116 \textcolor{comment}{!Calculating the effective Hamiltonian}}
+\DoxyCodeLine{1117 heff=uno*ham+hrt\textcolor{comment}{!+fck}}
+\DoxyCodeLine{1118 }
+\DoxyCodeLine{1119 }
+\DoxyCodeLine{1120 \textcolor{keyword}{deallocate}(hrt,fck)}
+\DoxyCodeLine{1121 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_aeae68dfe30d90e3c7b1facf961c6e2c9}\label{namespacelib__gkba_aeae68dfe30d90e3c7b1facf961c6e2c9}} 
 \index{lib\_gkba@{lib\_gkba}!hamspin@{hamspin}}
 \index{hamspin@{hamspin}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{hamspin()}{hamspin()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::hamspin (\begin{DoxyParamCaption}\item[{integer}]{npx,  }\item[{integer}]{bc,  }\item[{double precision, dimension(\+:)}]{onsite,  }\item[{double precision, dimension(\+:)}]{nnhop,  }\item[{double precision, dimension(\+:,\+:)}]{ham }\end{DoxyParamCaption})}
 
+
+
+Definition at line 583 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{583     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{584 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{585     \textcolor{keywordtype}{integer} :: npx, bc}
+\DoxyCodeLine{586     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: onsite}
+\DoxyCodeLine{587     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: nnhop}
+\DoxyCodeLine{588 \textcolor{comment}{!Input/output variables}}
+\DoxyCodeLine{589     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: ham}
+\DoxyCodeLine{590 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{591     \textcolor{keywordtype}{integer} :: i}
+\DoxyCodeLine{592 }
+\DoxyCodeLine{593 ham=0.0d0}
+\DoxyCodeLine{594 }
+\DoxyCodeLine{595 \textcolor{comment}{!Diagonal elements}}
+\DoxyCodeLine{596 \textcolor{keywordflow}{do} i=1, npx}
+\DoxyCodeLine{597 \textcolor{comment}{!up}}
+\DoxyCodeLine{598     ham(2*i-\/1,2*i-\/1) = onsite(i)}
+\DoxyCodeLine{599 \textcolor{comment}{!down       }}
+\DoxyCodeLine{600     ham(2*i,2*i) = onsite(i)}
+\DoxyCodeLine{601 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{602 }
+\DoxyCodeLine{603 \textcolor{comment}{!Nearest Neighbour}}
+\DoxyCodeLine{604 \textcolor{keywordflow}{do} i=1, npx-\/1}
+\DoxyCodeLine{605 \textcolor{comment}{!up}}
+\DoxyCodeLine{606     ham(2*i-\/1,2*i+1) = nnhop(i)}
+\DoxyCodeLine{607     ham(2*i+1,2*i-\/1) = nnhop(i)}
+\DoxyCodeLine{608 \textcolor{comment}{!down}}
+\DoxyCodeLine{609     ham(2*i,2*i+2) = nnhop(i)}
+\DoxyCodeLine{610     ham(2*i+2,2*i) = nnhop(i)}
+\DoxyCodeLine{611 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{612 }
+\DoxyCodeLine{613 }
+\DoxyCodeLine{614 \textcolor{comment}{!Periodic boundary conditions}}
+\DoxyCodeLine{615 }
+\DoxyCodeLine{616 \textcolor{keywordflow}{if}(bc==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{617 \textcolor{comment}{!up}}
+\DoxyCodeLine{618     ham(2*npx-\/1,2*1+1) = nnhop(1)}
+\DoxyCodeLine{619     ham(2*1+1,2*npx-\/1) = nnhop(1)}
+\DoxyCodeLine{620 \textcolor{comment}{!down}}
+\DoxyCodeLine{621     ham(2*npx,2*1+2) = nnhop(1)}
+\DoxyCodeLine{622     ham(2*1+2,2*npx) = nnhop(1)}
+\DoxyCodeLine{623 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{624 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_a1df91fa22ddc923dd84f615c2350b8a0}\label{namespacelib__gkba_a1df91fa22ddc923dd84f615c2350b8a0}} 
 \index{lib\_gkba@{lib\_gkba}!hfu@{hfu}}
 \index{hfu@{hfu}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{hfu()}{hfu()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::hfu (\begin{DoxyParamCaption}\item[{double precision}]{dt,  }\item[{double complex, dimension(\+:,\+:)}]{heff,  }\item[{integer}]{t,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{y }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1019 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1019     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1020 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{1021     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{1022     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{1023     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{1024 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{1025     \textcolor{keywordtype}{integer} :: t}
+\DoxyCodeLine{1026     \textcolor{keywordtype}{double precision} :: dt}
+\DoxyCodeLine{1027     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: heff}
+\DoxyCodeLine{1028 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{1029     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: y}
+\DoxyCodeLine{1030 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{1031     \textcolor{keywordtype}{integer} :: ns,i,j,tt}
+\DoxyCodeLine{1032     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{1033     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: U}
+\DoxyCodeLine{1034 }
+\DoxyCodeLine{1035 d=shape(heff)}
+\DoxyCodeLine{1036 ns=d(1)}
+\DoxyCodeLine{1037 }
+\DoxyCodeLine{1038 \textcolor{keyword}{allocate}(u(d(1),d(2)))}
+\DoxyCodeLine{1039 }
+\DoxyCodeLine{1040 }
+\DoxyCodeLine{1041 \textcolor{comment}{! !Calculating the infinitesimal evolution operator U}}
+\DoxyCodeLine{1042 \textcolor{comment}{! !suzuki trotter standard}}
+\DoxyCodeLine{1043 \textcolor{keyword}{call }\mbox{\hyperlink{matrexp__t_8f90_a10214dbcd6dc8c173753efac51a0ad59}{matrexp\_t}}(dt,heff,u) \textcolor{comment}{!matrexp o matrex\_t}}
+\DoxyCodeLine{1044 }
+\DoxyCodeLine{1045 y(t,:,:)=y(t,:,:)}
+\DoxyCodeLine{1046 }
+\DoxyCodeLine{1047 \textcolor{keywordflow}{do} tt=1,t}
+\DoxyCodeLine{1048     y(tt,:,:)=matmul(u,y(tt,:,:))}
+\DoxyCodeLine{1049 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1050 }
+\DoxyCodeLine{1051 \textcolor{comment}{! !suzuki trotter di ordine 2}}
+\DoxyCodeLine{1052 \textcolor{comment}{! call matrexp(dt/2,heff,U) !matrexp o matrex\_t}}
+\DoxyCodeLine{1053 \textcolor{comment}{!}}
+\DoxyCodeLine{1054 \textcolor{comment}{! y(t,:,:)=y(t,:,:)}}
+\DoxyCodeLine{1055 \textcolor{comment}{!}}
+\DoxyCodeLine{1056 \textcolor{comment}{! do tt=1,t}}
+\DoxyCodeLine{1057 \textcolor{comment}{!   y(tt,:,:)=matmul(matmul(U,y(tt,:,:)),U)}}
+\DoxyCodeLine{1058 \textcolor{comment}{! end do}}
+\DoxyCodeLine{1059 }
+\DoxyCodeLine{1060 y(t+1,:,:)=zero}
+\DoxyCodeLine{1061 }
+\DoxyCodeLine{1062 \textcolor{keywordflow}{do} i=1, ns}
+\DoxyCodeLine{1063     y(t+1,i,i)=uno}
+\DoxyCodeLine{1064 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1065 }
+\DoxyCodeLine{1066 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_aecac52b02400e43deb11b433369317b3}\label{namespacelib__gkba_aecac52b02400e43deb11b433369317b3}} 
 \index{lib\_gkba@{lib\_gkba}!initial@{initial}}
 \index{initial@{initial}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{initial()}{initial()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::initial (\begin{DoxyParamCaption}\item[{double precision, dimension(\+:)}]{ea,  }\item[{double precision}]{bt,  }\item[{double precision, dimension(\+:,\+:)}]{s,  }\item[{double precision}]{mu,  }\item[{integer}]{stat,  }\item[{double complex, dimension(\+:,\+:)}]{ro0 }\end{DoxyParamCaption})}
 
+
+
+Definition at line 808 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{808     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{809 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{810     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{811 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{812     \textcolor{keywordtype}{integer} :: stat}
+\DoxyCodeLine{813     \textcolor{keywordtype}{double precision} :: mu,bt}
+\DoxyCodeLine{814     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: ea}
+\DoxyCodeLine{815     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: s}
+\DoxyCodeLine{816 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{817     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: ro0}
+\DoxyCodeLine{818 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{819     \textcolor{keywordtype}{integer} :: i,j}
+\DoxyCodeLine{820     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{821     \textcolor{keywordtype}{double complex} :: alpha}
+\DoxyCodeLine{822     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} , \textcolor{keywordtype}{allocatable} :: rotmp}
+\DoxyCodeLine{823 }
+\DoxyCodeLine{824 d=shape(s)}
+\DoxyCodeLine{825 \textcolor{keyword}{allocate}(rotmp(d(1),d(2)))}
+\DoxyCodeLine{826 }
+\DoxyCodeLine{827 \textcolor{comment}{!Initial density matrix}}
+\DoxyCodeLine{828 rotmp=zero}
+\DoxyCodeLine{829 ro0=zero}
+\DoxyCodeLine{830 }
+\DoxyCodeLine{831 \textcolor{keywordflow}{do} i=1, d(1)}
+\DoxyCodeLine{832     rotmp(i,i)=1.0d0/(exp(bt*(ea(i)-\/mu))-\/stat)}
+\DoxyCodeLine{833 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{834 }
+\DoxyCodeLine{835 ro0=matmul(s,matmul(rotmp,transpose(s)))}
+\DoxyCodeLine{836 }
+\DoxyCodeLine{837 \textcolor{keyword}{deallocate}(rotmp)}
+\DoxyCodeLine{838 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_a9fffab8ecf631e618f4d37610fdae915}\label{namespacelib__gkba_a9fffab8ecf631e618f4d37610fdae915}} 
 \index{lib\_gkba@{lib\_gkba}!matrexp@{matrexp}}
 \index{matrexp@{matrexp}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{matrexp()}{matrexp()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::matrexp (\begin{DoxyParamCaption}\item[{double precision}]{alpha,  }\item[{double complex, dimension(\+:,\+:)}]{a,  }\item[{double complex, dimension(\+:,\+:)}]{mexp }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1132 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1132     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1133 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{1134     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{1135     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{1136     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{1137 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{1138     \textcolor{keywordtype}{double precision} :: alpha}
+\DoxyCodeLine{1139     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: a}
+\DoxyCodeLine{1140 \textcolor{comment}{!Output variables}}
+\DoxyCodeLine{1141     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: mexp}
+\DoxyCodeLine{1142 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{1143     \textcolor{keywordtype}{integer} :: i,j}
+\DoxyCodeLine{1144     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{1145     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: w}
+\DoxyCodeLine{1146     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: s}
+\DoxyCodeLine{1147     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: atmp}
+\DoxyCodeLine{1148 }
+\DoxyCodeLine{1149 d=shape(a)}
+\DoxyCodeLine{1150 }
+\DoxyCodeLine{1151 \textcolor{keyword}{allocate}(w(d(1)))}
+\DoxyCodeLine{1152 \textcolor{keyword}{allocate}(s(d(1),d(2)),atmp(d(1),d(2)))}
+\DoxyCodeLine{1153 }
+\DoxyCodeLine{1154 \textcolor{keyword}{call }\mbox{\hyperlink{diaghe_8f90_a2725f773e9de6eb90cabaac52f190d2b}{diaghe}}(a,w,s,0,\textcolor{stringliteral}{' '})}
+\DoxyCodeLine{1155 }
+\DoxyCodeLine{1156 atmp=zero}
+\DoxyCodeLine{1157 }
+\DoxyCodeLine{1158 \textcolor{keywordflow}{do} i=1,d(1)}
+\DoxyCodeLine{1159     atmp(i,i)=exp(-\/ci*alpha*w(i))   }
+\DoxyCodeLine{1160 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1161 }
+\DoxyCodeLine{1162 mexp=matmul(s,matmul(atmp,transpose(conjg(s))))}
+\DoxyCodeLine{1163 }
+\DoxyCodeLine{1164 \textcolor{keyword}{deallocate}(w,s,atmp)}
+\DoxyCodeLine{1165 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_a4eb6293bfccfb09a17d8ac1e1ae2b38b}\label{namespacelib__gkba_a4eb6293bfccfb09a17d8ac1e1ae2b38b}} 
 \index{lib\_gkba@{lib\_gkba}!matrexp\_t@{matrexp\_t}}
 \index{matrexp\_t@{matrexp\_t}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{matrexp\_t()}{matrexp\_t()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::matrexp\+\_\+t (\begin{DoxyParamCaption}\item[{double precision}]{alpha,  }\item[{double complex, dimension(\+:,\+:)}]{a,  }\item[{double complex, dimension(\+:,\+:)}]{mexp }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1893 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1893     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1894 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{1895     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{1896     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{1897     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{1898 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{1899     \textcolor{keywordtype}{double precision} :: alpha}
+\DoxyCodeLine{1900     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: a}
+\DoxyCodeLine{1901 \textcolor{comment}{!Output variables}}
+\DoxyCodeLine{1902     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: mexp}
+\DoxyCodeLine{1903 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{1904     \textcolor{keywordtype}{integer} :: i,j}
+\DoxyCodeLine{1905     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{1906     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: w}
+\DoxyCodeLine{1907     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: s,sold,snew}
+\DoxyCodeLine{1908     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: atmp}
+\DoxyCodeLine{1909 }
+\DoxyCodeLine{1910 d=shape(a)}
+\DoxyCodeLine{1911 }
+\DoxyCodeLine{1912 \textcolor{keyword}{allocate}(w(d(1)))}
+\DoxyCodeLine{1913 \textcolor{keyword}{allocate}(s(d(1),d(2)),atmp(d(1),d(2)))}
+\DoxyCodeLine{1914 \textcolor{keyword}{allocate}(sold(d(1),d(2)),snew(d(1),d(2)))}
+\DoxyCodeLine{1915 }
+\DoxyCodeLine{1916 }
+\DoxyCodeLine{1917 \textcolor{comment}{!call diaghe(a,w,s,0,' ') !a che serviva?}}
+\DoxyCodeLine{1918 }
+\DoxyCodeLine{1919 atmp=zero}
+\DoxyCodeLine{1920 }
+\DoxyCodeLine{1921 \textcolor{keywordflow}{do} i=1,d(1)}
+\DoxyCodeLine{1922     atmp(i,i)=1.0d0 }
+\DoxyCodeLine{1923 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1924 }
+\DoxyCodeLine{1925 sold=atmp}
+\DoxyCodeLine{1926 }
+\DoxyCodeLine{1927 \textcolor{keywordflow}{do} i=1,20}
+\DoxyCodeLine{1928     }
+\DoxyCodeLine{1929     snew=-\/ci*matmul(sold,a)*alpha/i}
+\DoxyCodeLine{1930     atmp=atmp+snew}
+\DoxyCodeLine{1931     sold=snew}
+\DoxyCodeLine{1932     }
+\DoxyCodeLine{1933 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1934 }
+\DoxyCodeLine{1935 }
+\DoxyCodeLine{1936 mexp=atmp}
+\DoxyCodeLine{1937 }
+\DoxyCodeLine{1938 \textcolor{keyword}{deallocate}(w,s,atmp,sold,snew)}
+\DoxyCodeLine{1939 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_a43bb5349f42e9c161e8a39e7408af1c9}\label{namespacelib__gkba_a43bb5349f42e9c161e8a39e7408af1c9}} 
 \index{lib\_gkba@{lib\_gkba}!momdist@{momdist}}
 \index{momdist@{momdist}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{momdist()}{momdist()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::momdist (\begin{DoxyParamCaption}\item[{integer}]{d,  }\item[{integer}]{npx,  }\item[{integer}]{npy,  }\item[{integer}]{t,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{y,  }\item[{double complex, dimension(\+:)}]{md }\end{DoxyParamCaption})}
 
+
+
+Definition at line 85 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{85     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{86 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{87     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = dacos(-\/1.0d0)       \textcolor{comment}{! Pi greco}}
+\DoxyCodeLine{88     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{89     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{90     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{91 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{92 \textcolor{comment}{!   character(*) :: filenameout}}
+\DoxyCodeLine{93     \textcolor{keywordtype}{integer} :: d,npx,npy,t}
+\DoxyCodeLine{94     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: y}
+\DoxyCodeLine{95 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{96     \textcolor{keywordtype}{integer} :: i,ix,iy,k,kkx,kky,nps}
+\DoxyCodeLine{97     \textcolor{keywordtype}{double precision} :: kx,ky}
+\DoxyCodeLine{98     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:)} :: md}
+\DoxyCodeLine{99     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: expk,ymom}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 \textcolor{keywordflow}{if} (d==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{102     nps=npx}
+\DoxyCodeLine{103 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (d==2) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{104     nps=npx*npy}
+\DoxyCodeLine{105 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 \textcolor{keyword}{allocate}(expk(nps,nps),ymom(nps,nps))}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 md=zero}
+\DoxyCodeLine{110 expk=zero}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 \textcolor{comment}{!Fourier transform in momentum}}
+\DoxyCodeLine{113 \textcolor{keywordflow}{if} (d==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{114     \textcolor{keywordflow}{do} k=1,npx}
+\DoxyCodeLine{115     \textcolor{keywordflow}{do} i=1,npx}
+\DoxyCodeLine{116         kx=-\/pi+2*pi*(k-\/1)/npx}
+\DoxyCodeLine{117         expk(k,i)=exp(-\/ci*kx*i)/sqrt(1.d0*nps)}
+\DoxyCodeLine{118 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{119 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{120 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (d==2) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{121     k=1}
+\DoxyCodeLine{122     \textcolor{keywordflow}{do} kky=1,npy}
+\DoxyCodeLine{123     \textcolor{keywordflow}{do} kkx=1,npx}
+\DoxyCodeLine{124     i=1}
+\DoxyCodeLine{125     kx=-\/pi+2*pi*(kkx-\/1)/npx}
+\DoxyCodeLine{126     ky=-\/pi+2*pi*(kky-\/1)/npy}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128     \textcolor{keywordflow}{do} iy=1,npy}
+\DoxyCodeLine{129     \textcolor{keywordflow}{do} ix=1,npx}
+\DoxyCodeLine{130         expk(k,i)=exp(-\/ci*(kx*ix+ky*iy))/(1.d0*nps)}
+\DoxyCodeLine{131     i=i+1}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{134 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136     k=k+1}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{139 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 ymom(:,:)=matmul(expk,matmul(y(t,1:nps,1:nps),conjg(transpose(expk))))}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{146     md(i)=ymom(i,i)}
+\DoxyCodeLine{147 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 \textcolor{keyword}{deallocate}(expk)}
+\DoxyCodeLine{150 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_aecc651c896c669643ed2cb59c29715d3}\label{namespacelib__gkba_aecc651c896c669643ed2cb59c29715d3}} 
 \index{lib\_gkba@{lib\_gkba}!rdm@{rdm}}
 \index{rdm@{rdm}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{rdm()}{rdm()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::rdm (\begin{DoxyParamCaption}\item[{integer}]{t,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{ain,  }\item[{character($\ast$)}]{filename }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1716 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1716     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1717     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: ain}
+\DoxyCodeLine{1718     \textcolor{keywordtype}{character(*)} :: filename}
+\DoxyCodeLine{1719     \textcolor{keywordtype}{integer} :: t,ns}
+\DoxyCodeLine{1720     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(3)} :: d}
+\DoxyCodeLine{1721     \textcolor{keywordtype}{integer} :: i,j,ierr}
+\DoxyCodeLine{1722 }
+\DoxyCodeLine{1723 d=shape(ain)}
+\DoxyCodeLine{1724 ns=d(2)}
+\DoxyCodeLine{1725 }
+\DoxyCodeLine{1726 \textcolor{keyword}{open}(unit=21,file=filename//\textcolor{stringliteral}{'\_r.dat'},access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{1727 \textcolor{keyword}{open}(unit=22,file=filename//\textcolor{stringliteral}{'\_i.dat'},access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{1728 \textcolor{keyword}{call }fseek(21, 0, 2, ierr)}
+\DoxyCodeLine{1729 \textcolor{keyword}{call }fseek(22, 0, 2, ierr)}
+\DoxyCodeLine{1730 }
+\DoxyCodeLine{1731 \textcolor{keywordflow}{do} i=1, ns}
+\DoxyCodeLine{1732 \textcolor{keywordflow}{do} j=1, ns}
+\DoxyCodeLine{1733     \textcolor{keyword}{write}(21,*) real(ain(t,i,j))}
+\DoxyCodeLine{1734     \textcolor{keyword}{write}(22,*) aimag(ain(t,i,j))}
+\DoxyCodeLine{1735 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1736 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1737 \textcolor{keyword}{close}(21)}
+\DoxyCodeLine{1738 \textcolor{keyword}{close}(22)}
+\DoxyCodeLine{1739 }
+\DoxyCodeLine{1740 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_ae2d5d30e6650869ed7c02f182519af22}\label{namespacelib__gkba_ae2d5d30e6650869ed7c02f182519af22}} 
 \index{lib\_gkba@{lib\_gkba}!rdm0@{rdm0}}
 \index{rdm0@{rdm0}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{rdm0()}{rdm0()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::rdm0 (\begin{DoxyParamCaption}\item[{double complex, dimension(\+:)}]{ain,  }\item[{character($\ast$)}]{filename }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1744 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1744     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1745     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:)} :: ain}
+\DoxyCodeLine{1746     \textcolor{keywordtype}{character(*)} :: filename}
+\DoxyCodeLine{1747     \textcolor{keywordtype}{integer} :: ns}
+\DoxyCodeLine{1748     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(1)} :: d}
+\DoxyCodeLine{1749     \textcolor{keywordtype}{integer} :: i,j,ierr}
+\DoxyCodeLine{1750 }
+\DoxyCodeLine{1751 d=shape(ain)}
+\DoxyCodeLine{1752 ns=d(1)}
+\DoxyCodeLine{1753 }
+\DoxyCodeLine{1754 \textcolor{keyword}{open}(unit=21,file=filename//\textcolor{stringliteral}{'\_r.dat'},access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{1755 \textcolor{keyword}{open}(unit=22,file=filename//\textcolor{stringliteral}{'\_i.dat'},access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{1756 \textcolor{keyword}{call }fseek(21, 0, 2, ierr)}
+\DoxyCodeLine{1757 \textcolor{keyword}{call }fseek(22, 0, 2, ierr)}
+\DoxyCodeLine{1758 }
+\DoxyCodeLine{1759 \textcolor{keywordflow}{do} i=1, ns}
+\DoxyCodeLine{1760     \textcolor{keyword}{write}(21,\textcolor{stringliteral}{'(F12.6)'}) real(ain(i))}
+\DoxyCodeLine{1761     \textcolor{keyword}{write}(22,\textcolor{stringliteral}{'(F12.6)'}) aimag(ain(i))}
+\DoxyCodeLine{1762 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1763 }
+\DoxyCodeLine{1764 \textcolor{keyword}{close}(21)}
+\DoxyCodeLine{1765 \textcolor{keyword}{close}(22)}
+\DoxyCodeLine{1766 }
+\DoxyCodeLine{1767 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_ae275b0983bca019fd1a685f85844e9a4}\label{namespacelib__gkba_ae275b0983bca019fd1a685f85844e9a4}} 
 \index{lib\_gkba@{lib\_gkba}!rdmc@{rdmc}}
 \index{rdmc@{rdmc}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{rdmc()}{rdmc()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::rdmc (\begin{DoxyParamCaption}\item[{integer}]{t,  }\item[{double complex, dimension(\+:)}]{ain,  }\item[{character($\ast$)}]{filename }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1772 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1772     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1773     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:)} :: ain}
+\DoxyCodeLine{1774     \textcolor{keywordtype}{character(*)} :: filename}
+\DoxyCodeLine{1775     \textcolor{keywordtype}{integer} :: t,ns}
+\DoxyCodeLine{1776     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(3)} :: d}
+\DoxyCodeLine{1777     \textcolor{keywordtype}{integer} :: i,j,ierr}
+\DoxyCodeLine{1778 }
+\DoxyCodeLine{1779 \textcolor{comment}{!d=shape(ain)}}
+\DoxyCodeLine{1780 }
+\DoxyCodeLine{1781 \textcolor{keyword}{open}(unit=23,file=filename//\textcolor{stringliteral}{'.dat'},access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{1782 \textcolor{comment}{!open(unit=24,file=filename//'\_i.dat',access = 'append',status='unknown')}}
+\DoxyCodeLine{1783 \textcolor{comment}{!call fseek(23, 0, 2, ierr)}}
+\DoxyCodeLine{1784 \textcolor{comment}{!call fseek(24, 0, 2, ierr)}}
+\DoxyCodeLine{1785 }
+\DoxyCodeLine{1786     \textcolor{keyword}{write}(23,\textcolor{stringliteral}{'(F12.6)'}) real(ain(t))}
+\DoxyCodeLine{1787     \textcolor{comment}{!write(24,*) Aimag(ain(t))}}
+\DoxyCodeLine{1788 }
+\DoxyCodeLine{1789 \textcolor{keyword}{close}(23)}
+\DoxyCodeLine{1790 \textcolor{comment}{!close(24)}}
+\DoxyCodeLine{1791 }
+\DoxyCodeLine{1792 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_af51698f40c171ab3ab146c0e7131febc}\label{namespacelib__gkba_af51698f40c171ab3ab146c0e7131febc}} 
 \index{lib\_gkba@{lib\_gkba}!rdmp@{rdmp}}
 \index{rdmp@{rdmp}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{rdmp()}{rdmp()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::rdmp (\begin{DoxyParamCaption}\item[{integer}]{t,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{ain,  }\item[{character($\ast$)}]{filename }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1797 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1797     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1798     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: ain}
+\DoxyCodeLine{1799     \textcolor{keywordtype}{character(*)} :: filename}
+\DoxyCodeLine{1800     \textcolor{keywordtype}{integer} :: t,ns}
+\DoxyCodeLine{1801     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(3)} :: d}
+\DoxyCodeLine{1802     \textcolor{keywordtype}{integer} :: i,j,ierr}
+\DoxyCodeLine{1803 }
+\DoxyCodeLine{1804 d=shape(ain)}
+\DoxyCodeLine{1805 ns=d(2)}
+\DoxyCodeLine{1806 }
+\DoxyCodeLine{1807 \textcolor{keyword}{open}(unit=21,file=filename//\textcolor{stringliteral}{'\_r.dat'},access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{1808 \textcolor{keyword}{open}(unit=22,file=filename//\textcolor{stringliteral}{'\_i.dat'},access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{1809 \textcolor{keyword}{call }fseek(21, 0, 2, ierr)}
+\DoxyCodeLine{1810 \textcolor{keyword}{call }fseek(22, 0, 2, ierr)}
+\DoxyCodeLine{1811 }
+\DoxyCodeLine{1812 \textcolor{keywordflow}{do} i=1, ns}
+\DoxyCodeLine{1813     \textcolor{keyword}{write}(21,\textcolor{stringliteral}{'(F12.6)'}) real(ain(t,i,i))}
+\DoxyCodeLine{1814     \textcolor{keyword}{write}(22,\textcolor{stringliteral}{'(F12.6)'}) aimag(ain(t,i,i))}
+\DoxyCodeLine{1815 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1816 \textcolor{keyword}{close}(21)}
+\DoxyCodeLine{1817 \textcolor{keyword}{close}(22)}
+\DoxyCodeLine{1818 }
+\DoxyCodeLine{1819 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_aa0c9c050091306f2cb622322499ea2d5}\label{namespacelib__gkba_aa0c9c050091306f2cb622322499ea2d5}} 
 \index{lib\_gkba@{lib\_gkba}!rdms@{rdms}}
 \index{rdms@{rdms}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{rdms()}{rdms()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::rdms (\begin{DoxyParamCaption}\item[{integer}]{t,  }\item[{double complex, dimension(\+:)}]{ain,  }\item[{character($\ast$)}]{filename }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1824 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1824     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1825     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:)} :: ain}
+\DoxyCodeLine{1826     \textcolor{keywordtype}{character(*)} :: filename}
+\DoxyCodeLine{1827     \textcolor{keywordtype}{integer} :: t,ns}
+\DoxyCodeLine{1828     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(3)} :: d}
+\DoxyCodeLine{1829     \textcolor{keywordtype}{integer} :: i,j,ierr}
+\DoxyCodeLine{1830 }
+\DoxyCodeLine{1831 \textcolor{comment}{!d=shape(ain)}}
+\DoxyCodeLine{1832 }
+\DoxyCodeLine{1833 \textcolor{keyword}{open}(unit=23,file=filename//\textcolor{stringliteral}{'\_r.dat'},access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{1834 \textcolor{keyword}{open}(unit=24,file=filename//\textcolor{stringliteral}{'\_i.dat'},access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{1835 \textcolor{comment}{!call fseek(23, 0, 2, ierr)}}
+\DoxyCodeLine{1836 \textcolor{comment}{!call fseek(24, 0, 2, ierr)}}
+\DoxyCodeLine{1837 }
+\DoxyCodeLine{1838     \textcolor{keyword}{write}(23,\textcolor{stringliteral}{'(F12.6)'}) real(ain(t))}
+\DoxyCodeLine{1839     \textcolor{keyword}{write}(24,\textcolor{stringliteral}{'(F12.6)'}) aimag(ain(t))}
+\DoxyCodeLine{1840 }
+\DoxyCodeLine{1841 \textcolor{keyword}{close}(23)}
+\DoxyCodeLine{1842 \textcolor{keyword}{close}(24)}
+\DoxyCodeLine{1843 }
+\DoxyCodeLine{1844 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_a3f373cca6d940b66e0fe4e7a454220ca}\label{namespacelib__gkba_a3f373cca6d940b66e0fe4e7a454220ca}} 
 \index{lib\_gkba@{lib\_gkba}!slfembtime@{slfembtime}}
 \index{slfembtime@{slfembtime}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{slfembtime()}{slfembtime()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::slfembtime (\begin{DoxyParamCaption}\item[{double precision}]{dt,  }\item[{integer}]{t,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfl\+\_\+emb,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfg\+\_\+emb,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfl,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfg }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1570 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1570     }
+\DoxyCodeLine{1571     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1572 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{1573     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{1574     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{1575     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{1576 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{1577     \textcolor{keywordtype}{integer} :: t}
+\DoxyCodeLine{1578     \textcolor{keywordtype}{double precision} :: dt}
+\DoxyCodeLine{1579     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfl}
+\DoxyCodeLine{1580     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfg}
+\DoxyCodeLine{1581 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{1582     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfl\_emb}
+\DoxyCodeLine{1583     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfg\_emb}
+\DoxyCodeLine{1584     }
+\DoxyCodeLine{1585 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{1586     \textcolor{keywordtype}{integer} :: ns,i,j,tt}
+\DoxyCodeLine{1587     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{1588     }
+\DoxyCodeLine{1589 }
+\DoxyCodeLine{1590 d=shape(slfl(1,:,:))}
+\DoxyCodeLine{1591 ns=d(1)}
+\DoxyCodeLine{1592 }
+\DoxyCodeLine{1593 slfl=zero}
+\DoxyCodeLine{1594 slfg=zero}
+\DoxyCodeLine{1595 }
+\DoxyCodeLine{1596 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!LESSER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1597 \textcolor{keywordflow}{do} tt=1,t}
+\DoxyCodeLine{1598     slfl(tt,1:ns,1:ns)=slfl\_emb(t-\/tt+1,1:ns,1:ns)}
+\DoxyCodeLine{1599 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1600 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1601 }
+\DoxyCodeLine{1602 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!GREATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1603 \textcolor{keywordflow}{do} tt=1,t}
+\DoxyCodeLine{1604     slfg(tt,1:ns,1:ns)=slfg\_emb(t-\/tt+1,1:ns,1:ns)}
+\DoxyCodeLine{1605 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1606 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1607 }
+\DoxyCodeLine{1608 }
+\DoxyCodeLine{1609 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_af680e1c8c1fc284e2489d6dd54276c7a}\label{namespacelib__gkba_af680e1c8c1fc284e2489d6dd54276c7a}} 
 \index{lib\_gkba@{lib\_gkba}!slfmbpemb@{slfmbpemb}}
 \index{slfmbpemb@{slfmbpemb}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{slfmbpemb()}{slfmbpemb()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::slfmbpemb (\begin{DoxyParamCaption}\item[{double precision}]{dt,  }\item[{integer}]{t,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfl\+\_\+emb,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfg\+\_\+emb,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfl,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfg }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1528 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1528     }
+\DoxyCodeLine{1529     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1530 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{1531     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{1532     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{1533     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{1534 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{1535     \textcolor{keywordtype}{integer} :: t}
+\DoxyCodeLine{1536     \textcolor{keywordtype}{double precision} :: dt}
+\DoxyCodeLine{1537     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfl}
+\DoxyCodeLine{1538     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfg}
+\DoxyCodeLine{1539 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{1540     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfl\_emb}
+\DoxyCodeLine{1541     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfg\_emb}
+\DoxyCodeLine{1542     }
+\DoxyCodeLine{1543 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{1544     \textcolor{keywordtype}{integer} :: ns,i,j,tt}
+\DoxyCodeLine{1545     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{1546     }
+\DoxyCodeLine{1547 }
+\DoxyCodeLine{1548 d=shape(slfl(1,:,:))}
+\DoxyCodeLine{1549 ns=d(1)}
+\DoxyCodeLine{1550 }
+\DoxyCodeLine{1551 }
+\DoxyCodeLine{1552 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!LESSER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1553 \textcolor{keywordflow}{do} tt=1,t}
+\DoxyCodeLine{1554     slfl(tt,1:ns,1:ns)=slfl(tt,1:ns,1:ns)+slfl\_emb(t-\/tt+1,1:ns,1:ns)}
+\DoxyCodeLine{1555 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1556 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1557 }
+\DoxyCodeLine{1558 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!GREATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1559 \textcolor{keywordflow}{do} tt=1,t}
+\DoxyCodeLine{1560     slfg(tt,1:ns,1:ns)=slfg(tt,1:ns,1:ns)+slfg\_emb(t-\/tt+1,1:ns,1:ns)}
+\DoxyCodeLine{1561 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1562 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1563 }
+\DoxyCodeLine{1564 }
+\DoxyCodeLine{1565 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_a63778c77d3ab3b86cddf94cc3ba7ae14}\label{namespacelib__gkba_a63778c77d3ab3b86cddf94cc3ba7ae14}} 
 \index{lib\_gkba@{lib\_gkba}!sndbgkba@{sndbgkba}}
 \index{sndbgkba@{sndbgkba}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{sndbgkba()}{sndbgkba()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::sndbgkba (\begin{DoxyParamCaption}\item[{double precision}]{dt,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{ro,  }\item[{integer}]{t,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{y,  }\item[{double precision, dimension(\+:,\+:)}]{v,  }\item[{double precision, dimension(\+:)}]{vdrive,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfl,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{slfg }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1308 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1308     \textcolor{keywordtype}{use }omp\_lib}
+\DoxyCodeLine{1309     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1310 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{1311     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{1312     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{1313     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{1314 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{1315     \textcolor{keywordtype}{integer} :: t}
+\DoxyCodeLine{1316     \textcolor{keywordtype}{double precision} :: dt}
+\DoxyCodeLine{1317     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: ro}
+\DoxyCodeLine{1318     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: v}
+\DoxyCodeLine{1319     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: vdrive}
+\DoxyCodeLine{1320     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: y}
+\DoxyCodeLine{1321 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{1322     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfl}
+\DoxyCodeLine{1323     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: slfg}
+\DoxyCodeLine{1324 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{1325     \textcolor{keywordtype}{integer} :: ns,i,j,tt,num}
+\DoxyCodeLine{1326     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{1327     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: tmp1,tmp2}
+\DoxyCodeLine{1328     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtmp1,vtmp2}
+\DoxyCodeLine{1329     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: gl}
+\DoxyCodeLine{1330     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: gg}
+\DoxyCodeLine{1331 }
+\DoxyCodeLine{1332 d=shape(v)}
+\DoxyCodeLine{1333 ns=d(1)}
+\DoxyCodeLine{1334 }
+\DoxyCodeLine{1335 slfl=zero}
+\DoxyCodeLine{1336 slfg=zero}
+\DoxyCodeLine{1337 }
+\DoxyCodeLine{1338 \textcolor{keyword}{allocate}(tmp1(d(1),d(2)),tmp2(d(1),d(2)),gl(d(1),d(2)),gg(d(1),d(2)))}
+\DoxyCodeLine{1339 }
+\DoxyCodeLine{1340 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!Direct term!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1341 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!LESSER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1342 \textcolor{comment}{!\$omp parallel }}
+\DoxyCodeLine{1343 \textcolor{comment}{!\$omp do private(tt,gl,gg,tmp1,tmp2)}}
+\DoxyCodeLine{1344 \textcolor{keywordflow}{do} tt=1,t}
+\DoxyCodeLine{1345     gl(1:ns,1:ns)=ci*matmul(y(tt,1:ns,1:ns),ro(tt,1:ns,1:ns))}
+\DoxyCodeLine{1346     gg(1:ns,1:ns)=ci*matmul(ro(tt,1:ns,1:ns),conjg(transpose(y(tt,1:ns,1:ns))))-\/ci*conjg(transpose(y(tt,1:ns,1:ns)))}
+\DoxyCodeLine{1347     tmp1(1:ns,1:ns)=(gl(1:ns,1:ns))*(transpose(gg(1:ns,1:ns))) }
+\DoxyCodeLine{1348     tmp2=matmul(v,matmul(tmp1,v))}
+\DoxyCodeLine{1349     slfl(tt,1:ns,1:ns)=gl(1:ns,1:ns)*tmp2(1:ns,1:ns)*vdrive(tt)*vdrive(t)\textcolor{comment}{!+slfl(tt,1:ns,1:ns)+}}
+\DoxyCodeLine{1350 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1351 \textcolor{comment}{!\$omp end do}}
+\DoxyCodeLine{1352 }
+\DoxyCodeLine{1353 \textcolor{keywordflow}{if}(t==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{1354 print*, \textcolor{stringliteral}{"num of threads"}, omp\_get\_num\_threads()}
+\DoxyCodeLine{1355 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{1356 \textcolor{comment}{!\$omp end parallel}}
+\DoxyCodeLine{1357 }
+\DoxyCodeLine{1358 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1359 }
+\DoxyCodeLine{1360 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!GREATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1361 \textcolor{comment}{!\$omp parallel do private(tt,gl,gg,tmp1,tmp2)}}
+\DoxyCodeLine{1362 \textcolor{keywordflow}{do} tt=1,t}
+\DoxyCodeLine{1363     gl(1:ns,1:ns)=ci*matmul(ro(tt,1:ns,1:ns),conjg(transpose(y(tt,1:ns,1:ns))))}
+\DoxyCodeLine{1364     gg(1:ns,1:ns)=ci*matmul(y(tt,1:ns,1:ns),ro(tt,1:ns,1:ns))-\/ci*y(tt,1:ns,1:ns)}
+\DoxyCodeLine{1365     tmp1(1:ns,1:ns)=gg(1:ns,1:ns)*(transpose(gl(1:ns,1:ns)))}
+\DoxyCodeLine{1366     tmp2=matmul(v,matmul(tmp1,v))}
+\DoxyCodeLine{1367     slfg(tt,1:ns,1:ns)=gg(1:ns,1:ns)*tmp2(1:ns,1:ns)*vdrive(tt)*vdrive(t)\textcolor{comment}{!+slfg(tt,1:ns,1:ns)}}
+\DoxyCodeLine{1368 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{1369 \textcolor{comment}{!\$omp end parallel do}}
+\DoxyCodeLine{1370 }
+\DoxyCodeLine{1371 }
+\DoxyCodeLine{1372 }
+\DoxyCodeLine{1373 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1374 \textcolor{comment}{!}}
+\DoxyCodeLine{1375 \textcolor{comment}{!  slfl(t,1:ns,1:ns)=2*0.5*slfl(t,1:ns,1:ns)}}
+\DoxyCodeLine{1376 \textcolor{comment}{!  slfg(t,1:ns,1:ns)=2*0.5*slfg(t,1:ns,1:ns)}}
+\DoxyCodeLine{1377 }
+\DoxyCodeLine{1378 }
+\DoxyCodeLine{1379 \textcolor{comment}{!deallocate(tmp1,tmp2,gg,gl)}}
+\DoxyCodeLine{1380 }
+\DoxyCodeLine{1381 \textcolor{comment}{!}}
+\DoxyCodeLine{1382 \textcolor{comment}{! allocate(vtmp1(d(1)),vtmp2(d(1)))}}
+\DoxyCodeLine{1383 }
+\DoxyCodeLine{1384 \textcolor{comment}{!}}
+\DoxyCodeLine{1385 \textcolor{comment}{! !!!!!!!!!!!!!!!!!!!!!!!!!Exchange term!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1386 \textcolor{comment}{!}}
+\DoxyCodeLine{1387 \textcolor{comment}{! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!LESSER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1388 \textcolor{comment}{! do tt=1,t}}
+\DoxyCodeLine{1389 \textcolor{comment}{!   gl(1:ns,1:ns)=ci*matmul(y(tt,1:ns,1:ns),ro(tt,1:ns,1:ns))}}
+\DoxyCodeLine{1390 \textcolor{comment}{!   gg(1:ns,1:ns)=ci*matmul(ro(tt,1:ns,1:ns),conjg(transpose(y(tt,1:ns,1:ns))))-\/conjg(transpose(y(tt,1:ns,1:ns)))}}
+\DoxyCodeLine{1391 \textcolor{comment}{!   do i=1,ns}}
+\DoxyCodeLine{1392 \textcolor{comment}{!   do j=1,ns}}
+\DoxyCodeLine{1393 \textcolor{comment}{! !!!!Il coniugato va per il prodotto scalare!!!!!!}}
+\DoxyCodeLine{1394 \textcolor{comment}{!   vtmp1 = conjg(gl(1:ns,j)*v(i,1:ns))}}
+\DoxyCodeLine{1395 \textcolor{comment}{!   vtmp2 = gl(i,1:ns)*v(1:ns,j)}}
+\DoxyCodeLine{1396 \textcolor{comment}{!   slfl(tt,i,j) = slfl(tt,i,j)-\/dot\_product(vtmp1,matmul(gg(:,:),vtmp2))}}
+\DoxyCodeLine{1397 \textcolor{comment}{!   end do}}
+\DoxyCodeLine{1398 \textcolor{comment}{!   end do}}
+\DoxyCodeLine{1399 \textcolor{comment}{! end do}}
+\DoxyCodeLine{1400 \textcolor{comment}{! ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1401 \textcolor{comment}{! !}}
+\DoxyCodeLine{1402 \textcolor{comment}{! ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!GREATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1403 \textcolor{comment}{! do tt=1,t}}
+\DoxyCodeLine{1404 \textcolor{comment}{!   gl(1:ns,1:ns)=ci*matmul(ro(tt,1:ns,1:ns),conjg(transpose(y(tt,1:ns,1:ns))))}}
+\DoxyCodeLine{1405 \textcolor{comment}{!   gg(1:ns,1:ns)=ci*matmul(y(tt,1:ns,1:ns),ro(tt,1:ns,1:ns))-\/y(tt,1:ns,1:ns)}}
+\DoxyCodeLine{1406 \textcolor{comment}{!   do i=1,ns}}
+\DoxyCodeLine{1407 \textcolor{comment}{!   do j=1,ns}}
+\DoxyCodeLine{1408 \textcolor{comment}{! !!!!Il coniugato va per il prodotto scalare!!!!!!}}
+\DoxyCodeLine{1409 \textcolor{comment}{!   vtmp1 = conjg(gg(1:ns,j)*v(i,1:ns))}}
+\DoxyCodeLine{1410 \textcolor{comment}{!   vtmp2 = gg(i,1:ns)*v(1:ns,j)}}
+\DoxyCodeLine{1411 \textcolor{comment}{!   slfl(tt,i,j) = slfl(tt,i,j)-\/dot\_product(vtmp1,matmul(gl(:,:),vtmp2))}}
+\DoxyCodeLine{1412 \textcolor{comment}{!   end do}}
+\DoxyCodeLine{1413 \textcolor{comment}{!   end do}}
+\DoxyCodeLine{1414 \textcolor{comment}{! end do}}
+\DoxyCodeLine{1415 \textcolor{comment}{! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{1416 \textcolor{comment}{!}}
+\DoxyCodeLine{1417 \textcolor{keyword}{deallocate}(tmp1,tmp2,gg,gl)}
+\DoxyCodeLine{1418 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_a5d65b67a9fbdf49f289b645a914c118a}\label{namespacelib__gkba_a5d65b67a9fbdf49f289b645a914c118a}} 
 \index{lib\_gkba@{lib\_gkba}!switch\_f@{switch\_f}}
 \index{switch\_f@{switch\_f}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{switch\_f()}{switch\_f()}}
 {\footnotesize\ttfamily double precision function lib\+\_\+gkba\+::switch\+\_\+f (\begin{DoxyParamCaption}\item[{double precision, intent(in)}]{t }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1172 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1172    \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{intent(in)} :: t \textcolor{comment}{! input}}
+\DoxyCodeLine{1173    \textcolor{keywordtype}{double precision}             :: f \textcolor{comment}{! output}}
+\DoxyCodeLine{1174    \textcolor{keywordtype}{double precision}             :: th, toff,rate, Bt, At \textcolor{comment}{! output}}
+\DoxyCodeLine{1175 }
+\DoxyCodeLine{1176 }
+\DoxyCodeLine{1177 }
+\DoxyCodeLine{1178    f = 1.0d0-\/1.0d0/(1.0d0+exp((t-\/25.0d0)/3.0))}
+\DoxyCodeLine{1179    }
+\DoxyCodeLine{1180 \textcolor{comment}{!}}
+\DoxyCodeLine{1181 \textcolor{comment}{!    toff=100.0d0}}
+\DoxyCodeLine{1182 \textcolor{comment}{!    th = 0.5d0*toff}}
+\DoxyCodeLine{1183 \textcolor{comment}{!    rate=th*0.5d0}}
+\DoxyCodeLine{1184 \textcolor{comment}{!    Bt = th/(rate*log(2.0d0))-\/0.5d0}}
+\DoxyCodeLine{1185 \textcolor{comment}{!    At = 0.5d0*log(2.0d0)*exp(2.0d0*Bt)}}
+\DoxyCodeLine{1186 \textcolor{comment}{!}}
+\DoxyCodeLine{1187 \textcolor{comment}{!    f=exp(-\/2d0*th*At*exp(Bt/((t/(2*th))-\/1.0d0))/(t))}}
+\DoxyCodeLine{1188 \textcolor{comment}{!}}
+\DoxyCodeLine{1189    }
+\DoxyCodeLine{1190    }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_ac1d73efe9e779b553d9a5d963ec9ab4e}\label{namespacelib__gkba_ac1d73efe9e779b553d9a5d963ec9ab4e}} 
 \index{lib\_gkba@{lib\_gkba}!tbham@{tbham}}
 \index{tbham@{tbham}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{tbham()}{tbham()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::tbham (\begin{DoxyParamCaption}\item[{integer}]{npx,  }\item[{integer}]{bc,  }\item[{double precision, dimension(\+:)}]{onsite,  }\item[{double precision, dimension(\+:)}]{nnhop,  }\item[{double precision, dimension(\+:,\+:)}]{ham }\end{DoxyParamCaption})}
 
+
+
+Definition at line 9 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{9     \textcolor{comment}{!use mpi}}
+\DoxyCodeLine{10     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{11 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{12     \textcolor{keywordtype}{integer} :: npx, bc}
+\DoxyCodeLine{13     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: onsite}
+\DoxyCodeLine{14     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: nnhop}
+\DoxyCodeLine{15 \textcolor{comment}{!Input/output variables}}
+\DoxyCodeLine{16     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: ham}
+\DoxyCodeLine{17 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{18     \textcolor{keywordtype}{integer} :: i}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 ham=0.0d0}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{comment}{!Diagonal elements}}
+\DoxyCodeLine{23 \textcolor{keywordflow}{do} i=1, npx}
+\DoxyCodeLine{24     ham(i,i) = onsite(i)}
+\DoxyCodeLine{25 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{comment}{!Nearest Neighbour}}
+\DoxyCodeLine{28 \textcolor{keywordflow}{do} i=1, npx-\/1}
+\DoxyCodeLine{29     ham(i,i+1) = nnhop(i)}
+\DoxyCodeLine{30     ham(i+1,i) = nnhop(i)}
+\DoxyCodeLine{31 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{comment}{!Periodic boundary conditions}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{keywordflow}{if}(bc==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{37     ham(npx,1) = nnhop(1)}
+\DoxyCodeLine{38     ham(1,npx) = nnhop(1)}
+\DoxyCodeLine{39 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{40 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_a6584530aae8e71fc65ba9cf657875453}\label{namespacelib__gkba_a6584530aae8e71fc65ba9cf657875453}} 
 \index{lib\_gkba@{lib\_gkba}!tbham2d@{tbham2d}}
 \index{tbham2d@{tbham2d}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{tbham2d()}{tbham2d()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::tbham2d (\begin{DoxyParamCaption}\item[{integer}]{npx,  }\item[{integer}]{npy,  }\item[{integer}]{bcx,  }\item[{integer}]{bcy,  }\item[{double precision, dimension(\+:)}]{onsite,  }\item[{character ($\ast$)}]{gmt,  }\item[{double precision, dimension(\+:,\+:)}]{ham }\end{DoxyParamCaption})}
 
+
+
+Definition at line 168 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{168 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{169     \textcolor{keywordtype}{character (*)} :: gmt}
+\DoxyCodeLine{170     \textcolor{keywordtype}{integer} :: npx,npy,bcx,bcy}
+\DoxyCodeLine{171     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: onsite}
+\DoxyCodeLine{172 \textcolor{comment}{!   double precision, dimension(:) :: nnhop}}
+\DoxyCodeLine{173 \textcolor{comment}{!Input/output variables}}
+\DoxyCodeLine{174     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: ham}
+\DoxyCodeLine{175 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{176     \textcolor{keywordtype}{integer} :: ix,iy,i,j}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178 ham=0.0d0}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180 \textcolor{keywordflow}{if} (gmt==\textcolor{stringliteral}{'sq'}.or.gmt==\textcolor{stringliteral}{'tr'}.or.gmt==\textcolor{stringliteral}{'grp'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{181 \textcolor{comment}{!Diagonal elements}}
+\DoxyCodeLine{182 \textcolor{keywordflow}{do} ix=1, npx}
+\DoxyCodeLine{183 \textcolor{keywordflow}{do} iy=1, npy}
+\DoxyCodeLine{184     i=ix+npx*(iy-\/1)}
+\DoxyCodeLine{185     ham(i,i) = 0.d0\textcolor{comment}{!onsite(i)}}
+\DoxyCodeLine{186 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{187 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189 \textcolor{comment}{!Nearest Neighbour along x (ix,iy) <-\/> (ix+1,iy)}}
+\DoxyCodeLine{190 \textcolor{keywordflow}{do} ix=1, npx-\/1}
+\DoxyCodeLine{191 \textcolor{keywordflow}{do} iy=1,npy}
+\DoxyCodeLine{192     i=ix+npx*(iy-\/1)}
+\DoxyCodeLine{193     ham(i,i+1) = -\/0.5d0\textcolor{comment}{!nnhop(i)}}
+\DoxyCodeLine{194     ham(i+1,i) = -\/0.5d0\textcolor{comment}{!nnhop(i)}}
+\DoxyCodeLine{195 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{196 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{197 }
+\DoxyCodeLine{198 \textcolor{comment}{!Nearest Neighbour along y (ix,iy) <-\/> (ix,iy+1)}}
+\DoxyCodeLine{199 \textcolor{keywordflow}{do} ix=1, npx}
+\DoxyCodeLine{200 \textcolor{keywordflow}{do} iy=1,npy-\/1}
+\DoxyCodeLine{201     i=ix+npx*(iy-\/1)}
+\DoxyCodeLine{202     ham(i,i+npx) = -\/0.5d0\textcolor{comment}{!nnhop(i)}}
+\DoxyCodeLine{203     ham(i+npx,i) = -\/0.5d0\textcolor{comment}{!nnhop(i)}}
+\DoxyCodeLine{204 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{205 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207 \textcolor{comment}{!Periodic boundary conditions along x (npx,iy) <-\/> (1,iy)}}
+\DoxyCodeLine{208 \textcolor{keywordflow}{if}(bcx==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{209 \textcolor{keywordflow}{do} iy=1, npy}
+\DoxyCodeLine{210     i=1+npx*(iy-\/1)}
+\DoxyCodeLine{211     j=npx+npx*(iy-\/1)}
+\DoxyCodeLine{212     ham(j,i) = -\/0.5d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{213     ham(i,j) = -\/0.5d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{214 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{215 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{216 }
+\DoxyCodeLine{217 }
+\DoxyCodeLine{218 \textcolor{comment}{!Periodic boundary conditions along y (ix,npy) <-\/> (ix,1)}}
+\DoxyCodeLine{219 \textcolor{keywordflow}{if}(bcy==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{220 \textcolor{keywordflow}{do} ix=1, npx}
+\DoxyCodeLine{221     i=ix}
+\DoxyCodeLine{222     j=ix+npx*(npy-\/1)}
+\DoxyCodeLine{223     ham(j,i) = -\/0.5d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{224     ham(i,j) = -\/0.5d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{225 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{226 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228 }
+\DoxyCodeLine{229 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231 }
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TRIANGULAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235 \textcolor{comment}{!!To add the exagonal structure to the square one (ix,iy) <-\/> (ix-\/1,iy+1) }}
+\DoxyCodeLine{236 \textcolor{comment}{!!Basically this adds the triangles (\(\backslash\)) to a "square lattice" (-\/ , |)}}
+\DoxyCodeLine{237 \textcolor{comment}{!!Vista QUADRATO (aiuta per gli indici)}}
+\DoxyCodeLine{238 \textcolor{comment}{!!iy=6  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{239 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{240 \textcolor{comment}{!!iy=5  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{241 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{242 \textcolor{comment}{!!iy=4  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{243 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{244 \textcolor{comment}{!!iy=3  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{245 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{246 \textcolor{comment}{!!iy=2  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{247 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{248 \textcolor{comment}{!!iy=1  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{249 \textcolor{comment}{!!}}
+\DoxyCodeLine{250 \textcolor{comment}{!!ix=    1   2   3   4   5   6}}
+\DoxyCodeLine{251 \textcolor{comment}{!!}}
+\DoxyCodeLine{252 \textcolor{comment}{!!Vista ESAGONI (shifti le rige alternate)}}
+\DoxyCodeLine{253 \textcolor{comment}{!!iy=6    o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{254 \textcolor{comment}{!!   / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) /}}
+\DoxyCodeLine{255 \textcolor{comment}{!!iy=5  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{256 \textcolor{comment}{!!        \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) /}}
+\DoxyCodeLine{257 \textcolor{comment}{!!iy=4    o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{258 \textcolor{comment}{!!   / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) /}}
+\DoxyCodeLine{259 \textcolor{comment}{!!iy=3  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{260 \textcolor{comment}{!!        \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) /}}
+\DoxyCodeLine{261 \textcolor{comment}{!!iy=2    o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{262 \textcolor{comment}{!!   / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) /}}
+\DoxyCodeLine{263 \textcolor{comment}{!!iy=1  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{264 \textcolor{comment}{!!}}
+\DoxyCodeLine{265 \textcolor{comment}{!!ix=    1   2   3   4   5   6}}
+\DoxyCodeLine{266 }
+\DoxyCodeLine{267 \textcolor{comment}{!if (gmt=='tr') then}}
+\DoxyCodeLine{268 \textcolor{comment}{!do ix=2, npx}}
+\DoxyCodeLine{269 \textcolor{comment}{!do iy=1,npy-\/1}}
+\DoxyCodeLine{270 \textcolor{comment}{!   i=ix+npx*(iy-\/1)}}
+\DoxyCodeLine{271 \textcolor{comment}{!   j=ix-\/1+npx*(iy-\/1+1)}}
+\DoxyCodeLine{272 \textcolor{comment}{!   ham(i,j) = -\/0.5d0!nnhop(i)}}
+\DoxyCodeLine{273 \textcolor{comment}{!   ham(j,i) = -\/0.5d0!nnhop(i)}}
+\DoxyCodeLine{274 \textcolor{comment}{!end do}}
+\DoxyCodeLine{275 \textcolor{comment}{!end do}}
+\DoxyCodeLine{276 }
+\DoxyCodeLine{277 \textcolor{comment}{!!Periodic boundary conditions along x (1,iy) <-\/> (npx,iy+1)}}
+\DoxyCodeLine{278 \textcolor{comment}{!!Vista QUADRATO}}
+\DoxyCodeLine{279 \textcolor{comment}{!!iy=6  -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{280 \textcolor{comment}{!!  \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\)}}
+\DoxyCodeLine{281 \textcolor{comment}{!!iy=5  -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{282 \textcolor{comment}{!!  \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\)}}
+\DoxyCodeLine{283 \textcolor{comment}{!!iy=4  -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{284 \textcolor{comment}{!!  \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\)}}
+\DoxyCodeLine{285 \textcolor{comment}{!!iy=3  -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{286 \textcolor{comment}{!!  \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\)}}
+\DoxyCodeLine{287 \textcolor{comment}{!!iy=2  -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{288 \textcolor{comment}{!!  \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\)}}
+\DoxyCodeLine{289 \textcolor{comment}{!!iy=1  -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{290 \textcolor{comment}{!!}}
+\DoxyCodeLine{291 \textcolor{comment}{!!ix=      4   5   6   1   2   3}}
+\DoxyCodeLine{292 \textcolor{comment}{!if(bcx==1) then}}
+\DoxyCodeLine{293 \textcolor{comment}{!do iy=1, npy-\/1}}
+\DoxyCodeLine{294 \textcolor{comment}{!   i=1+npx*(iy-\/1)}}
+\DoxyCodeLine{295 \textcolor{comment}{!   j=npx+npx*(iy-\/1+1)}}
+\DoxyCodeLine{296 \textcolor{comment}{!   ham(j,i) = -\/0.5d0!nnhop(1)}}
+\DoxyCodeLine{297 \textcolor{comment}{!   ham(i,j) = -\/0.5d0!nnhop(1)}}
+\DoxyCodeLine{298 \textcolor{comment}{!end do}}
+\DoxyCodeLine{299 \textcolor{comment}{!end if}}
+\DoxyCodeLine{300 }
+\DoxyCodeLine{301 \textcolor{comment}{!!Periodic boundary conditions along y (ix,npy) <-\/> (ix-\/1,1)}}
+\DoxyCodeLine{302 \textcolor{comment}{!!Vista QUADRATO}}
+\DoxyCodeLine{303 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{304 \textcolor{comment}{!!iy=3  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{305 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{306 \textcolor{comment}{!!iy=2  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{307 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{308 \textcolor{comment}{!!iy=1  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{309 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{310 \textcolor{comment}{!!iy=6  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{311 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{312 \textcolor{comment}{!!iy=5  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{313 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{314 \textcolor{comment}{!!iy=4  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{315 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{316 \textcolor{comment}{!!}}
+\DoxyCodeLine{317 \textcolor{comment}{!!ix=    1   2   3   4   5   6}}
+\DoxyCodeLine{318 }
+\DoxyCodeLine{319 \textcolor{comment}{!if(bcy==1) then}}
+\DoxyCodeLine{320 \textcolor{comment}{!do ix=2, npx}}
+\DoxyCodeLine{321 \textcolor{comment}{!   i=ix+npx*(npy-\/1)}}
+\DoxyCodeLine{322 \textcolor{comment}{!   j=ix-\/1}}
+\DoxyCodeLine{323 \textcolor{comment}{!   ham(j,i) = -\/0.5d0!nnhop(1)}}
+\DoxyCodeLine{324 \textcolor{comment}{!   ham(i,j) = -\/0.5d0!nnhop(1)}}
+\DoxyCodeLine{325 \textcolor{comment}{!end do}}
+\DoxyCodeLine{326 \textcolor{comment}{!end if}}
+\DoxyCodeLine{327 }
+\DoxyCodeLine{328 \textcolor{comment}{!end if}}
+\DoxyCodeLine{329 }
+\DoxyCodeLine{330 }
+\DoxyCodeLine{331 }
+\DoxyCodeLine{332 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!GRAPHENE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{333 \textcolor{comment}{!To do the graphene we start from a square lattice and remove some links}}
+\DoxyCodeLine{334 \textcolor{comment}{!In the example below 8 and 8 sites are shown}}
+\DoxyCodeLine{335 \textcolor{comment}{!iy=8   o     o-\/o     o-\/o     o-\/o     o}}
+\DoxyCodeLine{336 \textcolor{comment}{!    \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   / }}
+\DoxyCodeLine{337 \textcolor{comment}{!iy=7     o-\/o     o-\/o     o-\/o     o-\/o}}
+\DoxyCodeLine{338 \textcolor{comment}{!        /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\) }}
+\DoxyCodeLine{339 \textcolor{comment}{!iy=6   o     o-\/o     o-\/o     o-\/o     o}}
+\DoxyCodeLine{340 \textcolor{comment}{!    \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   / }}
+\DoxyCodeLine{341 \textcolor{comment}{!iy=5     o-\/o     o-\/o     o-\/o     o-\/o}}
+\DoxyCodeLine{342 \textcolor{comment}{!        /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\) }}
+\DoxyCodeLine{343 \textcolor{comment}{!iy=4   o     o-\/o     o-\/o     o-\/o     o}}
+\DoxyCodeLine{344 \textcolor{comment}{!    \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   / }}
+\DoxyCodeLine{345 \textcolor{comment}{!iy=3     o-\/o     o-\/o     o-\/o     o-\/o}}
+\DoxyCodeLine{346 \textcolor{comment}{!        /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\) }}
+\DoxyCodeLine{347 \textcolor{comment}{!iy=2   o     o-\/o     o-\/o     o-\/o     o}}
+\DoxyCodeLine{348 \textcolor{comment}{!    \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   / }}
+\DoxyCodeLine{349 \textcolor{comment}{!iy=1     o-\/o     o-\/o     o-\/o     o-\/o}}
+\DoxyCodeLine{350 \textcolor{comment}{!}}
+\DoxyCodeLine{351 \textcolor{comment}{!ix=      1 2     3 4     5 6     7 8}}
+\DoxyCodeLine{352 \textcolor{comment}{!SQUARE VIEW}}
+\DoxyCodeLine{353 \textcolor{comment}{!iy=8   o o-\/o o-\/o o-\/o o}}
+\DoxyCodeLine{354 \textcolor{comment}{!   | | | | | | | |}}
+\DoxyCodeLine{355 \textcolor{comment}{!iy=7   o-\/o o-\/o o-\/o o-\/o}}
+\DoxyCodeLine{356 \textcolor{comment}{!       | | | | | | | |}}
+\DoxyCodeLine{357 \textcolor{comment}{!iy=6   o o-\/o o-\/o o-\/o o}}
+\DoxyCodeLine{358 \textcolor{comment}{!   | | | | | | | |}}
+\DoxyCodeLine{359 \textcolor{comment}{!iy=5   o-\/o o-\/o o-\/o o-\/o}}
+\DoxyCodeLine{360 \textcolor{comment}{!       | | | | | | | |}}
+\DoxyCodeLine{361 \textcolor{comment}{!iy=4   o o-\/o o-\/o o-\/o o}}
+\DoxyCodeLine{362 \textcolor{comment}{!   | | | | | | | |}}
+\DoxyCodeLine{363 \textcolor{comment}{!iy=3   o-\/o o-\/o o-\/o o-\/o}}
+\DoxyCodeLine{364 \textcolor{comment}{!       | | | | | | | |}}
+\DoxyCodeLine{365 \textcolor{comment}{!iy=2   o o-\/o o-\/o o-\/o o}}
+\DoxyCodeLine{366 \textcolor{comment}{!   | | | | | | | |}}
+\DoxyCodeLine{367 \textcolor{comment}{!iy=1   o-\/o o-\/o o-\/o o-\/o}}
+\DoxyCodeLine{368 \textcolor{comment}{!}}
+\DoxyCodeLine{369 \textcolor{comment}{!ix=    1 2 3 4 5 6 7 8}}
+\DoxyCodeLine{370 }
+\DoxyCodeLine{371 \textcolor{keywordflow}{if} (gmt==\textcolor{stringliteral}{'grp'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{372 }
+\DoxyCodeLine{373 \textcolor{comment}{!Nearest Neighbour along x (ix,iy) <-\/> (ix+1,iy) if ix=2*m-\/1 and iy=2*l-\/1}}
+\DoxyCodeLine{374 \textcolor{comment}{!iy=3   o-\/o o-\/o o-\/o o-\/o}}
+\DoxyCodeLine{375 \textcolor{comment}{!   | | | | | | | |}}
+\DoxyCodeLine{376 \textcolor{comment}{!iy=2   o o-\/o o-\/o o-\/o o}}
+\DoxyCodeLine{377 \textcolor{comment}{!   | | | | | | | | }}
+\DoxyCodeLine{378 \textcolor{comment}{!iy=1   o-\/o o-\/o o-\/o o-\/o}}
+\DoxyCodeLine{379 \textcolor{comment}{!}}
+\DoxyCodeLine{380 \textcolor{comment}{!ix=    1 2 3 4 5 6 7 8}}
+\DoxyCodeLine{381 \textcolor{keywordflow}{do} iy=1,npy}
+\DoxyCodeLine{382 \textcolor{keywordflow}{do} ix=1, npx-\/1,2}
+\DoxyCodeLine{383 \textcolor{comment}{!   i=local coordinate along x + number of sites on the odd iy * position of the odd iy +}}
+\DoxyCodeLine{384 \textcolor{comment}{!   number of sites along the even iy * position of the even iy}}
+\DoxyCodeLine{385     i=ix+mod(iy,2)+npx*(iy-\/1)}
+\DoxyCodeLine{386 \textcolor{comment}{!   print*, "(ix,iy)= ", ix,iy, " (i,j )", i,i+1}}
+\DoxyCodeLine{387     ham(i,i+1) = 0.d0}
+\DoxyCodeLine{388     ham(i+1,i) = 0.d0}
+\DoxyCodeLine{389 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{390 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{391 }
+\DoxyCodeLine{392 \textcolor{comment}{!Periodic boundary conditions along x (npx,iy) <-\/> (1,iy)}}
+\DoxyCodeLine{393 \textcolor{comment}{!consistently with the broken bonds}}
+\DoxyCodeLine{394 \textcolor{keywordflow}{if}(bcx==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{395 \textcolor{keywordflow}{do} iy=1, npy,2}
+\DoxyCodeLine{396     i=1+mod(iy-\/1,2)+npx*(iy-\/1)}
+\DoxyCodeLine{397     j=npx+mod(iy-\/1,2)+npx*(iy-\/1)}
+\DoxyCodeLine{398     \textcolor{comment}{!print*, "(ix,iy)= ", 1,iy, " (i,j )", i,j}}
+\DoxyCodeLine{399     ham(j,i) = 0.d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{400     ham(i,j) = 0.d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{401 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{402 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{403 }
+\DoxyCodeLine{404 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{405 }
+\DoxyCodeLine{406 }
+\DoxyCodeLine{407 }
+\DoxyCodeLine{408 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!EXAGONS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{409 \textcolor{comment}{!!    TO  BE CHECKED!!!}}
+\DoxyCodeLine{410 \textcolor{comment}{!!The exagon is slightly more complicated,}}
+\DoxyCodeLine{411 \textcolor{comment}{!!but it's structure can be recovered by assuming a stack of two different }}
+\DoxyCodeLine{412 \textcolor{comment}{!!chains with n\_x and Ceiling(n\_x/2) sites.}}
+\DoxyCodeLine{413 \textcolor{comment}{!!In the example below 8 and 5 sites are shown}}
+\DoxyCodeLine{414 \textcolor{comment}{!!iy=8  o     o     o     o     o}}
+\DoxyCodeLine{415 \textcolor{comment}{!!   \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / }}
+\DoxyCodeLine{416 \textcolor{comment}{!!iy=7    o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{417 \textcolor{comment}{!!        /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) }}
+\DoxyCodeLine{418 \textcolor{comment}{!!iy=6  o     o     o     o     o}}
+\DoxyCodeLine{419 \textcolor{comment}{!!   \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / }}
+\DoxyCodeLine{420 \textcolor{comment}{!!iy=5    o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{421 \textcolor{comment}{!!        /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) }}
+\DoxyCodeLine{422 \textcolor{comment}{!!iy=4  o     o     o     o     o}}
+\DoxyCodeLine{423 \textcolor{comment}{!!   \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / }}
+\DoxyCodeLine{424 \textcolor{comment}{!!iy=3    o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{425 \textcolor{comment}{!!        /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) }}
+\DoxyCodeLine{426 \textcolor{comment}{!!iy=2  o     o     o     o     o}}
+\DoxyCodeLine{427 \textcolor{comment}{!!   \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / }}
+\DoxyCodeLine{428 \textcolor{comment}{!!iy=1    o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{429 \textcolor{comment}{!!}}
+\DoxyCodeLine{430 \textcolor{comment}{!!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{431 }
+\DoxyCodeLine{432 \textcolor{comment}{!if (gmt=='ex') then}}
+\DoxyCodeLine{433 \textcolor{comment}{!!Diagonal elements}}
+\DoxyCodeLine{434 \textcolor{comment}{!do ix=1, npx}}
+\DoxyCodeLine{435 \textcolor{comment}{!do iy=1, npy}}
+\DoxyCodeLine{436 \textcolor{comment}{!   i=ix+npx*(Ceiling(iy/2.d0)-\/1)+Ceiling(npx/2.d0)*(Floor(iy/2.d0)-\/1)}}
+\DoxyCodeLine{437 \textcolor{comment}{!   ham(i,i) = onsite(ix)}}
+\DoxyCodeLine{438 \textcolor{comment}{!end do}}
+\DoxyCodeLine{439 \textcolor{comment}{!end do}}
+\DoxyCodeLine{440 }
+\DoxyCodeLine{441 \textcolor{comment}{!!Nearest Neighbour along x (ix,iy) <-\/> (ix+1,iy) if ix=2*m-\/1 and iy=2*l-\/1}}
+\DoxyCodeLine{442 \textcolor{comment}{!!iy=3    o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{443 \textcolor{comment}{!!}}
+\DoxyCodeLine{444 \textcolor{comment}{!!iy=2  o     o     o     o     o}}
+\DoxyCodeLine{445 \textcolor{comment}{!!}}
+\DoxyCodeLine{446 \textcolor{comment}{!!iy=1    o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{447 \textcolor{comment}{!!}}
+\DoxyCodeLine{448 \textcolor{comment}{!!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{449 \textcolor{comment}{!do iy=1,npy,2}}
+\DoxyCodeLine{450 \textcolor{comment}{!do ix=1, npx-\/1,2}}
+\DoxyCodeLine{451 \textcolor{comment}{!!  i=local coordinate along x + number of sites on the odd iy * position of the odd iy +}}
+\DoxyCodeLine{452 \textcolor{comment}{!!  number of sites along the even iy * position of the even iy}}
+\DoxyCodeLine{453 \textcolor{comment}{!   i=ix+npx*(Ceiling(iy/2.d0)-\/1)+(Floor(npx/2.d0)+1)*(Ceiling(iy/2.d0)-\/1)}}
+\DoxyCodeLine{454 \textcolor{comment}{!   ham(i,i+1) = -\/0.5d0!*mod(ix,2)!nnhop(i)}}
+\DoxyCodeLine{455 \textcolor{comment}{!   ham(i+1,i) = -\/0.5d0!*mod(ix,2)!nnhop(i)}}
+\DoxyCodeLine{456 \textcolor{comment}{!end do}}
+\DoxyCodeLine{457 \textcolor{comment}{!end do}}
+\DoxyCodeLine{458 }
+\DoxyCodeLine{459 \textcolor{comment}{!!Nearest Neighbour along y}}
+\DoxyCodeLine{460 \textcolor{comment}{!!iy=3    o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{461 \textcolor{comment}{!!}}
+\DoxyCodeLine{462 \textcolor{comment}{!!iy=2  o     o     o     o     o}}
+\DoxyCodeLine{463 \textcolor{comment}{!!   \(\backslash\)     \(\backslash\)     \(\backslash\)     \(\backslash\)     }}
+\DoxyCodeLine{464 \textcolor{comment}{!!iy=1    o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{465 \textcolor{comment}{!!}}
+\DoxyCodeLine{466 \textcolor{comment}{!!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{467 }
+\DoxyCodeLine{468 \textcolor{comment}{!do iy=2,npy,2}}
+\DoxyCodeLine{469 \textcolor{comment}{!do ix=1, Ceiling(npx/2.d0)-\/1}}
+\DoxyCodeLine{470 \textcolor{comment}{!   i=ix+npx*(Ceiling(iy/2.d0)-\/1)+(Floor(npx/2.d0)+1)*(Ceiling(iy/2.d0)-\/1)}}
+\DoxyCodeLine{471 \textcolor{comment}{!   j=2*ix-\/1+npx*(Ceiling((iy-\/1)/2.d0)-\/1)+(Floor(npx/2.d0)+1)*(Ceiling((iy-\/1)/2.d0)-\/1)}}
+\DoxyCodeLine{472 \textcolor{comment}{!   print*, "(ix,iy)= ", ix,iy, " (i,j )", i,j}}
+\DoxyCodeLine{473 \textcolor{comment}{!   ham(i,j) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{474 \textcolor{comment}{!   ham(j,i) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{475 \textcolor{comment}{!end do}}
+\DoxyCodeLine{476 \textcolor{comment}{!end do}}
+\DoxyCodeLine{477 }
+\DoxyCodeLine{478 }
+\DoxyCodeLine{479 \textcolor{comment}{!!!iy=3   o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{480 \textcolor{comment}{!!!}}
+\DoxyCodeLine{481 \textcolor{comment}{!!!iy=2 o     o     o     o     o}}
+\DoxyCodeLine{482 \textcolor{comment}{!!!      /     /     /     / }}
+\DoxyCodeLine{483 \textcolor{comment}{!!!iy=1   o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{484 \textcolor{comment}{!!!}}
+\DoxyCodeLine{485 \textcolor{comment}{!!!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{486 }
+\DoxyCodeLine{487 }
+\DoxyCodeLine{488 \textcolor{comment}{!!do iy=2,npy,2}}
+\DoxyCodeLine{489 \textcolor{comment}{!!do ix=2, Ceiling(npx/2.d0)}}
+\DoxyCodeLine{490 \textcolor{comment}{!!  i=ix+npx*(Ceiling(iy/2.d0)-\/1)+Ceiling(npx/2.d0)*(Floor(iy/2.d0)-\/1)}}
+\DoxyCodeLine{491 \textcolor{comment}{!!  j=2*ix+npx*(Ceiling((iy-\/1)/2.d0)-\/1)+Ceiling(npx/2.d0)*(Floor((iy-\/1)/2.d0)-\/1)}}
+\DoxyCodeLine{492 \textcolor{comment}{!!  ham(i,j) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{493 \textcolor{comment}{!!  ham(j,i) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{494 \textcolor{comment}{!!end do}}
+\DoxyCodeLine{495 \textcolor{comment}{!!end do}}
+\DoxyCodeLine{496 }
+\DoxyCodeLine{497 }
+\DoxyCodeLine{498 \textcolor{comment}{!!!iy=3   o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{499 \textcolor{comment}{!!!        /     /     /     /     }}
+\DoxyCodeLine{500 \textcolor{comment}{!!!iy=2 o     o     o     o     o}}
+\DoxyCodeLine{501 \textcolor{comment}{!!!}}
+\DoxyCodeLine{502 \textcolor{comment}{!!!iy=1   o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{503 \textcolor{comment}{!!!}}
+\DoxyCodeLine{504 \textcolor{comment}{!!!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{505 }
+\DoxyCodeLine{506 \textcolor{comment}{!!do iy=2,npy-\/2,2}}
+\DoxyCodeLine{507 \textcolor{comment}{!!do ix=1, Ceiling(npx/2.d0)-\/1}}
+\DoxyCodeLine{508 \textcolor{comment}{!!  i=ix+npx*(Ceiling(iy/2.d0)-\/1)+Ceiling(npx/2.d0)*(Floor(iy/2.d0)-\/1)}}
+\DoxyCodeLine{509 \textcolor{comment}{!!  j=2*ix-\/1+npx*(Ceiling((iy+1)/2.d0)-\/1)+Ceiling(npx/2.d0)*(Floor((iy+1)/2.d0)-\/1)}}
+\DoxyCodeLine{510 \textcolor{comment}{!!  ham(i,j) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{511 \textcolor{comment}{!!  ham(j,i) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{512 \textcolor{comment}{!!end do}}
+\DoxyCodeLine{513 \textcolor{comment}{!!end do}}
+\DoxyCodeLine{514 }
+\DoxyCodeLine{515 }
+\DoxyCodeLine{516 }
+\DoxyCodeLine{517 \textcolor{comment}{!!!iy=3   o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{518 \textcolor{comment}{!!!            \(\backslash\)     \(\backslash\)     \(\backslash\)     \(\backslash\) }}
+\DoxyCodeLine{519 \textcolor{comment}{!!!iy=2 o     o     o     o     o}}
+\DoxyCodeLine{520 \textcolor{comment}{!!!}}
+\DoxyCodeLine{521 \textcolor{comment}{!!!iy=1   o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{522 \textcolor{comment}{!!!}}
+\DoxyCodeLine{523 \textcolor{comment}{!!!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{524 }
+\DoxyCodeLine{525 \textcolor{comment}{!!do iy=2,npy-\/2,2}}
+\DoxyCodeLine{526 \textcolor{comment}{!!do ix=2, Ceiling(npx/2.d0)}}
+\DoxyCodeLine{527 \textcolor{comment}{!!  i=ix+npx*(Ceiling(iy/2.d0)-\/1)+Ceiling(npx/2.d0)*(Floor(iy/2.d0)-\/1)}}
+\DoxyCodeLine{528 \textcolor{comment}{!!  j=2*ix+npx*(Ceiling((iy+1)/2.d0)-\/1)+Ceiling(npx/2.d0)*(Floor((iy+1)/2.d0)-\/1)}}
+\DoxyCodeLine{529 \textcolor{comment}{!!  ham(i,j) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{530 \textcolor{comment}{!!  ham(j,i) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{531 \textcolor{comment}{!!end do}}
+\DoxyCodeLine{532 \textcolor{comment}{!!end do}}
+\DoxyCodeLine{533 }
+\DoxyCodeLine{534 }
+\DoxyCodeLine{535 \textcolor{comment}{!!if (bcy==1) then }}
+\DoxyCodeLine{536 \textcolor{comment}{!!!Boundary conditions along y}}
+\DoxyCodeLine{537 \textcolor{comment}{!!!iy=1   o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{538 \textcolor{comment}{!!!        /     /     /     /     }}
+\DoxyCodeLine{539 \textcolor{comment}{!!!iy=8 o     o     o     o     o}}
+\DoxyCodeLine{540 \textcolor{comment}{!!!}}
+\DoxyCodeLine{541 \textcolor{comment}{!!!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{542 }
+\DoxyCodeLine{543 }
+\DoxyCodeLine{544 \textcolor{comment}{!!do ix=1, Ceiling(npx/2.d0)-\/1}}
+\DoxyCodeLine{545 \textcolor{comment}{!!  i=ix+npx*(Ceiling(npy/2.d0)-\/1)+Ceiling(npx/2.d0)*(Floor(npy/2.d0)-\/1)}}
+\DoxyCodeLine{546 \textcolor{comment}{!!  j=2*ix-\/1}}
+\DoxyCodeLine{547 \textcolor{comment}{!!  ham(i,j) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{548 \textcolor{comment}{!!  ham(j,i) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{549 \textcolor{comment}{!!end do}}
+\DoxyCodeLine{550 }
+\DoxyCodeLine{551 }
+\DoxyCodeLine{552 \textcolor{comment}{!!!iy=1   o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{553 \textcolor{comment}{!!!            \(\backslash\)     \(\backslash\)     \(\backslash\)     \(\backslash\) }}
+\DoxyCodeLine{554 \textcolor{comment}{!!!iy=8 o     o     o     o     o}}
+\DoxyCodeLine{555 \textcolor{comment}{!!!}}
+\DoxyCodeLine{556 \textcolor{comment}{!!!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{557 }
+\DoxyCodeLine{558 }
+\DoxyCodeLine{559 \textcolor{comment}{!!do ix=2, Ceiling(npx/2.d0)}}
+\DoxyCodeLine{560 \textcolor{comment}{!!  i=ix+npx*(Ceiling(npy/2.d0)-\/1)+Ceiling(npx/2.d0)*(Floor(npy/2.d0)-\/1)}}
+\DoxyCodeLine{561 \textcolor{comment}{!!  j=2*ix}}
+\DoxyCodeLine{562 \textcolor{comment}{!!  ham(i,j) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{563 \textcolor{comment}{!!  ham(j,i) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{564 \textcolor{comment}{!!end do}}
+\DoxyCodeLine{565 \textcolor{comment}{!!end if}}
+\DoxyCodeLine{566 }
+\DoxyCodeLine{567 }
+\DoxyCodeLine{568 \textcolor{comment}{!end if}}
+\DoxyCodeLine{569 }
+\DoxyCodeLine{570 }
+\DoxyCodeLine{571 }
+
+\end{DoxyCode}
 \mbox{\Hypertarget{namespacelib__gkba_a582a53a1f4396975c94de7d7f3b4c47f}\label{namespacelib__gkba_a582a53a1f4396975c94de7d7f3b4c47f}} 
 \index{lib\_gkba@{lib\_gkba}!time\_stepping@{time\_stepping}}
 \index{time\_stepping@{time\_stepping}!lib\_gkba@{lib\_gkba}}
 \doxysubsubsection{\texorpdfstring{time\_stepping()}{time\_stepping()}}
 {\footnotesize\ttfamily subroutine lib\+\_\+gkba\+::time\+\_\+stepping (\begin{DoxyParamCaption}\item[{double precision}]{dt,  }\item[{double complex, dimension(\+:,\+:)}]{ham,  }\item[{double complex, dimension(\+:,\+:,\+:)}]{ro,  }\item[{integer}]{t,  }\item[{double complex, dimension(\+:,\+:)}]{cint }\end{DoxyParamCaption})}
 
+
+
+Definition at line 1233 of file .\+lib\+\_\+gkba.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1233     }
+\DoxyCodeLine{1234     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{1235 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{1236     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{1237     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{1238     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{1239 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{1240     \textcolor{keywordtype}{integer} :: t}
+\DoxyCodeLine{1241     \textcolor{keywordtype}{double precision} :: dt}
+\DoxyCodeLine{1242     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: ham}
+\DoxyCodeLine{1243     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)} :: ro}
+\DoxyCodeLine{1244     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: cint}
+\DoxyCodeLine{1245     }
+\DoxyCodeLine{1246 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{1247     \textcolor{keywordtype}{integer} :: ns,i,j,tt}
+\DoxyCodeLine{1248     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{1249     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: U}
+\DoxyCodeLine{1250     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension (:,:)}, \textcolor{keywordtype}{allocatable} :: temp1, temp2, c0, c1, c2, c3, c4, c5, c6, c7}
+\DoxyCodeLine{1251     }
+\DoxyCodeLine{1252 }
+\DoxyCodeLine{1253 d=shape(ham)}
+\DoxyCodeLine{1254 ns=d(1)}
+\DoxyCodeLine{1255 }
+\DoxyCodeLine{1256 \textcolor{keyword}{allocate}(temp1(ns,ns))}
+\DoxyCodeLine{1257 \textcolor{keyword}{allocate}(temp2(ns,ns),c0(ns,ns),c1(ns,ns),c2(ns,ns),c3(ns,ns),c4(ns,ns),c5(ns,ns),c6(ns,ns),c7(ns,ns))}
+\DoxyCodeLine{1258 \textcolor{keyword}{allocate}(u(ns,ns))}
+\DoxyCodeLine{1259 }
+\DoxyCodeLine{1260 \textcolor{keyword}{call }\mbox{\hyperlink{matrexp_8f90_ae7c52de9413e52e1f6488cb6fe50a2f9}{matrexp}}(dt,ham,u) \textcolor{comment}{!matrexp o matrexp\_t}}
+\DoxyCodeLine{1261 }
+\DoxyCodeLine{1262 temp1=zero}
+\DoxyCodeLine{1263 temp2=zero}
+\DoxyCodeLine{1264 c0=zero}
+\DoxyCodeLine{1265 c1=zero}
+\DoxyCodeLine{1266 c2=zero}
+\DoxyCodeLine{1267 c3=zero}
+\DoxyCodeLine{1268 c4=zero}
+\DoxyCodeLine{1269 c5=zero}
+\DoxyCodeLine{1270 c6=zero}
+\DoxyCodeLine{1271 c7=zero}
+\DoxyCodeLine{1272 }
+\DoxyCodeLine{1273 }
+\DoxyCodeLine{1274 }
+\DoxyCodeLine{1275 c0(:,:)= -\/ci*dt*cint(:,:)}
+\DoxyCodeLine{1276 c1(:,:)=ci*dt/2.d0*(matmul(ham(:,:),c0(:,:))-\/matmul(c0(:,:),ham(:,:)))}
+\DoxyCodeLine{1277 c2(:,:)=ci*dt/3.d0*(matmul(ham(:,:),c1(:,:))-\/matmul(c1(:,:),ham(:,:)))}
+\DoxyCodeLine{1278 c3(:,:)=ci*dt/4.d0*(matmul(ham(:,:),c2(:,:))-\/matmul(c2(:,:),ham(:,:)))}
+\DoxyCodeLine{1279 c4(:,:)=ci*dt/5.d0*(matmul(ham(:,:),c3(:,:))-\/matmul(c3(:,:),ham(:,:)))}
+\DoxyCodeLine{1280 c5(:,:)=ci*dt/6.d0*(matmul(ham(:,:),c4(:,:))-\/matmul(c4(:,:),ham(:,:)))}
+\DoxyCodeLine{1281 c6(:,:)=ci*dt/7.d0*(matmul(ham(:,:),c5(:,:))-\/matmul(c5(:,:),ham(:,:)))}
+\DoxyCodeLine{1282 c7(:,:)=ci*dt/8.d0*(matmul(ham(:,:),c6(:,:))-\/matmul(c6(:,:),ham(:,:)))}
+\DoxyCodeLine{1283 }
+\DoxyCodeLine{1284 }
+\DoxyCodeLine{1285 temp1(:,:)=c0(:,:)+c1(:,:)+c2(:,:)+c3(:,:)+c4(:,:)+c5(:,:)+c6(:,:)+c7(:,:)}
+\DoxyCodeLine{1286 }
+\DoxyCodeLine{1287 temp2 = matmul(u,ro(t,:,:)-\/ci*temp1(:,:))}
+\DoxyCodeLine{1288 temp1 = matmul(temp2,conjg(transpose(u)))}
+\DoxyCodeLine{1289 }
+\DoxyCodeLine{1290 ro(t+1,:,:)=temp1(:,:)}
+\DoxyCodeLine{1291 }
+\DoxyCodeLine{1292 }
+\DoxyCodeLine{1293 }
+\DoxyCodeLine{1294 \textcolor{keyword}{deallocate}(temp1,temp2,c0,c1,c2,c3,c4,c5,c6,c7)}
+\DoxyCodeLine{1295 }
+
+\end{DoxyCode}

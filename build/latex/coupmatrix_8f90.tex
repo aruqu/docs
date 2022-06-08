@@ -43,3 +43,37 @@ subroutine \mbox{\hyperlink{coupmatrix_8f90_a6fcdf586d4d22fefa489fcf82e1c3d4f}{c
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 30 of file coupmatrix.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{30     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{31 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{32     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{intent(in)}, \textcolor{keywordtype}{optional} :: NPX}
+\DoxyCodeLine{33     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{intent(in)} :: LDS}
+\DoxyCodeLine{34 \textcolor{comment}{!Output variables}}
+\DoxyCodeLine{35     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{intent(out)} :: GAMMA}
+\DoxyCodeLine{36 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{37     \textcolor{keywordtype}{integer} :: i,j}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 gamma=0.0d0}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{comment}{!do i=1, size(LDS)}}
+\DoxyCodeLine{42 \textcolor{comment}{!!up}}
+\DoxyCodeLine{43     \textcolor{comment}{!GAMMA(LDS(i),LDS(i)) = 1.0d0}}
+\DoxyCodeLine{44 \textcolor{comment}{!end do}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{keywordflow}{do} i=1, \textcolor{keyword}{size}(lds)}
+\DoxyCodeLine{47     \textcolor{keywordflow}{do} j=1, \textcolor{keyword}{size}(lds)}
+\DoxyCodeLine{48         gamma(lds(i),lds(j)) = 1.0d0}
+\DoxyCodeLine{49         gamma(lds(j),lds(i)) = 1.0d0}
+\DoxyCodeLine{50 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{51 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{comment}{!!down      }}
+\DoxyCodeLine{54 \textcolor{comment}{!   GAMMA(NPX+i,NPX+i) = 1.0d0}}
+\DoxyCodeLine{55 }
+
+\end{DoxyCode}

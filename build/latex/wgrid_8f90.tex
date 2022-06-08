@@ -22,22 +22,22 @@ subroutine \mbox{\hyperlink{wgrid_8f90_ac1e0ef0b5f9b155362eff40f3b526b25}{wgrid}
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & wm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & WM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & vw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & VW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & prt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & P\+RT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & om \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & OM \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -47,3 +47,59 @@ subroutine \mbox{\hyperlink{wgrid_8f90_ac1e0ef0b5f9b155362eff40f3b526b25}{wgrid}
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 39 of file wgrid.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{39     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{40 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{41     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = dacos(-\/1.0d0)       \textcolor{comment}{! Pi greco}}
+\DoxyCodeLine{42 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{43     \textcolor{keywordtype}{integer} :: npw,prt}
+\DoxyCodeLine{44     \textcolor{keywordtype}{double precision} :: wm}
+\DoxyCodeLine{45 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{46     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)} :: vw}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension (1:npw)} :: om}
+\DoxyCodeLine{48 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{49     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol,pc,pr}
+\DoxyCodeLine{50 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{51     \textcolor{keywordtype}{integer} :: iw,liw,lldwc,numroc}
+\DoxyCodeLine{52     \textcolor{keywordtype}{double precision} :: deps}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{55 nprocs=nprow*npcol}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 lldwc=numroc(npw,1,mycol,0,nprow*nprow)}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 liw=0}
+\DoxyCodeLine{61 \textcolor{keywordflow}{do} iw=1, npw}
+\DoxyCodeLine{62 pc=mod(floor(real(iw-\/1)),nprocs)}
+\DoxyCodeLine{63 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{64 liw=liw+1}
+\DoxyCodeLine{65 vw(liw)=iw}
+\DoxyCodeLine{66 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{67 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{keywordflow}{if}(prt==1.and.myrow==0.and.mycol==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 \textcolor{keywordflow}{do} iw=1, npw}
+\DoxyCodeLine{72     om(iw)=om(iw) -\/wm+2.d0*wm*(iw-\/1)/(npw-\/1)}
+\DoxyCodeLine{73 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 \textcolor{comment}{!if(prt==1.and.myrow==0.and.mycol==0) then}}
+\DoxyCodeLine{80 \textcolor{comment}{!open(unit=21,file=filenameout//'.dat',access = 'sequential',status='unknown')}}
+\DoxyCodeLine{81 \textcolor{comment}{!do iw=1, npw}}
+\DoxyCodeLine{82 \textcolor{comment}{!   write(21,*) -\/wm+2.d0*wm*(iw-\/1)/(npw-\/1)}}
+\DoxyCodeLine{83 \textcolor{comment}{!end do}}
+\DoxyCodeLine{84 \textcolor{comment}{!close(21)}}
+\DoxyCodeLine{85 \textcolor{comment}{!end if}}
+\DoxyCodeLine{86 }
+
+\end{DoxyCode}

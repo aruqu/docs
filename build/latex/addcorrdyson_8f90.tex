@@ -26,3 +26,147 @@ subroutine \mbox{\hyperlink{addcorrdyson_8f90_add3ea32902a1ea49283e8f4aed9d2fc7}
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 17 of file addcorrdyson.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{17     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{18     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{19 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{20     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{21     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{22     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Complex unity}}
+\DoxyCodeLine{23 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{24     \textcolor{keywordtype}{character (*)} :: scm}
+\DoxyCodeLine{25     \textcolor{keywordtype}{integer} :: nps,npt}
+\DoxyCodeLine{26     \textcolor{keywordtype}{double precision} :: tf,bt}
+\DoxyCodeLine{27     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descg0r,descg0lft}
+\DoxyCodeLine{28     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lg0r,lg0lft}
+\DoxyCodeLine{29     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descgrsr}
+\DoxyCodeLine{30     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: lgrsr}
+\DoxyCodeLine{31     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descsm,descslft}
+\DoxyCodeLine{32     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsm,lslft}
+\DoxyCodeLine{33     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descnegr,descnegm,descneglft}
+\DoxyCodeLine{34     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegr,lnegm,lneglft}
+\DoxyCodeLine{35 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{36     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descnegl,descnegg}
+\DoxyCodeLine{37     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegl,lnegg}
+\DoxyCodeLine{38 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{39     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{40 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{41     \textcolor{keywordtype}{integer} :: n,i,j,tt,ttp,it,itp,lit,litp}
+\DoxyCodeLine{42     \textcolor{keywordtype}{integer} :: mb,nb,pr,pc,lldr,lldc,lldtr,lldtc}
+\DoxyCodeLine{43     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{44     \textcolor{keywordtype}{double precision} :: dt,dbt}
+\DoxyCodeLine{45     \textcolor{keywordtype}{double complex} :: zalpha}
+\DoxyCodeLine{46     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descnegtmp1,descnegtmp2,descnegtmp3}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: lnegtmp1,lnegtmp2,lnegtmp3}
+\DoxyCodeLine{48     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtt, vttp}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 context = descg0r(2)}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 n= nps*npt}
+\DoxyCodeLine{55 mb = descg0r(5)}
+\DoxyCodeLine{56 nb = descg0r(6)}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 lldr= numroc(n,mb,myrow,0,nprow)}
+\DoxyCodeLine{59 lldc= numroc(n,nb,mycol,0,npcol)}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 lldtr=numroc(npt,1,myrow,0,nprow)}
+\DoxyCodeLine{62 lldtc=numroc(npt,1,mycol,0,npcol)}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{keyword}{allocate}(vtt(lldtr),vttp(lldtc))}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 vtt=0}
+\DoxyCodeLine{68 vttp=0}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 i=0}
+\DoxyCodeLine{71 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{72 pr=mod(floor(real(tt-\/1)),nprow)}
+\DoxyCodeLine{73 \textcolor{keywordflow}{if}(myrow==pr) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{74 i=i+1}
+\DoxyCodeLine{75 vtt(i)=tt}
+\DoxyCodeLine{76 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{77 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 i=0}
+\DoxyCodeLine{80 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{81 pc=mod(floor(real(tt-\/1)),npcol)}
+\DoxyCodeLine{82 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{83 i=i+1}
+\DoxyCodeLine{84 vttp(i)=tt}
+\DoxyCodeLine{85 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{86 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 \textcolor{keyword}{allocate}(lnegtmp1(lldr,lldc),lnegtmp2(lldr,lldc),lnegtmp3(lldr,lldc))}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 lnegtmp1=zero}
+\DoxyCodeLine{92 lnegtmp2=zero}
+\DoxyCodeLine{93 lnegtmp3=zero}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 \textcolor{keyword}{call }descinit(descnegtmp1,n,n,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{96 \textcolor{keyword}{call }descinit(descnegtmp2,n,n,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{97 \textcolor{keyword}{call }descinit(descnegtmp3,n,n,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 dt=tf/(npt-\/1)}
+\DoxyCodeLine{100 dbt=bt/(npt-\/1)}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 \textcolor{comment}{!++++++++++++++++++++++++++++++Lesser NE Green's+++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{comment}{!gr*srgt*dt}}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \textcolor{keyword}{call }\mbox{\hyperlink{lftrgt_8f90_ac2054aa950e72541f98d2b5c7fea1892}{lftrgt}}(nps,npt,\textcolor{stringliteral}{'lr'},lslft,descslft,lnegtmp2,descnegtmp2)}
+\DoxyCodeLine{107 \textcolor{comment}{!lnegtmp2=lslft}}
+\DoxyCodeLine{108 \textcolor{keyword}{call }\mbox{\hyperlink{intgrtn_8f90_ae61e4c40452bc8008e91d73f0ea4c960}{intgrtn}} (scm,\textcolor{stringliteral}{'m'},npt,\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{'N'},n,n,n,dt*uno,0.d0,1,lg0r,1,1,descg0r,lnegtmp2,1,1,descnegtmp2,zero,lnegtmp1,1,1,descnegtmp1)}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 \textcolor{keyword}{call }blacs\_barrier(context,\textcolor{stringliteral}{'A'})}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{comment}{!gr*srgt*dt+grgt*sm*dbt}}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 lnegtmp2=zero}
+\DoxyCodeLine{116 \textcolor{keyword}{call }\mbox{\hyperlink{lftrgt_8f90_ac2054aa950e72541f98d2b5c7fea1892}{lftrgt}}(nps,npt,\textcolor{stringliteral}{'lr'},lg0lft,descg0lft,lnegtmp2,descnegtmp2)}
+\DoxyCodeLine{117 \textcolor{keyword}{call }\mbox{\hyperlink{intgrtn_8f90_ae61e4c40452bc8008e91d73f0ea4c960}{intgrtn}} (scm,\textcolor{stringliteral}{'m'},npt,\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{'N'},n,n,n,-\/ci*dbt,0.d0,1,lnegtmp2,1,1,descnegtmp2,lsm,1,1,descsm,uno,lnegtmp1,1,1,descnegtmp1)}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 \textcolor{keyword}{call }blacs\_barrier(context,\textcolor{stringliteral}{'A'})}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 lnegtmp2 = lnegtmp1}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 \textcolor{comment}{!(gr*srgt*dt+grgt*sm*dbt)*neglft*dbt}}
+\DoxyCodeLine{124 lnegtmp3=zero   }
+\DoxyCodeLine{125 \textcolor{keyword}{call }\mbox{\hyperlink{intgrtn_8f90_ae61e4c40452bc8008e91d73f0ea4c960}{intgrtn}}(scm,\textcolor{stringliteral}{'m'},npt,\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{'N'},n,n,n,-\/ci*dbt,0.d0,1,lnegtmp2,1,1,descnegtmp2,lneglft,1,1,descneglft,zero,lnegtmp3,1,1,descnegtmp3)}
+\DoxyCodeLine{126 \textcolor{keyword}{call }blacs\_barrier(context,\textcolor{stringliteral}{'A'})}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128 lnegtmp2=zero}
+\DoxyCodeLine{129 \textcolor{keyword}{call }\mbox{\hyperlink{lftrgt_8f90_ac2054aa950e72541f98d2b5c7fea1892}{lftrgt}}(nps,npt,\textcolor{stringliteral}{'lr'},lg0lft,descg0lft,lnegtmp2,descnegtmp2)}
+\DoxyCodeLine{130 \textcolor{keyword}{call }\mbox{\hyperlink{intgrtn_8f90_ae61e4c40452bc8008e91d73f0ea4c960}{intgrtn}} (scm,\textcolor{stringliteral}{'m'},npt,\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{'N'},n,n,n,-\/ci*dbt,0.d0,1,lnegtmp2,1,1,descnegtmp2,lslft,1,1,descslft,zero,lnegtmp1,1,1,descnegtmp1)}
+\DoxyCodeLine{131 \textcolor{keyword}{call }\mbox{\hyperlink{intgrtn_8f90_ae61e4c40452bc8008e91d73f0ea4c960}{intgrtn}} (scm,\textcolor{stringliteral}{'m'},npt,\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{'C'},n,n,n,dt*uno,0.d0,1,lnegtmp1,1,1,descnegtmp1,lnegr,1,1,descnegr,zero,lnegtmp2,1,1,descnegtmp2)}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134 lnegtmp1 = lnegtmp3 + lnegtmp2}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 \textcolor{comment}{!grsr*tempnegl*dt}}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138 \textcolor{keyword}{call }\mbox{\hyperlink{intgrtn_8f90_ae61e4c40452bc8008e91d73f0ea4c960}{intgrtn}} (scm,\textcolor{stringliteral}{'m'},npt,\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{'N'},n,n,n,dt*uno,1.d0,1,lgrsr,1,1,descgrsr,lnegtmp1,1,1,descnegtmp1,zero,lnegtmp3,1,1,descnegtmp3)}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140 \textcolor{keyword}{call }blacs\_barrier(context,\textcolor{stringliteral}{'A'})}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 \textcolor{comment}{!-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 lnegl=lnegl + lnegtmp3}
+\DoxyCodeLine{145 lnegg=lnegg + lnegtmp3}
+\DoxyCodeLine{146 \textcolor{comment}{!lnegl=lnegtmp3}}
+\DoxyCodeLine{147 \textcolor{comment}{!lnegg=lnegtmp3}}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 \textcolor{keyword}{deallocate} (lnegtmp1,lnegtmp2,lnegtmp3)}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152 }
+
+\end{DoxyCode}

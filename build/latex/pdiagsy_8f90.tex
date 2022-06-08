@@ -22,31 +22,31 @@ subroutine \mbox{\hyperlink{pdiagsy_8f90_ae906837491ff00861884668773462562}{pdia
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & la \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & LA \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & desca \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+CA \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & w \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & W \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & ls \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & LS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descs \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+CS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & prnt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & P\+R\+NT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & suffix \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+U\+F\+F\+IX \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -56,3 +56,101 @@ subroutine \mbox{\hyperlink{pdiagsy_8f90_ae906837491ff00861884668773462562}{pdia
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 51 of file pdiagsy.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{51     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{52     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{53 \textcolor{comment}{!Input Variables    }}
+\DoxyCodeLine{54     \textcolor{keywordtype}{character(*)} :: suffix}
+\DoxyCodeLine{55     \textcolor{keywordtype}{integer} :: nps,prnt}
+\DoxyCodeLine{56     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: w}
+\DoxyCodeLine{57     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: desca}
+\DoxyCodeLine{58     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: la}
+\DoxyCodeLine{59 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{60     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descs}
+\DoxyCodeLine{61     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: ls}
+\DoxyCodeLine{62 \textcolor{comment}{!Variable for grid query}}
+\DoxyCodeLine{63     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{64 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{65     \textcolor{keywordtype}{double precision} :: dalpha}
+\DoxyCodeLine{66     \textcolor{keywordtype}{integer} :: i,j}
+\DoxyCodeLine{67     \textcolor{keywordtype}{integer} :: mbs,nbs,lldr,lldc}
+\DoxyCodeLine{68     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{69     \textcolor{keywordtype}{integer} :: info1,info2,dwork,diwork}
+\DoxyCodeLine{70     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: work}
+\DoxyCodeLine{71     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: iwork}
+\DoxyCodeLine{72     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: lta}
+\DoxyCodeLine{73     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descta}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 mbs = desca(5)}
+\DoxyCodeLine{78 nbs = desca(6)}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 lldr=numroc(nps,mbs,myrow,0,nprow)}
+\DoxyCodeLine{81 lldc=numroc(nps,nbs,mycol,0,npcol)}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \textcolor{keyword}{allocate}(lta(lldr,lldc))}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{keyword}{call }descinit(descta,nps,nps,mbs,nbs,0,0,context,lldr,info)}
+\DoxyCodeLine{86 lta=la}
+\DoxyCodeLine{87 w=0.d0}
+\DoxyCodeLine{88 ls=0.d0}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \textcolor{keyword}{allocate} (work(1),iwork(1))}
+\DoxyCodeLine{91 work=0.d0}
+\DoxyCodeLine{92 iwork=0}
+\DoxyCodeLine{93 \textcolor{keyword}{call }pdsyevd(\textcolor{stringliteral}{'V'},\textcolor{stringliteral}{'U'},nps,lta,1,1,descta,w,ls,1,1,descs,work,-\/1,iwork,-\/1,info1)}
+\DoxyCodeLine{94 dwork=max(1,int(work(1)))}
+\DoxyCodeLine{95 diwork=max(1,int(iwork(1)))}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 lta=la}
+\DoxyCodeLine{98 \textcolor{keyword}{deallocate}(work,iwork)}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 \textcolor{keywordflow}{if} (info1==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{101     w=0.0d0}
+\DoxyCodeLine{102     ls=0.0d0}
+\DoxyCodeLine{103     \textcolor{keyword}{allocate}(work(dwork),iwork(diwork))}
+\DoxyCodeLine{104     \textcolor{keyword}{call }pdsyevd(\textcolor{stringliteral}{'V'},\textcolor{stringliteral}{'U'},nps,lta,1,1,descta,w,ls,1,1,descs,work,dwork,iwork,diwork,info2)}
+\DoxyCodeLine{105     \textcolor{keyword}{deallocate}(work)}
+\DoxyCodeLine{106 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (info1/=0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{107     \textcolor{keyword}{write}(*,*) \textcolor{stringliteral}{'ERROR 1 in diagonalization'},info1}
+\DoxyCodeLine{108         stop}
+\DoxyCodeLine{109 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 \textcolor{keywordflow}{if} (info2/=0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{113     \textcolor{keyword}{write}(*,*) \textcolor{stringliteral}{'ERROR 2 in diagonalization'}, info2}
+\DoxyCodeLine{114     stop}
+\DoxyCodeLine{115 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117 \textcolor{comment}{!Print eigenvalues}}
+\DoxyCodeLine{118 \textcolor{keywordflow}{if} (prnt==1) \textcolor{keywordflow}{then} }
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 \textcolor{keywordflow}{if} (myrow.eq.0 .and. mycol.eq.0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{121     \textcolor{keyword}{open} (unit=22,file=\textcolor{stringliteral}{'eval'}//trim(suffix)//\textcolor{stringliteral}{'.dat'}, status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{122     \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{123         \textcolor{keyword}{write}(22,*) w(i) }
+\DoxyCodeLine{124 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{125         \textcolor{keyword}{close}(22)}
+\DoxyCodeLine{126 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128 \textcolor{comment}{!Print eigenvectors}}
+\DoxyCodeLine{129 \textcolor{keyword}{open}(unit=22,file=\textcolor{stringliteral}{'evec'}//trim(suffix)//\textcolor{stringliteral}{'.dat'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{130     \textcolor{keywordflow}{do} i=1,nps  }
+\DoxyCodeLine{131     \textcolor{keywordflow}{do} j=1,nps}
+\DoxyCodeLine{132         \textcolor{keyword}{call }pdelget(\textcolor{stringliteral}{'A'}, \textcolor{stringliteral}{' '}, dalpha, ls, i,j, descs)}
+\DoxyCodeLine{133         \textcolor{keyword}{write}(22,*) dalpha}
+\DoxyCodeLine{134 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{135 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{136 \textcolor{keyword}{close}(22)       }
+\DoxyCodeLine{137 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 \textcolor{keyword}{deallocate}(lta)}
+\DoxyCodeLine{140 }
+
+\end{DoxyCode}

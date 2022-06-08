@@ -22,22 +22,22 @@ subroutine \mbox{\hyperlink{dyson-2t_2src_2phamspin_8f90_ab6170b1fb713ad0fb0a818
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & npx \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PX \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & bc \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & BC \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lham \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+H\+AM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descham \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+H\+AM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & onsite \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & O\+N\+S\+I\+TE \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nnhop \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+N\+H\+OP \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -47,3 +47,55 @@ subroutine \mbox{\hyperlink{dyson-2t_2src_2phamspin_8f90_ab6170b1fb713ad0fb0a818
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 39 of file phamspin.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{39     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{40     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{41 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{42     \textcolor{keywordtype}{integer} :: npx, bc}
+\DoxyCodeLine{43     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descham}
+\DoxyCodeLine{44     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: onsite}
+\DoxyCodeLine{45     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: nnhop}
+\DoxyCodeLine{46 \textcolor{comment}{!Input/output variables}}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: lham}
+\DoxyCodeLine{48 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{49     \textcolor{keywordtype}{double precision} :: dalpha}
+\DoxyCodeLine{50     \textcolor{keywordtype}{integer} :: i}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 lham=0.0d0}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{comment}{!Diagonal elements}}
+\DoxyCodeLine{55 \textcolor{keywordflow}{do} i=1, npx}
+\DoxyCodeLine{56 \textcolor{comment}{!up}}
+\DoxyCodeLine{57     dalpha = onsite(i)}
+\DoxyCodeLine{58     \textcolor{keyword}{call }pdelset(lham,2*i-\/1,2*i-\/1,descham,dalpha)}
+\DoxyCodeLine{59 \textcolor{comment}{!down       }}
+\DoxyCodeLine{60     dalpha = onsite(i)}
+\DoxyCodeLine{61     \textcolor{keyword}{call }pdelset(lham,2*i,2*i,descham,dalpha)}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{64 \textcolor{comment}{!Nearest Neighbour  }}
+\DoxyCodeLine{65 \textcolor{keywordflow}{do} i=1, npx-\/1}
+\DoxyCodeLine{66     dalpha = nnhop(i)}
+\DoxyCodeLine{67     \textcolor{keyword}{call }pdelset(lham,2*i-\/1,2*i+1,descham,dalpha)}
+\DoxyCodeLine{68     \textcolor{keyword}{call }pdelset(lham,2*i+1,2*i-\/1,descham,dalpha)}
+\DoxyCodeLine{69     \textcolor{keyword}{call }pdelset(lham,2*i,2*i+2,descham,dalpha)}
+\DoxyCodeLine{70     \textcolor{keyword}{call }pdelset(lham,2*i+2,2*i,descham,dalpha)}
+\DoxyCodeLine{71 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 \textcolor{keywordflow}{if} (bc==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{74 \textcolor{comment}{!Periodic boundary conditions}}
+\DoxyCodeLine{75     dalpha = nnhop(i)}
+\DoxyCodeLine{76     \textcolor{keyword}{call }pdelset(lham,1,2*npx-\/1,descham,dalpha)}
+\DoxyCodeLine{77     \textcolor{keyword}{call }pdelset(lham,2*npx-\/1,1,descham,dalpha)}
+\DoxyCodeLine{78     \textcolor{keyword}{call }pdelset(lham,2,2*npx,descham,dalpha)}
+\DoxyCodeLine{79     \textcolor{keyword}{call }pdelset(lham,2*npx,2,descham,dalpha)}
+\DoxyCodeLine{80 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 }
+
+\end{DoxyCode}

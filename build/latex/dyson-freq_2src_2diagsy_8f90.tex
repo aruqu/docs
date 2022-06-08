@@ -22,22 +22,22 @@ subroutine \mbox{\hyperlink{dyson-freq_2src_2diagsy_8f90_a77b11ab26cc5dd609764fc
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & a \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & A \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & w \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & W \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & s \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & prnt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & P\+R\+NT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & suffix \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+U\+F\+F\+IX \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -47,3 +47,79 @@ subroutine \mbox{\hyperlink{dyson-freq_2src_2diagsy_8f90_a77b11ab26cc5dd609764fc
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 39 of file diagsy.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{39     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{40     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{41 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{42     \textcolor{keywordtype}{character(*)} :: suffix}
+\DoxyCodeLine{43     \textcolor{keywordtype}{integer} :: nps,prnt}
+\DoxyCodeLine{44     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: a}
+\DoxyCodeLine{45 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{46     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: w}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: s}
+\DoxyCodeLine{48 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{49     \textcolor{keywordtype}{double precision} :: dalpha}
+\DoxyCodeLine{50     \textcolor{keywordtype}{integer} :: i,j}
+\DoxyCodeLine{51     \textcolor{keywordtype}{integer} :: info1,info2,dwork,diwork}
+\DoxyCodeLine{52     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: work}
+\DoxyCodeLine{53     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: iwork}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 s=a}
+\DoxyCodeLine{57 w=0.d0}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \textcolor{keyword}{allocate} (work(1),iwork(1))}
+\DoxyCodeLine{60 work=0.d0}
+\DoxyCodeLine{61 iwork=0}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{keyword}{call }dsyevd(\textcolor{stringliteral}{'V'},\textcolor{stringliteral}{'U'},nps,s,nps,w,work,-\/1,iwork,-\/1,info1)}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 dwork=max(1,int(work(1)))}
+\DoxyCodeLine{66 diwork=max(1,int(iwork(1)))}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 s=a}
+\DoxyCodeLine{69 \textcolor{keyword}{deallocate}(work,iwork)}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 \textcolor{keywordflow}{if} (info1==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{74     w=0.0d0}
+\DoxyCodeLine{75     \textcolor{keyword}{allocate}(work(dwork),iwork(diwork))}
+\DoxyCodeLine{76     \textcolor{keyword}{call }dsyevd(\textcolor{stringliteral}{'V'},\textcolor{stringliteral}{'U'},nps,s,nps,w,work,dwork,iwork,diwork,info2)}
+\DoxyCodeLine{77     \textcolor{keyword}{deallocate}(work)}
+\DoxyCodeLine{78 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (info1/=0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{79     \textcolor{keyword}{write}(*,*) \textcolor{stringliteral}{'ERROR 1, info1=  '}, info1}
+\DoxyCodeLine{80         stop}
+\DoxyCodeLine{81 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \textcolor{keywordflow}{if} (info2/=0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{84     \textcolor{keyword}{write}(*,*) \textcolor{stringliteral}{'ERROR 2, info2= '}, info2}
+\DoxyCodeLine{85     stop}
+\DoxyCodeLine{86 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 \textcolor{comment}{!Print eigenvalues}}
+\DoxyCodeLine{89 \textcolor{keywordflow}{if} (prnt==1) \textcolor{keywordflow}{then} }
+\DoxyCodeLine{90     \textcolor{keyword}{open} (unit=22,file=\textcolor{stringliteral}{'eval'}//trim(suffix)//\textcolor{stringliteral}{'.dat'}, status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{91     \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{92         \textcolor{keyword}{write}(22,*) w(i)}
+\DoxyCodeLine{93 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{94         \textcolor{keyword}{close}(22)}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 \textcolor{comment}{!Print eigenvectors}}
+\DoxyCodeLine{97 \textcolor{keyword}{open}(unit=23,file=\textcolor{stringliteral}{'evec'}//trim(suffix)//\textcolor{stringliteral}{'.dat'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{98     \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{99     \textcolor{keywordflow}{do} j=1,nps}
+\DoxyCodeLine{100         \textcolor{keyword}{write}(23,*) s(i,j)}
+\DoxyCodeLine{101 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{102 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{103 \textcolor{keyword}{close}(23)}
+\DoxyCodeLine{104 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 }
+
+\end{DoxyCode}

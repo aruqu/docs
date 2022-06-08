@@ -22,43 +22,43 @@ subroutine \mbox{\hyperlink{phse_8f90_a2ebe1ed7e3933c34828c01348260e7fc}{phse}} 
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & wm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & WM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & vw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & VW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & v \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & V \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lnegl \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+N\+E\+GL \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lnegg \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+N\+E\+GG \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & desc \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+SC \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsl \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SL \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsg \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SG \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsr \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SR \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descld \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+LD \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -68,3 +68,166 @@ subroutine \mbox{\hyperlink{phse_8f90_a2ebe1ed7e3933c34828c01348260e7fc}{phse}} 
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 67 of file phse.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{67     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{68     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{69 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{70     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = dacos(-\/1.0d0)       \textcolor{comment}{! Pi greco}}
+\DoxyCodeLine{71     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{72     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{73     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{74 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{75     \textcolor{keywordtype}{integer} :: nps,npw}
+\DoxyCodeLine{76     \textcolor{keywordtype}{double precision} :: wm,g}
+\DoxyCodeLine{77     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: vw,desc,descld}
+\DoxyCodeLine{78     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension (:,:)} :: v}
+\DoxyCodeLine{79     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegl}
+\DoxyCodeLine{80     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegg}
+\DoxyCodeLine{81 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{82     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsl}
+\DoxyCodeLine{83     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsg}
+\DoxyCodeLine{84     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsr}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{87     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol,rsrc,csrc}
+\DoxyCodeLine{88 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{89     \textcolor{keywordtype}{integer} :: n,i,j,lw,liw,mb,nb,lldc,lldr,lldwc,lldwr, numroc}
+\DoxyCodeLine{90     \textcolor{keywordtype}{double precision} :: t,dt,tm}
+\DoxyCodeLine{91     \textcolor{keywordtype}{double complex} :: zalpha}
+\DoxyCodeLine{92     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(nps,nps)} :: intg, tmp, tmpa, cv}
+\DoxyCodeLine{93     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: ltmpr, ltmpl, ltmpg, ltmp,lpa, lpr, lpl, lpg, lwr, lwl, lwg }
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{96 nprocs=nprow*npcol}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 mb = desc(5)}
+\DoxyCodeLine{99 nb = desc(6)}
+\DoxyCodeLine{100 n=nps*npw}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 lldr=numroc(nps,mb,myrow,0,1)}
+\DoxyCodeLine{103 lldc=numroc(n,nb,mycol,0,nprocs)}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 lldwr=numroc(1,1,myrow,0,1)}
+\DoxyCodeLine{106 lldwc=numroc(npw,1,mycol,0,nprocs)}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 \textcolor{keyword}{allocate}(ltmpr(lldr,lldc),ltmpl(lldr,lldc),ltmpg(lldr,lldc),ltmp(lldwr,lldwc))}
+\DoxyCodeLine{109 \textcolor{keyword}{allocate}(lpr(lldwr,lldwc),lpa(lldwr,lldwc),lpl(lldwr,lldwc),lpg(lldwr,lldwc))}
+\DoxyCodeLine{110 \textcolor{keyword}{allocate}(lwr(lldr,lldc),lwl(lldr,lldc),lwg(lldr,lldc))}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!POLARIZATION DIAGRAM (time) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 \textcolor{keyword}{call }\mbox{\hyperlink{fourierwt_8f90_a233f3212e076010b60b1e0d1d14b7f1b}{fourierwt}}(context,nps,npw,wm,1,lnegl,desc,ltmpl)}
+\DoxyCodeLine{116 \textcolor{keyword}{call }\mbox{\hyperlink{fourierwt_8f90_a233f3212e076010b60b1e0d1d14b7f1b}{fourierwt}}(context,nps,npw,wm,1,lnegg,desc,ltmpg)}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!LESSER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 \textcolor{comment}{!do lw=1, lldwc}}
+\DoxyCodeLine{122 \textcolor{comment}{!   liw=(lw-\/1)*nps+1}}
+\DoxyCodeLine{123 \textcolor{comment}{!   do i=1,nps}}
+\DoxyCodeLine{124 \textcolor{comment}{!   do j=1,nps}}
+\DoxyCodeLine{125 \textcolor{comment}{!       lpl(1,lw)= ci*ltmpl(i,liw+j-\/1)!*conjg(ltmpg(i,liw+j-\/1))*(g**2)}}
+\DoxyCodeLine{126 \textcolor{comment}{!   end do}}
+\DoxyCodeLine{127 \textcolor{comment}{!   end do}}
+\DoxyCodeLine{128 \textcolor{comment}{!end do}}
+\DoxyCodeLine{129 lpl=zero}
+\DoxyCodeLine{130 tmp=zero}
+\DoxyCodeLine{131 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{132     liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{133     tmp=matmul(matmul(v,ltmpl(1:nps,liw:liw+nps-\/1)), matmul(v,conjg(transpose(ltmpg(1:nps,liw:liw+nps-\/1)))) )}
+\DoxyCodeLine{134     \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{135         lpl(1,lw)= lpl(1,lw)+ci*tmp(i,i)}
+\DoxyCodeLine{136 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{137 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 \textcolor{comment}{!if(myrow==0.and.mycol==0) then}}
+\DoxyCodeLine{140 \textcolor{comment}{!   print*, tmp(1,1)  }}
+\DoxyCodeLine{141 \textcolor{comment}{!end if}}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!GREATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 \textcolor{comment}{!do lw=1, lldwc}}
+\DoxyCodeLine{146 \textcolor{comment}{!   liw=(lw-\/1)*nps+1}}
+\DoxyCodeLine{147 \textcolor{comment}{!   do i=1,nps}}
+\DoxyCodeLine{148 \textcolor{comment}{!   do j=1,nps}}
+\DoxyCodeLine{149 \textcolor{comment}{!       lpg(1,lw)= ci*ltmpg(i,liw+j-\/1)!*conjg(ltmpl(i,liw+j-\/1))*(g**2)}}
+\DoxyCodeLine{150 \textcolor{comment}{!   end do}}
+\DoxyCodeLine{151 \textcolor{comment}{!   end do}}
+\DoxyCodeLine{152 \textcolor{comment}{!end do}}
+\DoxyCodeLine{153 lpg=zero}
+\DoxyCodeLine{154 tmp=zero}
+\DoxyCodeLine{155 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{156     liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{157     tmp=matmul(matmul(v,ltmpg(1:nps,liw:liw+nps-\/1)), matmul(v,conjg(transpose(ltmpl(1:nps,liw:liw+nps-\/1)))) )}
+\DoxyCodeLine{158     \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{159         lpg(1,lw)= lpg(1,lw)+ci*tmp(i,i)}
+\DoxyCodeLine{160 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{161 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!RETARDED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165 ltmp=zero}
+\DoxyCodeLine{166 tm=pi*(npw-\/1)/(2.d0*wm)}
+\DoxyCodeLine{167 dt=pi/wm}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169 \textcolor{comment}{!do lw=1, lldwc}}
+\DoxyCodeLine{170 \textcolor{comment}{!   liw=(lw-\/1)*nps+1}}
+\DoxyCodeLine{171 \textcolor{comment}{!   t=-\/tm+(vw(lw)-\/1)*dt}}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173 \textcolor{comment}{!   if (t.ge.0.d0.and.t<dt) then}}
+\DoxyCodeLine{174 \textcolor{comment}{!       ltmp(:,liw:liw+nps-\/1)=0.5d0*(lpg(:,liw:liw+nps-\/1)-\/lpl(:,liw:liw+nps-\/1))}}
+\DoxyCodeLine{175 \textcolor{comment}{!   else if (t>0.d0) then}}
+\DoxyCodeLine{176 \textcolor{comment}{!       ltmp(:,liw:liw+nps-\/1)=(lpg(:,liw:liw+nps-\/1)-\/lpl(:,liw:liw+nps-\/1))}}
+\DoxyCodeLine{177 \textcolor{comment}{!   end if}}
+\DoxyCodeLine{178 \textcolor{comment}{!end do}}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{181     t=-\/tm+(vw(lw)-\/1)*dt}
+\DoxyCodeLine{182     \textcolor{keywordflow}{if} (t.ge.0.d0.and.t<dt) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{183         ltmp(1,lw)=0.5d0*(lpg(1,lw)-\/lpl(1,lw))}
+\DoxyCodeLine{184     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (t>0.d0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{185         ltmp(1,lw)=(lpg(1,lw)-\/lpl(1,lw))}
+\DoxyCodeLine{186 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{187 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189 lsr=zero}
+\DoxyCodeLine{190 \textcolor{keyword}{call }\mbox{\hyperlink{fourierwt_8f90_a233f3212e076010b60b1e0d1d14b7f1b}{fourierwt}}(context,1,npw,wm,-\/1,ltmp,descld,lsr)}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ADVANCED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195 \textcolor{comment}{!ltmp=zero}}
+\DoxyCodeLine{196 \textcolor{comment}{!tm=pi*(npw-\/1)/(2.d0*wm)}}
+\DoxyCodeLine{197 \textcolor{comment}{!dt=pi/wm}}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{199 \textcolor{comment}{!do lw=1, lldwc}}
+\DoxyCodeLine{200 \textcolor{comment}{!   liw=(lw-\/1)*nps+1}}
+\DoxyCodeLine{201 \textcolor{comment}{!   t=-\/tm+(vw(lw)-\/1)*dt}}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203 \textcolor{comment}{!   if (t.ge.0.d0.and.t<dt) then}}
+\DoxyCodeLine{204 \textcolor{comment}{!       ltmp(:,liw:liw+nps-\/1)=-\/0.5d0*(lpg(:,liw:liw+nps-\/1)-\/lpl(:,liw:liw+nps-\/1))}}
+\DoxyCodeLine{205 \textcolor{comment}{!   else if (t<0.d0) then}}
+\DoxyCodeLine{206 \textcolor{comment}{!       ltmp(:,liw:liw+nps-\/1)=-\/(lpg(:,liw:liw+nps-\/1)-\/lpl(:,liw:liw+nps-\/1))}}
+\DoxyCodeLine{207 \textcolor{comment}{!   end if}}
+\DoxyCodeLine{208 \textcolor{comment}{!end do}}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211 \textcolor{comment}{!lsa=zero}}
+\DoxyCodeLine{212 \textcolor{comment}{!call fourierwt(context,nps,npw,wm,-\/1,ltmp,desc,lsa)}}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214 ltmp=lpl}
+\DoxyCodeLine{215 lsl=zero}
+\DoxyCodeLine{216 \textcolor{keyword}{call }\mbox{\hyperlink{fourierwt_8f90_a233f3212e076010b60b1e0d1d14b7f1b}{fourierwt}}(context,1,npw,wm,-\/1,ltmp,descld,lsl)}
+\DoxyCodeLine{217 }
+\DoxyCodeLine{218 ltmp=lpg}
+\DoxyCodeLine{219 lsg=zero}
+\DoxyCodeLine{220 \textcolor{keyword}{call }\mbox{\hyperlink{fourierwt_8f90_a233f3212e076010b60b1e0d1d14b7f1b}{fourierwt}}(context,1,npw,wm,-\/1,ltmp,descld,lsg)}
+\DoxyCodeLine{221 }
+
+\end{DoxyCode}

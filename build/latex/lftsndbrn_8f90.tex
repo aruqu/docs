@@ -22,25 +22,25 @@ subroutine \mbox{\hyperlink{lftsndbrn_8f90_aab3d78c02e8340cc121a99653781c31f}{lf
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & v \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & V \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lneglft \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+N\+E\+G\+L\+FT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descneglft \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+N\+E\+G\+L\+FT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lslft \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+S\+L\+FT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descslft \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+S\+L\+FT \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -50,3 +50,158 @@ subroutine \mbox{\hyperlink{lftsndbrn_8f90_aab3d78c02e8340cc121a99653781c31f}{lf
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 43 of file lftsndbrn.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{43     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{44     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{45 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{46     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{47 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{48     \textcolor{keywordtype}{integer} :: nps, npt}
+\DoxyCodeLine{49     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: v}
+\DoxyCodeLine{50     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descneglft}
+\DoxyCodeLine{51     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lneglft}
+\DoxyCodeLine{52 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{53     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descslft}
+\DoxyCodeLine{54     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}:: lslft}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{57     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{58 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{59     \textcolor{keywordtype}{integer} :: n,i,j,tt,ttp,it,itp,lit,litp}
+\DoxyCodeLine{60     \textcolor{keywordtype}{integer} :: mb,nb,pr,pc,lldr,lldc,lldtr,lldtc}
+\DoxyCodeLine{61     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{62     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: desctmp,desctmprgt}
+\DoxyCodeLine{63     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: ltmp,ltmprgt}
+\DoxyCodeLine{64     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtt, vttp}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 context = descneglft(2)}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 lldtr=numroc(npt,1,myrow,0,nprow)}
+\DoxyCodeLine{71 lldtc=numroc(npt,1,mycol,0,npcol)}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 n=nps*npt}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 mb = descneglft(5)}
+\DoxyCodeLine{76 nb = descneglft(6)}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 lldr=numroc(n,mb,myrow,0,nprow)}
+\DoxyCodeLine{79 lldc=numroc(n,nb,mycol,0,npcol)}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{keyword}{allocate}(ltmp(lldr,lldc),ltmprgt(lldr,lldc))}
+\DoxyCodeLine{83 ltmp=zero}
+\DoxyCodeLine{84 ltmprgt=zero}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \textcolor{keyword}{call }descinit(desctmprgt,n,n,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 \textcolor{keyword}{allocate}(vtt(lldtr),vttp(lldtc))}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 vtt=0}
+\DoxyCodeLine{91 vttp=0}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 i=0}
+\DoxyCodeLine{94 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{95 pr=mod(floor(real(tt-\/1)),nprow)}
+\DoxyCodeLine{96 \textcolor{keywordflow}{if}(myrow==pr) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{97 i=i+1}
+\DoxyCodeLine{98 vtt(i)=tt}
+\DoxyCodeLine{99 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{100 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 i=0}
+\DoxyCodeLine{103 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{104 pc=mod(floor(real(tt-\/1)),npcol)}
+\DoxyCodeLine{105 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{106 i=i+1}
+\DoxyCodeLine{107 vttp(i)=tt}
+\DoxyCodeLine{108 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{109 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 \textcolor{keyword}{call }\mbox{\hyperlink{lftrgt_8f90_ac2054aa950e72541f98d2b5c7fea1892}{lftrgt}}(nps,npt,\textcolor{stringliteral}{'lr'},lneglft,descneglft,ltmprgt,desctmprgt)}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{comment}{!+++++++++++++++++++++++++++++++++Direct term++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 \textcolor{comment}{!Polarization diagram}}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{119 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{122 litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 ltmp(lit:lit+nps-\/1,litp:litp+nps-\/1) = lneglft(lit:lit+nps-\/1,litp:litp+nps-\/1)*ltmprgt(lit:lit+nps-\/1,litp:litp+nps-\/1)}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{127 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{130 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{133 litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 ltmp(lit:lit+nps-\/1,litp:litp+nps-\/1) = matmul(v,matmul(ltmp(lit:lit+nps-\/1,litp:litp+nps-\/1),v))}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{138 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141 \textcolor{comment}{!Self energy}}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{144 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{147 litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 lslft(lit:lit+nps-\/1,litp:litp+nps-\/1)=lslft(lit:lit+nps-\/1,litp:litp+nps-\/1)\&}
+\DoxyCodeLine{150                 \&+lneglft(lit:lit+nps-\/1,litp:litp+nps-\/1)*ltmp(lit:lit+nps-\/1,litp:litp+nps-\/1)}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{153 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{154 \textcolor{comment}{!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 \textcolor{comment}{!++++++++++++++++++++++++++++++Exchange term+++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{161 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{164 litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166 \textcolor{keywordflow}{do} it = lit,lit+nps-\/1}
+\DoxyCodeLine{167 \textcolor{keywordflow}{do} itp = litp,litp+nps-\/1}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169 \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{170 \textcolor{keywordflow}{do} j=1, nps}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172 lslft(it,itp)=lslft(it,itp)-\/lneglft(it,litp+j-\/1)*lneglft(lit+i-\/1,itp)*v(it-\/lit+1,i)*ltmprgt(lit+i-\/1,litp+j-\/1)*v(itp-\/litp+1,j)}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{176 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{179 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{183 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185 \textcolor{comment}{!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188 \textcolor{keyword}{deallocate}(ltmp,ltmprgt)}
+\DoxyCodeLine{189 }
+
+\end{DoxyCode}

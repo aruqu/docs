@@ -50,3 +50,44 @@ subroutine \mbox{\hyperlink{gkba_2src_2tbham_8f90_a451ef4ee8e99560e5de03ef15bc33
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 40 of file tbham.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{40     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{41 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{42     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{intent(in)} :: NPX}
+\DoxyCodeLine{43     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{intent(in)}, \textcolor{keywordtype}{optional} :: BC}
+\DoxyCodeLine{44     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{intent(in)}, \textcolor{keywordtype}{optional} :: ONSITE}
+\DoxyCodeLine{45     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{intent(in)} :: NNHOP}
+\DoxyCodeLine{46 \textcolor{comment}{!Output variables}}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{intent(out)} :: HAM}
+\DoxyCodeLine{48 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{49     \textcolor{keywordtype}{integer} :: i}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 ham=0.0d0}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{comment}{!Diagonal elementsi}}
+\DoxyCodeLine{54 \textcolor{keywordflow}{if} (\textcolor{keyword}{present}(onsite)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{55     \textcolor{keywordflow}{do} i=1, npx}
+\DoxyCodeLine{56         ham(i,i) = onsite(i)}
+\DoxyCodeLine{57 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{58 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \textcolor{comment}{!Nearest Neighbour}}
+\DoxyCodeLine{61 \textcolor{keywordflow}{do} i=1, npx-\/1}
+\DoxyCodeLine{62     ham(i,i+1) = nnhop(i)}
+\DoxyCodeLine{63     ham(i+1,i) = nnhop(i)}
+\DoxyCodeLine{64 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \textcolor{comment}{!Periodic boundary conditions}}
+\DoxyCodeLine{68 \textcolor{keywordflow}{if} (\textcolor{keyword}{present}(bc).and.bc==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{69     ham(npx,1) = nnhop(npx)}
+\DoxyCodeLine{70     ham(1,npx) = nnhop(npx)}
+\DoxyCodeLine{71 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{72 }
+
+\end{DoxyCode}

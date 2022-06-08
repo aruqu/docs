@@ -87,6 +87,8 @@ $(document).ready(function(){initNavTree('coupmatrix_8f90.html',''); initResizab
 <div class="title">coupmatrix.f90 File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><a href="coupmatrix_8f90_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
@@ -143,6 +145,34 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section version"><dt>Version</dt><dd>0.1 </dd></dl>
 <dl class="section author"><dt>Authors</dt><dd>Cosco F., Lo Gullo N., Talarico W. </dd></dl>
 
+<p class="definition">Definition at line <a class="el" href="coupmatrix_8f90_source.html#l00030">30</a> of file <a class="el" href="coupmatrix_8f90_source.html">coupmatrix.f90</a>.</p>
+<div class="fragment"><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordtype">implicit none</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">!Input variables</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordtype">integer</span>, <span class="keywordtype">intent(in)</span>, <span class="keywordtype">optional</span> :: NPX</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">integer</span>, <span class="keywordtype">dimension(:)</span>, <span class="keywordtype">intent(in)</span> :: LDS</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">!Output variables</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">double precision</span>, <span class="keywordtype">dimension(:,:)</span>, <span class="keywordtype">intent(out)</span> :: GAMMA</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">!Dummy variables</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">integer</span> :: i,j</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;gamma=0.0d0</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">!do i=1, size(LDS)</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">!!up</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="comment">!GAMMA(LDS(i),LDS(i)) = 1.0d0</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">!end do</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keywordflow">do</span> i=1, <span class="keyword">size</span>(lds)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">do</span> j=1, <span class="keyword">size</span>(lds)</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        gamma(lds(i),lds(j)) = 1.0d0</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        gamma(lds(j),lds(i)) = 1.0d0</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keywordflow">end do</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordflow">end do</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">!!down      </span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">!   GAMMA(NPX+i,NPX+i) = 1.0d0</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->

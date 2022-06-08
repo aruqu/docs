@@ -22,22 +22,22 @@ subroutine \mbox{\hyperlink{kernel_8f90_aada3471c9191926bca31a739e48739fb}{kerne
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & scm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+CM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & delta \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+L\+TA \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lker \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+K\+ER \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descker \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+K\+ER \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -47,3 +47,116 @@ subroutine \mbox{\hyperlink{kernel_8f90_aada3471c9191926bca31a739e48739fb}{kerne
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 39 of file kernel.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{39     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{40     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{41 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{42     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{43     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{44 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{45     \textcolor{keywordtype}{character (*)} :: scm}
+\DoxyCodeLine{46     \textcolor{keywordtype}{integer} :: nps,npt}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double complex} :: delta}
+\DoxyCodeLine{48 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{49     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descker}
+\DoxyCodeLine{50     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lker}
+\DoxyCodeLine{51 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{52     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{53 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{54     \textcolor{keywordtype}{integer} :: n,i,j,tt,ttp,lit,litp}
+\DoxyCodeLine{55     \textcolor{keywordtype}{integer} :: mb,nb,pr,pc,lldr,lldc,lldtr,lldtc}
+\DoxyCodeLine{56     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{57     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension (:,:)}, \textcolor{keywordtype}{allocatable} :: w}
+\DoxyCodeLine{58     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtt, vttp}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 context = descker(2)}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 lldtr= numroc(npt,1,myrow,0,nprow)}
+\DoxyCodeLine{65 lldtc= numroc(npt,1,mycol,0,npcol)}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 n=nps*npt}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 mb = descker(5)}
+\DoxyCodeLine{70 nb = descker(6)}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 lldr= numroc(n,mb,myrow,0,nprow)}
+\DoxyCodeLine{73 lldc= numroc(n,nb,mycol,0,npcol)}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{keyword}{allocate}(vtt(lldtr),vttp(lldtc))}
+\DoxyCodeLine{77 \textcolor{keyword}{allocate}(w(lldtr,lldtc))}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 vtt=0}
+\DoxyCodeLine{80 vttp=0}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 i=0}
+\DoxyCodeLine{83 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{84 pr=mod(floor(real(tt-\/1)),nprow)}
+\DoxyCodeLine{85 \textcolor{keywordflow}{if}(myrow==pr) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{86 i=i+1}
+\DoxyCodeLine{87 vtt(i)=tt}
+\DoxyCodeLine{88 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{89 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 i=0}
+\DoxyCodeLine{92 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{93 pc=mod(floor(real(tt-\/1)),npcol)}
+\DoxyCodeLine{94 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{95 i=i+1}
+\DoxyCodeLine{96 vttp(i)=tt}
+\DoxyCodeLine{97 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{98 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 \textcolor{comment}{!+++++++++++++++++++++++++++++++++Kernel+++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 \textcolor{keyword}{call }\mbox{\hyperlink{weights_8f90_a594689ef0872066cbc84bbe582e1b2f0}{weights}}(context,scm,npt,1,w)}
+\DoxyCodeLine{104 \textcolor{keyword}{call }blacs\_barrier(context,\textcolor{stringliteral}{'A'})}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 lker = -\/lker}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!Identity-\/Ker!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{109 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{110 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 \textcolor{keywordflow}{if}(vtt(tt)==vttp(ttp)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{115 litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118     \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{119         lker(lit+i-\/1,litp+i-\/1) = uno/(delta*w(tt,ttp))+lker(lit+i-\/1,litp+i-\/1)}
+\DoxyCodeLine{120 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{121 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{124 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{125 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!PALLINO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{128 \textcolor{comment}{!do tt=1, lldtr}}
+\DoxyCodeLine{129 \textcolor{comment}{!do ttp=1, lldtc}}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131 \textcolor{comment}{!lit =(tt-\/1)*nps+1}}
+\DoxyCodeLine{132 \textcolor{comment}{!litp=(ttp-\/1)*nps+1}}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 \textcolor{comment}{!if(vtt(tt).ge.vttp(ttp)) then}}
+\DoxyCodeLine{136 \textcolor{comment}{!   lker(lit:lit+nps-\/1,litp:litp+nps-\/1) = w(tt,ttp)*lker(lit:lit+nps-\/1,litp:litp+nps-\/1)}}
+\DoxyCodeLine{137 \textcolor{comment}{!end if}}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140 \textcolor{comment}{!end do}}
+\DoxyCodeLine{141 \textcolor{comment}{!end do}}
+\DoxyCodeLine{142 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{143 }
+
+\end{DoxyCode}

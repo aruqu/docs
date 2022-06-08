@@ -22,22 +22,22 @@ subroutine \mbox{\hyperlink{dyson-2t_2src_2pham_8f90_a3eb5b8d6f3edc8ef11ba2e4696
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & npx \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PX \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & bc \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & BC \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lham \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+H\+AM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descham \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+H\+AM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & onsite \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & O\+N\+S\+I\+TE \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nnhop \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+N\+H\+OP \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -47,3 +47,46 @@ subroutine \mbox{\hyperlink{dyson-2t_2src_2pham_8f90_a3eb5b8d6f3edc8ef11ba2e4696
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 39 of file pham.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{39     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{40     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{41 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{42     \textcolor{keywordtype}{integer} :: npx, bc}
+\DoxyCodeLine{43     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descham}
+\DoxyCodeLine{44     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: onsite}
+\DoxyCodeLine{45     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: nnhop}
+\DoxyCodeLine{46 \textcolor{comment}{!Input/output variables}}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: lham}
+\DoxyCodeLine{48 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{49     \textcolor{keywordtype}{double precision} :: dalpha}
+\DoxyCodeLine{50     \textcolor{keywordtype}{integer} :: i}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 lham=0.0d0}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{comment}{!Diagonal elements}}
+\DoxyCodeLine{55 \textcolor{keywordflow}{do} i=1, npx}
+\DoxyCodeLine{56     dalpha = onsite(i)}
+\DoxyCodeLine{57     \textcolor{keyword}{call }pdelset(lham,i,i,descham,dalpha)}
+\DoxyCodeLine{58 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{59 \textcolor{comment}{!Nearest Neighbour  }}
+\DoxyCodeLine{60 \textcolor{keywordflow}{do} i=1, npx-\/1}
+\DoxyCodeLine{61     dalpha = nnhop(i)}
+\DoxyCodeLine{62     \textcolor{keyword}{call }pdelset(lham,i,i+1,descham,dalpha)}
+\DoxyCodeLine{63     \textcolor{keyword}{call }pdelset(lham,i+1,i,descham,dalpha)}
+\DoxyCodeLine{64 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 \textcolor{keywordflow}{if} (bc==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{67 \textcolor{comment}{!Periodic boundary conditions}}
+\DoxyCodeLine{68     dalpha = nnhop(i)}
+\DoxyCodeLine{69     \textcolor{keyword}{call }pdelset(lham,1,npx,descham,dalpha)}
+\DoxyCodeLine{70     \textcolor{keyword}{call }pdelset(lham,npx,1,descham,dalpha)}
+\DoxyCodeLine{71 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 }
+
+\end{DoxyCode}

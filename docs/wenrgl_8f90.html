@@ -87,6 +87,8 @@ $(document).ready(function(){initNavTree('wenrgl_8f90.html',''); initResizable()
 <div class="title">wenrgl.f90 File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><a href="wenrgl_8f90_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
@@ -165,25 +167,85 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section user"><dt>Description</dt><dd><pre class="fragment"> </pre> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">[]</td><td>context <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>nps <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>npw <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>wm <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>vw <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>stat <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>lgr <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>desc <pre class="fragment"> </pre> </td></tr>
-    <tr><td class="paramname">[]</td><td>enrg <pre class="fragment"> </pre></td></tr>
+    <tr><td class="paramname">[]</td><td>CONTEXT <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>NPS <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>NPW <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>WM <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>VW <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>STAT <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>LGR <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>DESC <pre class="fragment"> </pre> </td></tr>
+    <tr><td class="paramname">[]</td><td>ENRG <pre class="fragment"> </pre></td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section version"><dt>Version</dt><dd>0.1 </dd></dl>
 <dl class="section author"><dt>Authors</dt><dd>Cosco F., Lo Gullo N., Talarico W. </dd></dl>
 
+<p class="definition">Definition at line <a class="el" href="wenrgl_8f90_source.html#l00051">51</a> of file <a class="el" href="wenrgl_8f90_source.html">wenrgl.f90</a>.</p>
+<div class="fragment"><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">use </span>mpi</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">implicit none</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">!Useful numerical parameters</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">double precision</span>, <span class="keywordtype">parameter</span> :: pi = dacos(-1.0d0)       <span class="comment">! Pi greco</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">double complex</span>, <span class="keywordtype">parameter</span> :: ci = (0.0d0,1.0d0)         <span class="comment">! Imaginary unit</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">double complex</span>, <span class="keywordtype">parameter</span> :: uno = (1.0d0,0.0d0)        <span class="comment">! Complex one</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">double complex</span>, <span class="keywordtype">parameter</span> :: zero = (0.0d0,0.0d0)       <span class="comment">! Complex zero</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">!Input variables</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">integer</span> :: nps,npw, stat</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">double precision</span> :: wm</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">integer</span>, <span class="keywordtype">dimension(:)</span> :: vw</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">integer</span>, <span class="keywordtype">dimension (:)</span> :: desc</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">double complex</span>, <span class="keywordtype">dimension(:,:)</span> :: lgr</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">!Output variables</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">double precision</span>, <span class="keywordtype">dimension(:)</span> :: enrg</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">!Varibles for grid query</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">integer</span> :: context,info,nprow,npcol,nprocs,myrow,mycol,rsrc,csrc</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">!Dummy variables</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">integer</span> :: n,i,iw,lw,lwp,liw,liwp</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">integer</span> :: nb,mb,pr,pc,lldr,lldc,lldwr,lldwc,numroc</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">double precision</span> :: dalpha,dw,w</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">integer</span>, <span class="keywordtype">dimension (9)</span> :: descw</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">double complex</span>, <span class="keywordtype">dimension(nps,nps)</span> :: intg</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">double complex</span>, <span class="keywordtype">dimension(:,:)</span>, <span class="keywordtype">allocatable</span> :: ltmp</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword">call </span>blacs_gridinfo(context,nprow,npcol,myrow,mycol)</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;nprocs=nprow*npcol</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;mb = desc(5)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;nb = desc(6)</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;n=nps*npw</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;lldr=numroc(nps,mb,myrow,0,1)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;lldc=numroc(n,nb,mycol,0,nprocs)</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;lldwr=numroc(npw,1,myrow,0,1)</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;lldwc=numroc(npw,1,mycol,0,nprocs)</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">allocate</span>(ltmp(lldr,lldc))</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;dw=2*wm/(npw-1)</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keywordflow">do</span> lw=1, lldwc</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    liw=(lw-1)*nps+1</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        w=-wm+(vw(lw)-1)*dw</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    ltmp(1:nps,liw:liw+nps-1) = w*lgr(1:nps,liw:liw+nps-1)</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="keywordflow">end do</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keyword">call </span>descinit(descw,1,npw,1,1,0,0,context,lldwr,info)</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;intg=zero</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="keyword">call </span><a class="code" href="wint_8f90.html#a9f702255e0af5953e65e9a6a035f6259">wint</a>(context,nps,npw,wm,ltmp,desc,intg)</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordflow">do</span> i=1,nps</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <a class="code" href="enrg_8f90.html#abf75adc31c0064f2bf9ecf5f96592180">enrg</a>(i)= stat*aimag(intg(i,i))</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keywordflow">    end do</span></div>
+</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="awint_8f90_html_a9f702255e0af5953e65e9a6a035f6259"><div class="ttname"><a href="wint_8f90.html#a9f702255e0af5953e65e9a6a035f6259">wint</a></div><div class="ttdeci">subroutine wint(context, nps, npw, wm, la, desca, inta)</div><div class="ttdef"><b>Definition:</b> <a href="wint_8f90_source.html#l00043">wint.f90:43</a></div></div>
+<div class="ttc" id="aenrg_8f90_html_abf75adc31c0064f2bf9ecf5f96592180"><div class="ttname"><a href="enrg_8f90.html#abf75adc31c0064f2bf9ecf5f96592180">enrg</a></div><div class="ttdeci">subroutine enrg(scm, nps, npt, tf, filename, h, lnegl, descnegl, lnegr, descnegr, lsl, descsl, lsr, descsr, prnt)</div><div class="ttdef"><b>Definition:</b> <a href="enrg_8f90_source.html#l00017">enrg.f90:17</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

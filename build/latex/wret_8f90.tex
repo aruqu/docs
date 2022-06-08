@@ -22,28 +22,28 @@ subroutine \mbox{\hyperlink{wret_8f90_af0548b8ab8131c7ff586a5189bc68c3a}{wret}} 
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & wm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & WM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & vw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & VW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & w \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & W \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lg0r \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+G0R \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & desc \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+SC \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -53,3 +53,109 @@ subroutine \mbox{\hyperlink{wret_8f90_af0548b8ab8131c7ff586a5189bc68c3a}{wret}} 
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 47 of file wret.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{47     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{48     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{49 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{50     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{51     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)           \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{52 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{53     \textcolor{keywordtype}{integer} :: nps,npw,lld}
+\DoxyCodeLine{54     \textcolor{keywordtype}{double precision} :: wm}
+\DoxyCodeLine{55     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: w}
+\DoxyCodeLine{56     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)} :: vw}
+\DoxyCodeLine{57 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{58     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: desc}
+\DoxyCodeLine{59     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lg0r}
+\DoxyCodeLine{60 \textcolor{comment}{!Variable for grid query}}
+\DoxyCodeLine{61     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{62 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{63     \textcolor{keywordtype}{integer} :: i,j,ww,liw,nsteps}
+\DoxyCodeLine{64     \textcolor{keywordtype}{double precision} :: dw,eta,teta,deta,norm,tnorm,om}
+\DoxyCodeLine{65     \textcolor{keywordtype}{double precision} :: dalpha, start ,finish}
+\DoxyCodeLine{66     \textcolor{keywordtype}{double complex} :: zalpha,zbeta}
+\DoxyCodeLine{67     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(nps,nps)} :: intg0r}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{70 nprocs=nprow*npcol}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 lg0r=zero}
+\DoxyCodeLine{73 \textcolor{comment}{!eta=2.d1}}
+\DoxyCodeLine{74 \textcolor{comment}{!deta=51.d-\/1}}
+\DoxyCodeLine{75 \textcolor{comment}{!norm=0.d0}}
+\DoxyCodeLine{76 \textcolor{comment}{!tnorm=0.d0}}
+\DoxyCodeLine{77 \textcolor{comment}{!nsteps = 1}}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{comment}{!do while ((Abs(norm-\/nps)>=1.0E-\/14.and.nsteps<1000))}}
+\DoxyCodeLine{81 \textcolor{comment}{!!print*, norm, eta, deta}}
+\DoxyCodeLine{82 \textcolor{comment}{!!Retarded Green in the eigenbasis}}
+\DoxyCodeLine{83 \textcolor{comment}{!   do ww = 1, size(vw)}}
+\DoxyCodeLine{84 \textcolor{comment}{!       om=-\/wm+2*wm*(vw(ww)-\/1)/(npw-\/1)}}
+\DoxyCodeLine{85 \textcolor{comment}{!       liw = (ww-\/1)*nps+1}}
+\DoxyCodeLine{86 \textcolor{comment}{!       do i=1, nps}}
+\DoxyCodeLine{87 \textcolor{comment}{!           lg0r(i,liw+i-\/1) = 1.d0/(om-\/w(i)+ci*eta)}}
+\DoxyCodeLine{88 \textcolor{comment}{!       end do}}
+\DoxyCodeLine{89 \textcolor{comment}{!   end do}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 \textcolor{comment}{!!if (myrow.eq.0 .and. mycol.eq.0) then}}
+\DoxyCodeLine{92 \textcolor{comment}{!!call cpu\_time(start)}}
+\DoxyCodeLine{93 \textcolor{comment}{!!end if}}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 \textcolor{comment}{!!Calcolo integrale A(k,w)}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 \textcolor{comment}{!   call wint(context,nps,npw,wm,lg0r,desc,intg0r)}}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 \textcolor{comment}{!!if (myrow.eq.0 .and. mycol.eq.0) then}}
+\DoxyCodeLine{106 \textcolor{comment}{!!!call cpu\_time(finish)}}
+\DoxyCodeLine{107 \textcolor{comment}{!!! print*, "time\_int=  ",finish-\/start}}
+\DoxyCodeLine{108 \textcolor{comment}{!!  print*, norm, eta, deta}}
+\DoxyCodeLine{109 \textcolor{comment}{!!end if}}
+\DoxyCodeLine{110 \textcolor{comment}{!   tnorm=norm}}
+\DoxyCodeLine{111 \textcolor{comment}{!   norm=0.0d0}}
+\DoxyCodeLine{112 \textcolor{comment}{!   do i=1,nps}}
+\DoxyCodeLine{113 \textcolor{comment}{!       norm=norm-\/2.d0*Aimag(intg0r(i,i))}}
+\DoxyCodeLine{114 \textcolor{comment}{!   end do}}
+\DoxyCodeLine{115 \textcolor{comment}{!   if (norm<nps.and.norm>tnorm) then}}
+\DoxyCodeLine{116 \textcolor{comment}{!       eta=eta-\/deta}}
+\DoxyCodeLine{117 \textcolor{comment}{!   else}}
+\DoxyCodeLine{118 \textcolor{comment}{!       eta=eta+deta}}
+\DoxyCodeLine{119 \textcolor{comment}{!       deta=deta*0.5d0}}
+\DoxyCodeLine{120 \textcolor{comment}{!   end if}}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 \textcolor{comment}{!   nsteps=nsteps+1}}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \textcolor{comment}{!end do}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 eta = 1.d-\/10}
+\DoxyCodeLine{127 \textcolor{comment}{!Retarded Green in the eigenbasis}}
+\DoxyCodeLine{128 \textcolor{keywordflow}{do} ww = 1, \textcolor{keyword}{size}(vw)}
+\DoxyCodeLine{129     om=-\/wm+2*wm*(vw(ww)-\/1)/(npw-\/1)}
+\DoxyCodeLine{130     liw = (ww-\/1)*nps+1}
+\DoxyCodeLine{131     \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{132         lg0r(i,liw+i-\/1) = 1.d0/(om-\/w(i)+ci*eta)}
+\DoxyCodeLine{133 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{134 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 \textcolor{comment}{!   call wint(context,nps,npw,wm,lg0r,desc,intg0r)}}
+\DoxyCodeLine{137 \textcolor{comment}{!   norm=0.0d0}}
+\DoxyCodeLine{138 \textcolor{comment}{!   do i=1,nps}}
+\DoxyCodeLine{139 \textcolor{comment}{!       norm=norm-\/2.d0*Aimag(intg0r(i,i))}}
+\DoxyCodeLine{140 \textcolor{comment}{!   end do}}
+\DoxyCodeLine{141 \textcolor{comment}{!lg0r=lg0r*nps/norm}}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{comment}{!print*,norm,eta,nsteps}}
+\DoxyCodeLine{144 }
+
+\end{DoxyCode}

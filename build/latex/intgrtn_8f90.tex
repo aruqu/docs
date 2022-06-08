@@ -26,3 +26,238 @@ subroutine \mbox{\hyperlink{intgrtn_8f90_ae61e4c40452bc8008e91d73f0ea4c960}{intg
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 16 of file intgrtn.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{16     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{17     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{18 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{19     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{20     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{21 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{22     \textcolor{keywordtype}{character(*)} :: scm,mv,opA1,opA2}
+\DoxyCodeLine{23     \textcolor{keywordtype}{integer} :: npts}
+\DoxyCodeLine{24     \textcolor{keywordtype}{integer} :: wpos}
+\DoxyCodeLine{25     \textcolor{keywordtype}{integer} :: mA1,nA2,kA1}
+\DoxyCodeLine{26     \textcolor{keywordtype}{integer} :: ia1,ja1,ia2,ja2}
+\DoxyCodeLine{27     \textcolor{keywordtype}{double precision} :: dalpha}
+\DoxyCodeLine{28     \textcolor{keywordtype}{double complex} :: zalpha, zgamma, z}
+\DoxyCodeLine{29     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descA1, descA2}
+\DoxyCodeLine{30     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lA1, lA2}
+\DoxyCodeLine{31 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{32     \textcolor{keywordtype}{integer} :: ia3,ja3}
+\DoxyCodeLine{33     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descA3}
+\DoxyCodeLine{34     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lA3}
+\DoxyCodeLine{35 \textcolor{comment}{!Variables for grid query}}
+\DoxyCodeLine{36     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{37 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{38     \textcolor{keywordtype}{integer} :: i,j,t,tp,tt,ttp,lit,litp}
+\DoxyCodeLine{39     \textcolor{keywordtype}{integer} :: mb,nb,pr,pc,lldr,lldc,lldtr,lldtc}
+\DoxyCodeLine{40     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{41     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: ltmp1}
+\DoxyCodeLine{42     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (9)} :: desctmp1}
+\DoxyCodeLine{43     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtt, vttp}
+\DoxyCodeLine{44     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: w}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 context=desca1(2)}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 mb=desca2(5)}
+\DoxyCodeLine{51 nb=desca2(6)}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 lldr=numroc(ka1,mb,myrow,0,nprow)}
+\DoxyCodeLine{54 lldc=numroc(na2,nb,mycol,0,npcol)}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{keyword}{call }blacs\_barrier(context,\textcolor{stringliteral}{'A'})}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 lldtr=numroc(npts,1,myrow,0,nprow)}
+\DoxyCodeLine{60 lldtc=numroc(npts,1,mycol,0,npcol)}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{keyword}{allocate}(ltmp1(lldr,lldc))}
+\DoxyCodeLine{64 \textcolor{keyword}{call }descinit(desctmp1,ka1,na2,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 \textcolor{keyword}{allocate}(vtt(lldtr),vttp(lldtc))}
+\DoxyCodeLine{67 \textcolor{keyword}{allocate}(w(lldtr,lldtc))}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 vtt=0}
+\DoxyCodeLine{70 vttp=0}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 i=0}
+\DoxyCodeLine{73 \textcolor{keywordflow}{do} tt=1, npts}
+\DoxyCodeLine{74 pr=mod(floor(real(tt-\/1)),nprow)}
+\DoxyCodeLine{75 \textcolor{keywordflow}{if}(myrow==pr) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{76 i=i+1}
+\DoxyCodeLine{77 vtt(i)=tt}
+\DoxyCodeLine{78 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{79 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 i=0}
+\DoxyCodeLine{82 \textcolor{keywordflow}{do} tt=1, npts}
+\DoxyCodeLine{83 pc=mod(floor(real(tt-\/1)),npcol)}
+\DoxyCodeLine{84 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{85 i=i+1}
+\DoxyCodeLine{86 vttp(i)=tt}
+\DoxyCodeLine{87 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{88 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 \textcolor{comment}{!Non aggiunge pesi}}
+\DoxyCodeLine{93 \textcolor{keywordflow}{if} (wpos==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{94 ltmp1=la1}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 \textcolor{keywordflow}{if} (mv==\textcolor{stringliteral}{'m'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{97     \textcolor{keyword}{call }pzgemm(opa1,opa2,ma1,na2,ka1,zalpha,ltmp1,ia1,ja1,desctmp1,la2,ia2,ja2,desca2,zgamma,la3,ia3,ja3,desca3)}
+\DoxyCodeLine{98 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (mv==\textcolor{stringliteral}{'v'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{99     \textcolor{keyword}{call }pzgemv(opa1,ma1,na2,zalpha,ltmp1,ia1,ja1,desctmp1,la2,ia2,ja2,desca2,1,zgamma,la3,ia3,ia3,desca3,1)}
+\DoxyCodeLine{100 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 \textcolor{comment}{!Per le Retarded}}
+\DoxyCodeLine{103 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (wpos==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 \textcolor{keyword}{call }\mbox{\hyperlink{weights_8f90_a594689ef0872066cbc84bbe582e1b2f0}{weights}}(context,scm,npts,1,w)}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 ltmp1=la1}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{111 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 lit =(tt-\/1)*int(ma1/npts)+1}
+\DoxyCodeLine{114 litp=(ttp-\/1)*int(ka1/npts)+1}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 \textcolor{keywordflow}{if}(vtt(tt)==vttp(ttp).and.vtt(tt)==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{117     ltmp1(lit:lit+int(ma1/npts)-\/1,litp:litp+int(ka1/npts)-\/1) =\&}
+\DoxyCodeLine{118 \&dalpha*w(tt,ttp)*ltmp1(lit:lit+int(ma1/npts)-\/1,litp:litp+int(ka1/npts)-\/1)}
+\DoxyCodeLine{119 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 \textcolor{keywordflow}{if}(vtt(tt).ge.vttp(ttp).and.vtt(tt)>1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{122     ltmp1(lit:lit+int(ma1/npts)-\/1,litp:litp+int(ka1/npts)-\/1) = w(tt,ttp)*ltmp1(lit:lit+int(ma1/npts)-\/1,litp:litp+int(ka1/npts)-\/1)}
+\DoxyCodeLine{123 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 \textcolor{comment}{!if(vtt(tt).ge.vttp(ttp)) then}}
+\DoxyCodeLine{126 \textcolor{comment}{!   ltmp1(lit:lit+int(mA1/npts)-\/1,litp:litp+int(kA1/npts)-\/1) = w(tt,ttp)*ltmp1(lit:lit+int(mA1/npts)-\/1,litp:litp+int(kA1/npts)-\/1)}}
+\DoxyCodeLine{127 \textcolor{comment}{!end if}}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{130 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 \textcolor{keywordflow}{if} (mv==\textcolor{stringliteral}{'m'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{134     \textcolor{keyword}{call }pzgemm(opa1,opa2,ma1,na2,ka1,zalpha,ltmp1,ia1,ja1,desctmp1,la2,ia2,ja2,desca2,zgamma,la3,ia3,ja3,desca3)}
+\DoxyCodeLine{135 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (mv==\textcolor{stringliteral}{'v'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{136     \textcolor{keyword}{call }pzgemv(opa1,ma1,na2,zalpha,ltmp1,ia1,ja1,desctmp1,la2,ia2,ja2,desca2,1,zgamma,la3,ia3,ia3,desca3,1)}
+\DoxyCodeLine{137 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 \textcolor{comment}{!Per le Advanced}}
+\DoxyCodeLine{140 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (wpos==2) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 \textcolor{keyword}{call }\mbox{\hyperlink{weights_8f90_a594689ef0872066cbc84bbe582e1b2f0}{weights}}(context,scm,npts,1,w)}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 ltmp1=la2}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{148 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 lit =(tt-\/1)*int(ka1/npts)+1}
+\DoxyCodeLine{151 litp=(ttp-\/1)*int(na2/npts)+1}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 \textcolor{keywordflow}{if}(vtt(tt)==vttp(ttp).and.vtt(tt)==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{154     ltmp1(lit:lit+int(ka1/npts)-\/1,litp:litp+int(na2/npts)-\/1) =\&}
+\DoxyCodeLine{155 \&dalpha*w(tt,ttp)*ltmp1(lit:lit+int(ka1/npts)-\/1,litp:litp+int(na2/npts)-\/1)}
+\DoxyCodeLine{156 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 \textcolor{keywordflow}{if}(vtt(tt).ge.vttp(ttp).and.vtt(tt)>1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{159     ltmp1(lit:lit+int(ka1/npts)-\/1,litp:litp+int(na2/npts)-\/1) = w(tt,ttp)*ltmp1(lit:lit+int(ka1/npts)-\/1,litp:litp+int(na2/npts)-\/1)}
+\DoxyCodeLine{160 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 \textcolor{comment}{!if(vtt(tt).ge.vttp(ttp)) then}}
+\DoxyCodeLine{164 \textcolor{comment}{!   ltmp1(lit:lit+int(mA1/npts)-\/1,litp:litp+int(kA1/npts)-\/1) = w(tt,ttp)*ltmp1(lit:lit+int(mA1/npts)-\/1,litp:litp+int(kA1/npts)-\/1)}}
+\DoxyCodeLine{165 \textcolor{comment}{!end if}}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{169 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172 \textcolor{keywordflow}{if} (mv==\textcolor{stringliteral}{'m'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{173     \textcolor{keyword}{call }pzgemm(opa1,opa2,ma1,na2,ka1,zalpha,la1,ia1,ja1,desca1,ltmp1,ia2,ja2,desctmp1,zgamma,la3,ia3,ja3,desca3)}
+\DoxyCodeLine{174 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (mv==\textcolor{stringliteral}{'v'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{175 \textcolor{comment}{!Questo è da vedere!}}
+\DoxyCodeLine{176     \textcolor{keyword}{call }pzgemv(opa1,ma1,na2,zalpha,ltmp1,ia1,ja1,desctmp1,la2,ia2,ja2,desca2,1,zgamma,la3,ia3,ia3,desca3,1)}
+\DoxyCodeLine{177 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180 \textcolor{comment}{!Per le Retarded-\/Retarded}}
+\DoxyCodeLine{181 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (wpos==3) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183 \textcolor{keywordflow}{do} tp=1,npts}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185 \textcolor{keyword}{call }\mbox{\hyperlink{weights_8f90_a594689ef0872066cbc84bbe582e1b2f0}{weights}}(context,scm,npts,tp,w)}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188 ltmp1=la1}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{192 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 lit =(tt-\/1)*int(ma1/npts)+1}
+\DoxyCodeLine{195 litp=(ttp-\/1)*int(ka1/npts)+1}
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197 \textcolor{keywordflow}{if}(vtt(tt)==vttp(ttp).and.vtt(tt)==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{198     ltmp1(lit:lit+int(ma1/npts)-\/1,litp:litp+int(ka1/npts)-\/1) =\&}
+\DoxyCodeLine{199 \&dalpha*w(tt,ttp)*ltmp1(lit:lit+int(ma1/npts)-\/1,litp:litp+int(ka1/npts)-\/1)}
+\DoxyCodeLine{200 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202 \textcolor{comment}{!if(vtt(tt).ge.vttp(ttp).and.vtt(tt).ge.tp.and.vtt(tt)>1) then}}
+\DoxyCodeLine{203 \textcolor{keywordflow}{if}(vtt(tt).ge.vttp(ttp).and.vtt(tt).ge.tp.and.vtt(tt)>1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{204     ltmp1(lit:lit+int(ma1/npts)-\/1,litp:litp+int(ka1/npts)-\/1) = w(tt,ttp)*ltmp1(lit:lit+int(ma1/npts)-\/1,litp:litp+int(ka1/npts)-\/1)}
+\DoxyCodeLine{205 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207 \textcolor{comment}{!if(vtt(tt).ge.vttp(ttp)) then}}
+\DoxyCodeLine{208 \textcolor{comment}{!   ltmp1(lit:lit+int(mA1/npts)-\/1,litp:litp+int(kA1/npts)-\/1) = w(tt,ttp)*ltmp1(lit:lit+int(mA1/npts)-\/1,litp:litp+int(kA1/npts)-\/1)}}
+\DoxyCodeLine{209 \textcolor{comment}{!end if}}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{212 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215 \textcolor{comment}{!!!!Va sistemato!!!!}}
+\DoxyCodeLine{216 \textcolor{comment}{!if (mv=='m') then}}
+\DoxyCodeLine{217 \textcolor{comment}{!   do t=tp,npts}}
+\DoxyCodeLine{218 \textcolor{comment}{!       call pzgemm(opA1,opA2,int(mA1/npts),int(nA2/npts),(t-\/tp+1)*int(nA2/npts),\&}}
+\DoxyCodeLine{219 \textcolor{comment}{!           \&zalpha,ltmp1,(t-\/1)*int(mA1/npts)+1,(tp-\/1)*int(nA2/npts)+1,desctmp1,\&}}
+\DoxyCodeLine{220 \textcolor{comment}{!           \&lA2,(tp-\/1)*int(mA1/npts)+1,(tp-\/1)*int(nA2/npts)+1,descA2,\&}}
+\DoxyCodeLine{221 \textcolor{comment}{!           \&zgamma,lA3,(t-\/1)*int(mA1/npts)+1,(tp-\/1)*int(nA2/npts)+1,descA3)}}
+\DoxyCodeLine{222 \textcolor{comment}{!   end do}}
+\DoxyCodeLine{223 \textcolor{comment}{!else if (mv=='v') then}}
+\DoxyCodeLine{224 \textcolor{comment}{!   !Da vedere!!!!}}
+\DoxyCodeLine{225 \textcolor{comment}{!   call pzgemv(opA1,mA1,nA2,zalpha,ltmp1,ia1,ja1,desctmp1,lA2,ia2,ja2,descA2,1,zgamma,lA3,ia3,ia3,descA3,1)}}
+\DoxyCodeLine{226 \textcolor{comment}{!end if}}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228 }
+\DoxyCodeLine{229 \textcolor{keywordflow}{if} (mv==\textcolor{stringliteral}{'m'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{230     \textcolor{keyword}{call }pzgemm(opa1,opa2,ma1,int(na2/npts),ka1,zalpha,ltmp1,ia1,ja1,desctmp1,\&}
+\DoxyCodeLine{231             \&la2,1,(tp-\/1)*int(na2/npts)+1,desca2,zgamma,la3,ia3,(tp-\/1)*int(na2/npts)+1,desca3)}
+\DoxyCodeLine{232 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (mv==\textcolor{stringliteral}{'v'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{233     \textcolor{comment}{!Da vedere!!!!}}
+\DoxyCodeLine{234     \textcolor{keyword}{call }pzgemv(opa1,ma1,na2,zalpha,ltmp1,ia1,ja1,desctmp1,la2,ia2,ja2,desca2,1,zgamma,la3,ia3,ia3,desca3,1)}
+\DoxyCodeLine{235 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{236 }
+\DoxyCodeLine{237 }
+\DoxyCodeLine{238 }
+\DoxyCodeLine{239 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{240 }
+\DoxyCodeLine{241 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{242 }
+
+\end{DoxyCode}

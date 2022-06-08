@@ -22,52 +22,52 @@ subroutine \mbox{\hyperlink{wfreel_8f90_a87dc15a567c1cfe7ac7e87eca5cab19a}{wfree
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & wm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & WM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & vw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & VW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & mu \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & MU \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & ea \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & EA \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
 {\em \mbox{[}$\,$\mbox{]}} & T \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & beta \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & B\+E\+TA \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
 {\em \mbox{[}$\,$\mbox{]}} & V \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & shp \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+HP \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & stat \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+T\+AT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lg0r \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+G0R \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lg0l \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+G0L \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lg0g \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+G0G \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & desc \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+SC \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -77,3 +77,145 @@ subroutine \mbox{\hyperlink{wfreel_8f90_a87dc15a567c1cfe7ac7e87eca5cab19a}{wfree
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 79 of file wfreel.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{79     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{80     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{81 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{82     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{83     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)           \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{84     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = dacos(-\/1.0d0)       \textcolor{comment}{! Pi greco}}
+\DoxyCodeLine{85 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{86     \textcolor{keywordtype}{character(*)} :: shp}
+\DoxyCodeLine{87     \textcolor{keywordtype}{integer} :: nps,npw,lld, stat}
+\DoxyCodeLine{88     \textcolor{keywordtype}{double precision} :: wm, mu, ea, T,beta, V}
+\DoxyCodeLine{89     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)} :: vw}
+\DoxyCodeLine{90 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{91     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: desc}
+\DoxyCodeLine{92     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lg0r, lg0l,lg0g}
+\DoxyCodeLine{93 \textcolor{comment}{!Variables for grid query}}
+\DoxyCodeLine{94     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{95 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{96     \textcolor{keywordtype}{integer} :: i,j,ww,wwp,liw,lw, nsteps, lldwc,numroc}
+\DoxyCodeLine{97     \textcolor{keywordtype}{double precision} :: dw,eta,deta,norm,om, omp}
+\DoxyCodeLine{98     \textcolor{keywordtype}{double precision} :: dalpha}
+\DoxyCodeLine{99     \textcolor{keywordtype}{double complex} :: zalpha,zbeta}
+\DoxyCodeLine{100     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(nps,nps)} :: intg0r}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{103 nprocs=nprow*npcol}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 lldwc=numroc(npw,1,mycol,0,nprocs)}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 lg0r=zero}
+\DoxyCodeLine{109 \textcolor{comment}{!eta=1.d0}}
+\DoxyCodeLine{110 \textcolor{comment}{!deta=5.d-\/1}}
+\DoxyCodeLine{111 \textcolor{comment}{!norm=1.d3}}
+\DoxyCodeLine{112 \textcolor{comment}{!nsteps = 1}}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 \textcolor{comment}{!do while ((Abs(norm-\/2*npw)>=1.0E-\/14.and.nsteps<2000))}}
+\DoxyCodeLine{116 \textcolor{comment}{!lg0r=zero}}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 \textcolor{comment}{!!Retarded Green in the eigenbasis}}
+\DoxyCodeLine{119 \textcolor{comment}{!   do ww = 1, size(vw)}}
+\DoxyCodeLine{120 \textcolor{comment}{!       om=-\/wm+2*wm*(vw(ww)-\/1)/(npw-\/1)}}
+\DoxyCodeLine{121 \textcolor{comment}{!       liw = (ww-\/1)*nps+1}}
+\DoxyCodeLine{122 \textcolor{comment}{!       do wwp=1, npw}}
+\DoxyCodeLine{123 \textcolor{comment}{!           omp=-\/wm+2*wm*(wwp-\/1)/(npw-\/1)}}
+\DoxyCodeLine{124 \textcolor{comment}{!           do i=1,nps}}
+\DoxyCodeLine{125 \textcolor{comment}{!           lg0r(i,liw+i-\/1) =lg0r(i,liw+i-\/1) + 1.d0/(om-\/omp+ci*eta)}}
+\DoxyCodeLine{126 \textcolor{comment}{!           end do}}
+\DoxyCodeLine{127 \textcolor{comment}{!       end do}}
+\DoxyCodeLine{128 \textcolor{comment}{!   end do}}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 \textcolor{comment}{!!Calcolo integrale A(k,w)}}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 \textcolor{comment}{!   call wint(context,nps,npw,wm,lg0r,desc,intg0r)}}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134 \textcolor{comment}{!   norm=0.0d0}}
+\DoxyCodeLine{135 \textcolor{comment}{!   do i=1,2}}
+\DoxyCodeLine{136 \textcolor{comment}{!       norm=norm-\/2.d0*Aimag(intg0r(i,i))}}
+\DoxyCodeLine{137 \textcolor{comment}{!   end do}}
+\DoxyCodeLine{138 \textcolor{comment}{!   if (norm>2*npw) then}}
+\DoxyCodeLine{139 \textcolor{comment}{!       eta=eta+deta}}
+\DoxyCodeLine{140 \textcolor{comment}{!   else }}
+\DoxyCodeLine{141 \textcolor{comment}{!       eta=eta-\/deta}}
+\DoxyCodeLine{142 \textcolor{comment}{!       deta=deta*0.5d0}}
+\DoxyCodeLine{143 \textcolor{comment}{!   end if}}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 \textcolor{comment}{!   nsteps=nsteps+1}}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 \textcolor{comment}{!end do}}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 \textcolor{comment}{!!Retarded Green in the eigenbasis}}
+\DoxyCodeLine{150 \textcolor{comment}{!   do ww = 1, size(vw)}}
+\DoxyCodeLine{151 \textcolor{comment}{!       om=-\/wm+2*wm*(vw(ww)-\/1)/(npw-\/1)}}
+\DoxyCodeLine{152 \textcolor{comment}{!       liw = (ww-\/1)*nps+1}}
+\DoxyCodeLine{153 \textcolor{comment}{!       do wwp=1, npw}}
+\DoxyCodeLine{154 \textcolor{comment}{!           omp=-\/wm+2*wm*(wwp-\/1)/(npw-\/1)}}
+\DoxyCodeLine{155 \textcolor{comment}{!           do i=1,nps}}
+\DoxyCodeLine{156 \textcolor{comment}{!           lg0r(i,liw+i-\/1) =lg0r(i,liw+i-\/1) + 1.d0/(om-\/omp+ci*eta)}}
+\DoxyCodeLine{157 \textcolor{comment}{!           end do}}
+\DoxyCodeLine{158 \textcolor{comment}{!       end do}}
+\DoxyCodeLine{159 \textcolor{comment}{!   end do}}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 \textcolor{comment}{!print*, eta,norm}}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{164     liw = (lw-\/1)*nps+1  }
+\DoxyCodeLine{165     \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{166         lg0r(i,liw+i-\/1) =-\/ci*0.5d0}
+\DoxyCodeLine{167 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{168 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 \textcolor{comment}{!Tight-\/Binding Semi-\/Infinite Leads}}
+\DoxyCodeLine{172 \textcolor{comment}{!if (shp == 'tb') then}}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 \textcolor{comment}{!do lw=1,lldwc}}
+\DoxyCodeLine{175 \textcolor{comment}{!liw=(lw-\/1)*nps+1}}
+\DoxyCodeLine{176 \textcolor{comment}{!om=-\/wm+2.d0*wm*(vw(lw)-\/1)/(npw-\/1)  }}
+\DoxyCodeLine{177 \textcolor{comment}{!do i=1,nps}}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179 \textcolor{comment}{!   if((om-\/ea+mu-\/V).gt.2*Abs(T)) then}}
+\DoxyCodeLine{180 \textcolor{comment}{!       lg0r(i,liw+i-\/1)=0.5d0*(om-\/ea+mu-\/V-\/sqrt((om-\/ea+mu-\/V)**2.d0-\/4*T**2.d0))/T**2.d0}}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182 \textcolor{comment}{!   elseif(Abs(om-\/ea+mu-\/V).le.2*Abs(T)) then}}
+\DoxyCodeLine{183 \textcolor{comment}{!       lg0r(i,liw+i-\/1)=0.5d0*(om-\/ea+mu-\/V-\/ci*sqrt(4*T**2.d0-\/(om-\/ea+mu-\/V)**2.d0))/T**2.d0}}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185 \textcolor{comment}{!   else}}
+\DoxyCodeLine{186 \textcolor{comment}{!       lg0r(i,liw+i-\/1)=0.5d0*(om-\/ea+mu-\/V+sqrt((om-\/ea+mu-\/V)**2.d0-\/4*T**2.d0))/T**2.d0}}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188 \textcolor{comment}{!   end if}}
+\DoxyCodeLine{189 \textcolor{comment}{!end do}}
+\DoxyCodeLine{190 \textcolor{comment}{!end do}}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192 \textcolor{comment}{!end if}}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!Lesser Green's function!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{196 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{197     liw = (lw-\/1)*nps+1}
+\DoxyCodeLine{198     om=-\/wm+2.d0*wm*(vw(lw)-\/1)/(npw-\/1)}
+\DoxyCodeLine{199     dalpha=stat*(1.0d0/(exp(beta*(om-\/mu-\/v))-\/1.0d0*stat))}
+\DoxyCodeLine{200     lg0l(1:nps,liw:liw+nps-\/1)=dalpha*(lg0r(1:nps,liw:liw+nps-\/1)-\/transpose(conjg(lg0r(1:nps,liw:liw+nps-\/1))))}
+\DoxyCodeLine{201 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{202 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Greater Green's function!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{205 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{206     liw = (lw-\/1)*nps+1}
+\DoxyCodeLine{207     om=-\/wm+2.d0*wm*(vw(lw)-\/1)/(npw-\/1)}
+\DoxyCodeLine{208     dalpha=(1.d0-\/1.0d0/(exp(beta*(om-\/mu-\/v))-\/1.0d0*stat))}
+\DoxyCodeLine{209     lg0g(1:nps,liw:liw+nps-\/1)=dalpha*(lg0r(1:nps,liw:liw+nps-\/1)-\/transpose(conjg(lg0r(1:nps,liw:liw+nps-\/1))))}
+\DoxyCodeLine{210 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{211 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{212 }
+
+\end{DoxyCode}

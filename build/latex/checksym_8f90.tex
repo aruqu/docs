@@ -22,28 +22,28 @@ subroutine \mbox{\hyperlink{checksym_8f90_a2cb3c0ccf7e376763a0375464bee330a}{che
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & n \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & op \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & OP \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lal \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+AL \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descal \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+AL \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lag \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+AG \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descag \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+AG \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lar \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+AR \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descar \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+AR \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -53,3 +53,104 @@ subroutine \mbox{\hyperlink{checksym_8f90_a2cb3c0ccf7e376763a0375464bee330a}{che
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 47 of file checksym.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{47     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{48 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{49     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{50     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{51     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{52 \textcolor{comment}{!Input variables    }}
+\DoxyCodeLine{53     \textcolor{keywordtype}{character(*)} :: op}
+\DoxyCodeLine{54     \textcolor{keywordtype}{integer} :: n}
+\DoxyCodeLine{55     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descal,descag,descar}
+\DoxyCodeLine{56     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lal,lag,lar}
+\DoxyCodeLine{57 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{58     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,myrow,mycol,lldr,lldc}
+\DoxyCodeLine{59 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{60     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{61     \textcolor{keywordtype}{integer} :: mb,nb}
+\DoxyCodeLine{62     \textcolor{keywordtype}{double precision} :: epsmax, pzlange}
+\DoxyCodeLine{63     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descdelta}
+\DoxyCodeLine{64     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: ldelta}
+\DoxyCodeLine{65     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(1:10)} :: work}
+\DoxyCodeLine{66    }
+\DoxyCodeLine{67 context = descar(2)}
+\DoxyCodeLine{68 \textcolor{keyword}{call }blacs\_gridinfo( context, nprow, npcol, myrow, mycol )   }
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 mb = descar(5)}
+\DoxyCodeLine{71 nb = descar(6)}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 lldr= numroc(n,mb,myrow,0,nprow)}
+\DoxyCodeLine{74 lldc= numroc(n,nb,mycol,0,npcol)}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \textcolor{keyword}{allocate}(ldelta(lldr,lldc))}
+\DoxyCodeLine{78 \textcolor{keyword}{call }descinit(descdelta,n,n,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 ldelta=zero}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{comment}{!(ar-\/aa)-\/(ag-\/al)=0}}
+\DoxyCodeLine{83 \textcolor{keywordflow}{if} (op==\textcolor{stringliteral}{'ragl'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{84 \textcolor{comment}{!ldelta=lar}}
+\DoxyCodeLine{85     \textcolor{keyword}{call }pzlacpy(\textcolor{stringliteral}{'A'} ,n,n,lar,1,1,descar,ldelta,1,1,descdelta )   }
+\DoxyCodeLine{86 \textcolor{comment}{!ldelta=lar-\/laa}}
+\DoxyCodeLine{87     \textcolor{keyword}{call }pzgeadd(\textcolor{stringliteral}{'C'},n,n,-\/1.0d0*uno,lar,1,1,descar,uno,ldelta,1,1,descdelta)}
+\DoxyCodeLine{88 \textcolor{comment}{!ldelta=ldelta-\/lag}}
+\DoxyCodeLine{89     \textcolor{keyword}{call }pzgeadd(\textcolor{stringliteral}{'N'},n,n,-\/1.0d0*uno,lag,1,1,descag,uno,ldelta,1,1,descdelta)}
+\DoxyCodeLine{90 \textcolor{comment}{!ldelta=ldelta+lal}}
+\DoxyCodeLine{91     \textcolor{keyword}{call }pzgeadd(\textcolor{stringliteral}{'N'},n,n,uno,lal,1,1,descal,uno,ldelta,1,1,descdelta)}
+\DoxyCodeLine{92 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94 \textcolor{comment}{!al+conjg(transpose(al))=0}}
+\DoxyCodeLine{95 \textcolor{keywordflow}{if} (op==\textcolor{stringliteral}{'l'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{96 \textcolor{comment}{!ldelta=al}}
+\DoxyCodeLine{97     \textcolor{keyword}{call }pzlacpy(\textcolor{stringliteral}{'A'} ,n,n,lal,1,1,descal,ldelta,1,1,descdelta )   }
+\DoxyCodeLine{98     \textcolor{comment}{!ldelta=ldelta+conjg(transpose(lal))}}
+\DoxyCodeLine{99     \textcolor{keyword}{call }pzgeadd(\textcolor{stringliteral}{'C'},n,n,uno,lal,1,1,descal,uno,ldelta,1,1,descdelta)}
+\DoxyCodeLine{100 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 \textcolor{comment}{!ag+conjg(transpose(ag))=0}}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{keywordflow}{if} (op==\textcolor{stringliteral}{'g'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{105 \textcolor{comment}{!ldelta=ag}}
+\DoxyCodeLine{106     \textcolor{keyword}{call }pzlacpy(\textcolor{stringliteral}{'A'} ,n,n,lag,1,1,descag,ldelta,1,1,descdelta )   }
+\DoxyCodeLine{107 \textcolor{comment}{!ldelta=ldelta+conjg(transpose(lal))}}
+\DoxyCodeLine{108     \textcolor{keyword}{call }pzgeadd(\textcolor{stringliteral}{'C'},n,n,uno,lag,1,1,descag,uno,ldelta,1,1,descdelta)}
+\DoxyCodeLine{109 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 \textcolor{comment}{!!ar-\/conjg(transpose(aa))=0}}
+\DoxyCodeLine{112 \textcolor{comment}{!if (op=='ra') then}}
+\DoxyCodeLine{113 \textcolor{comment}{!!ldelta=ar}}
+\DoxyCodeLine{114 \textcolor{comment}{!   call pzlacpy('A' ,n,n,lar,1,1,descar,ldelta,1,1,descdelta )   }}
+\DoxyCodeLine{115 \textcolor{comment}{!!ldelta=ldelta-\/conjg(transpose(laa))}}
+\DoxyCodeLine{116 \textcolor{comment}{!   call pzgeadd('C',n,n,-\/1.0d0*uno,laa,1,1,descaa,uno,ldelta,1,1,descdelta)}}
+\DoxyCodeLine{117 \textcolor{comment}{!end if}}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 epsmax=pzlange(\textcolor{stringliteral}{'M'},n,n,ldelta,1,1,descdelta,work)}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 \textcolor{comment}{!if (epsmax<=1.0E-\/14.and.myrow==0.and.mycol==0) then}}
+\DoxyCodeLine{123 \textcolor{comment}{!   print*, '    ',op, ' Symmetry is OK'}}
+\DoxyCodeLine{124 \textcolor{comment}{!   print*, '    epsmax= ', epsmax}}
+\DoxyCodeLine{125 \textcolor{comment}{!   print*, ' '}}
+\DoxyCodeLine{126 \textcolor{comment}{!else if (epsmax>1.0E-\/14.and.myrow==0.and.mycol==0) then}}
+\DoxyCodeLine{127 \textcolor{comment}{!   print*, '    WARNING!!! ',op,' Symmetry is violated'}}
+\DoxyCodeLine{128 \textcolor{comment}{!   print*, '    epsmax= ', epsmax}}
+\DoxyCodeLine{129 \textcolor{comment}{!   print*, ' '}}
+\DoxyCodeLine{130 \textcolor{comment}{!end if}}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 \textcolor{keywordflow}{if} (epsmax>1.0e-\/10.and.myrow==0.and.mycol==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{133     print*, \textcolor{stringliteral}{'    WARNING!!! '},op,\textcolor{stringliteral}{' Symmetry is violated'}}
+\DoxyCodeLine{134     print*, \textcolor{stringliteral}{'    epsmax= '}, epsmax}
+\DoxyCodeLine{135     print*, \textcolor{stringliteral}{' '}}
+\DoxyCodeLine{136 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138 \textcolor{comment}{!-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{139 }
+
+\end{DoxyCode}

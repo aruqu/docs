@@ -22,19 +22,19 @@ subroutine \mbox{\hyperlink{dyson-2t_2src_2tbham_8f90_a0089e233c6d696d0cd5cd4a87
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & npx \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PX \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & bc \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & BC \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & onsite \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & O\+N\+S\+I\+TE \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nnhop \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+N\+H\+OP \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & ham \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & H\+AM \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -44,3 +44,43 @@ subroutine \mbox{\hyperlink{dyson-2t_2src_2tbham_8f90_a0089e233c6d696d0cd5cd4a87
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 35 of file tbham.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{35     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{36     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{37 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{38     \textcolor{keywordtype}{integer} :: npx, bc}
+\DoxyCodeLine{39     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: onsite}
+\DoxyCodeLine{40     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: nnhop}
+\DoxyCodeLine{41 \textcolor{comment}{!Input/output variables}}
+\DoxyCodeLine{42     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: ham}
+\DoxyCodeLine{43 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{44     \textcolor{keywordtype}{integer} :: i}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 ham=0.0d0}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{comment}{!Diagonal elements}}
+\DoxyCodeLine{49 \textcolor{keywordflow}{do} i=1, npx}
+\DoxyCodeLine{50     ham(i,i) = onsite(i)}
+\DoxyCodeLine{51 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{comment}{!Nearest Neighbour}}
+\DoxyCodeLine{54 \textcolor{keywordflow}{do} i=1, npx-\/1}
+\DoxyCodeLine{55     ham(i,i+1) = nnhop(i)}
+\DoxyCodeLine{56     ham(i+1,i) = nnhop(i)}
+\DoxyCodeLine{57 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \textcolor{comment}{!Periodic boundary conditions}}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{keywordflow}{if}(bc==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{63     ham(npx,1) = nnhop(1)}
+\DoxyCodeLine{64     ham(1,npx) = nnhop(1)}
+\DoxyCodeLine{65 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{66 }
+
+\end{DoxyCode}

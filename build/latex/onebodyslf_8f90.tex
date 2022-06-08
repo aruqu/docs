@@ -22,25 +22,25 @@ subroutine \mbox{\hyperlink{onebodyslf_8f90_ae5bdbecae98060e2416f9c3ee1d02e65}{o
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & scm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+CM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & tf \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & TF \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & ht \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & HT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsr \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SR \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descsr \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+SR \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -50,3 +50,91 @@ subroutine \mbox{\hyperlink{onebodyslf_8f90_ae5bdbecae98060e2416f9c3ee1d02e65}{o
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 43 of file onebodyslf.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{43     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{44     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{45 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{46     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{48 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{49     \textcolor{keywordtype}{character(*)} :: scm }
+\DoxyCodeLine{50     \textcolor{keywordtype}{integer} :: nps,npt}
+\DoxyCodeLine{51     \textcolor{keywordtype}{double precision} :: dt,tf}
+\DoxyCodeLine{52     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:,:)} :: ht}
+\DoxyCodeLine{53 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{54     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descsr}
+\DoxyCodeLine{55     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsr}
+\DoxyCodeLine{56 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{57     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{58 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{59     \textcolor{keywordtype}{integer} :: n,i,j,tt,ttp,lit,litp}
+\DoxyCodeLine{60     \textcolor{keywordtype}{integer} :: mb,nb,pr,pc,lldr,lldc,lldtr,lldtc}
+\DoxyCodeLine{61     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{62     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtt, vttp}
+\DoxyCodeLine{63     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension (:,:)}, \textcolor{keywordtype}{allocatable} :: w}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 context = descsr(2)}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 n=nps*npt}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 mb = descsr(5)}
+\DoxyCodeLine{72 nb = descsr(6)}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 lldr=numroc(n,mb,myrow,0,nprow)}
+\DoxyCodeLine{75 lldc=numroc(n,nb,mycol,0,npcol)}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 lldtr=numroc(npt,1,myrow,0,nprow)}
+\DoxyCodeLine{78 lldtc=numroc(npt,1,mycol,0,npcol)}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{keyword}{allocate}(vtt(lldtr),vttp(lldtc))}
+\DoxyCodeLine{81 \textcolor{keyword}{allocate}(w(lldtr,lldtc))}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 vtt=0}
+\DoxyCodeLine{84 vttp=0}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 i=0}
+\DoxyCodeLine{87 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{88 pr=mod(floor(real(tt-\/1)),nprow)}
+\DoxyCodeLine{89 \textcolor{keywordflow}{if}(myrow==pr) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{90 i=i+1}
+\DoxyCodeLine{91 vtt(i)=tt}
+\DoxyCodeLine{92 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{93 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 i=0}
+\DoxyCodeLine{96 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{97 pc=mod(floor(real(tt-\/1)),npcol)}
+\DoxyCodeLine{98 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{99 i=i+1}
+\DoxyCodeLine{100 vttp(i)=tt}
+\DoxyCodeLine{101 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{102 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{keyword}{call }\mbox{\hyperlink{weights_8f90_a594689ef0872066cbc84bbe582e1b2f0}{weights}}(context,scm,npt,1,w)}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 dt=tf/(npt-\/1)}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{109 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 \textcolor{keywordflow}{if}(vtt(tt)==vttp(ttp)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{114 litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116     lsr(lit:lit+nps-\/1,litp:litp+nps-\/1)=lsr(lit:lit+nps-\/1,litp:litp+nps-\/1)+ht(tt,1:nps,1:nps)/(dt*w(tt,ttp))}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{121 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{122 }
+
+\end{DoxyCode}

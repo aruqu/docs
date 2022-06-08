@@ -22,22 +22,22 @@ subroutine \mbox{\hyperlink{intgrtv_8f90_ac5a196ef8541f45bc02444c45be06c07}{intg
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & delta \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+L\+TA \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npts \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+P\+TS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
 {\em \mbox{[}$\,$\mbox{]}} & V \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & rc \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & RC \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & Vint \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & V\+I\+NT \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -47,3 +47,130 @@ subroutine \mbox{\hyperlink{intgrtv_8f90_ac5a196ef8541f45bc02444c45be06c07}{intg
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 39 of file intgrtv.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{39     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{40     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{41 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{42     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{43     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{44 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{45     \textcolor{keywordtype}{character(*)} :: rc}
+\DoxyCodeLine{46     \textcolor{keywordtype}{integer} :: npts}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double precision} :: delta}
+\DoxyCodeLine{48     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension (:)} :: V}
+\DoxyCodeLine{49 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{50     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension (:)} :: Vint}
+\DoxyCodeLine{51 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{52     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol,rsrc,csrc}
+\DoxyCodeLine{53 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{54     \textcolor{keywordtype}{integer} :: i,j,tt,ttp,ltt,lttp,lit,litp}
+\DoxyCodeLine{55     \textcolor{keywordtype}{integer} :: pr,pc,lldtr,lldtc}
+\DoxyCodeLine{56     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{57     \textcolor{keywordtype}{double precision} :: dalpha}
+\DoxyCodeLine{58     \textcolor{keywordtype}{double complex} :: zalpha, zbeta}
+\DoxyCodeLine{59     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: lone}
+\DoxyCodeLine{60     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descone}
+\DoxyCodeLine{61     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: lVtmp1,lVtmp2}
+\DoxyCodeLine{62     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descVtmp1,descVtmp2,descVtmp3}
+\DoxyCodeLine{63     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtt, vttp}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 lldtr=numroc(npts,1,myrow,0,nprow)}
+\DoxyCodeLine{68 lldtc=numroc(npts,1,mycol,0,npcol)}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 \textcolor{keyword}{allocate}(lone(lldtr,lldtc))}
+\DoxyCodeLine{71 \textcolor{keyword}{call }descinit(descone,npts,npts,1,1,0,0,context,lldtr,info)}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 \textcolor{keyword}{allocate}(vtt(lldtr),vttp(lldtc))}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 vtt=0}
+\DoxyCodeLine{76 vttp=0}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 i=0}
+\DoxyCodeLine{79 \textcolor{keywordflow}{do} tt=1, npts}
+\DoxyCodeLine{80 pr=mod(floor(real(tt-\/1)),nprow)}
+\DoxyCodeLine{81 \textcolor{keywordflow}{if}(myrow==pr) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{82 i=i+1}
+\DoxyCodeLine{83 vtt(i)=tt}
+\DoxyCodeLine{84 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{85 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 i=0}
+\DoxyCodeLine{88 \textcolor{keywordflow}{do} ttp=1, npts}
+\DoxyCodeLine{89 pc=mod(floor(real(ttp-\/1)),npcol)}
+\DoxyCodeLine{90 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{91 i=i+1}
+\DoxyCodeLine{92 vttp(i)=ttp}
+\DoxyCodeLine{93 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{94 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 vint=0.d0}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 lone=0.d0}
+\DoxyCodeLine{99 \textcolor{keywordflow}{do} tt = 1, lldtr}
+\DoxyCodeLine{100 \textcolor{keywordflow}{do} ttp = 1, lldtc}
+\DoxyCodeLine{101     \textcolor{keywordflow}{if}(vtt(tt).ge.vttp(ttp)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{102         lone(tt,ttp) = 1.0d0}
+\DoxyCodeLine{103 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{104 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{105 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 \textcolor{keyword}{allocate}(lvtmp1(lldtr,lldtc),lvtmp2(lldtr,lldtc))}
+\DoxyCodeLine{108 \textcolor{keyword}{call }descinit(descvtmp1,npts,npts,1,1,0,0,context,lldtr,info)}
+\DoxyCodeLine{109 \textcolor{keyword}{call }descinit(descvtmp2,npts,npts,1,1,0,0,context,lldtr,info)}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 lvtmp1=0.d0}
+\DoxyCodeLine{112 \textcolor{keywordflow}{do} tt = 1, lldtr}
+\DoxyCodeLine{113 \textcolor{keywordflow}{do} ttp = 1, lldtc}
+\DoxyCodeLine{114     lvtmp1(tt,ttp) = v(tt)}
+\DoxyCodeLine{115 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{116 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 \textcolor{keyword}{call }pdgemm (\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{'N'},npts,1,npts,delta,lone,1,1,descone,lvtmp1,1,1,descvtmp1,0.d0,lvtmp2,1,1,descvtmp2)}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 \textcolor{keyword}{call }blacs\_barrier(context,\textcolor{stringliteral}{'A'})}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 \textcolor{keywordflow}{if} (rc==\textcolor{stringliteral}{'r'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{125     dalpha = 0.d0}
+\DoxyCodeLine{126     \textcolor{keyword}{call }infog2l(vtt(tt),1,descvtmp2,nprow,npcol,myrow,mycol,ltt,lttp,rsrc,csrc)}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128     \textcolor{keywordflow}{if} (mycol==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{129         dalpha = lvtmp2(ltt,lttp)}
+\DoxyCodeLine{130         vint(ltt)=dalpha}
+\DoxyCodeLine{131         \textcolor{keyword}{call }dgebs2d(context,\textcolor{stringliteral}{'R'},\textcolor{stringliteral}{'i-\/ring'},1, 1,dalpha,1)}
+\DoxyCodeLine{132     \textcolor{keywordflow}{else}    }
+\DoxyCodeLine{133         \textcolor{keyword}{call }dgebr2d(context,\textcolor{stringliteral}{'R'},\textcolor{stringliteral}{'i-\/ring'},1, 1,dalpha,1,rsrc,csrc)}
+\DoxyCodeLine{134         vint(ltt)=dalpha    }
+\DoxyCodeLine{135 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{136 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (rc==\textcolor{stringliteral}{'c'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140 \textcolor{keyword}{call }pdgeadd(\textcolor{stringliteral}{'T'},npts,npts,1.0d0,lvtmp2,1,1,descvtmp2,0.d0,lvtmp1,1,1,descvtmp1)}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{143     dalpha = 0.d0}
+\DoxyCodeLine{144     \textcolor{keyword}{call }infog2l(1,vttp(ttp),descvtmp1,nprow,npcol,myrow,mycol,ltt,lttp,rsrc,csrc)}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146     \textcolor{keywordflow}{if} (myrow==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{147         dalpha = lvtmp1(ltt,lttp)}
+\DoxyCodeLine{148         vint(lttp)=dalpha}
+\DoxyCodeLine{149         \textcolor{keyword}{call }dgebs2d(context,\textcolor{stringliteral}{'C'},\textcolor{stringliteral}{'i-\/ring'},1, 1,dalpha,1)}
+\DoxyCodeLine{150     \textcolor{keywordflow}{else}    }
+\DoxyCodeLine{151         \textcolor{keyword}{call }dgebr2d(context,\textcolor{stringliteral}{'C'},\textcolor{stringliteral}{'i-\/ring'},1, 1,dalpha,1,rsrc,csrc)}
+\DoxyCodeLine{152         vint(lttp)=dalpha   }
+\DoxyCodeLine{153 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{154 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{157 }
+
+\end{DoxyCode}

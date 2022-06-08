@@ -22,37 +22,37 @@ subroutine \mbox{\hyperlink{wembslfen_8f90_a2ab925266ee9011cd59fd050af2c816d}{we
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & wm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & WM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & vw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & VW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lds \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+DS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & g \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & G \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & bt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & BT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & mu \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & MU \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & ea \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & EA \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & shp \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+HP \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
 {\em \mbox{[}$\,$\mbox{]}} & V \begin{DoxyVerb} \end{DoxyVerb}
@@ -61,16 +61,16 @@ subroutine \mbox{\hyperlink{wembslfen_8f90_a2ab925266ee9011cd59fd050af2c816d}{we
 {\em \mbox{[}$\,$\mbox{]}} & T \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & stat \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+T\+AT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsl \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SL \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsg \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SG \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsr \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SR \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -80,3 +80,131 @@ subroutine \mbox{\hyperlink{wembslfen_8f90_a2ab925266ee9011cd59fd050af2c816d}{we
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 83 of file wembslfen.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{83     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{84     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{85 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{86     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = dacos(-\/1.0d0)       \textcolor{comment}{! Pi greco}}
+\DoxyCodeLine{87     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{88     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{89     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{90 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{91     \textcolor{keywordtype}{character(*)} :: shp}
+\DoxyCodeLine{92     \textcolor{keywordtype}{integer} :: nps,npw,stat}
+\DoxyCodeLine{93     \textcolor{keywordtype}{double precision} :: wm,bt,ea,mu,V,T}
+\DoxyCodeLine{94     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: g}
+\DoxyCodeLine{95     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: lds}
+\DoxyCodeLine{96     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: vw}
+\DoxyCodeLine{97 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{98     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsl}
+\DoxyCodeLine{99     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsg}
+\DoxyCodeLine{100     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsr}
+\DoxyCodeLine{101 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{102     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{103 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{104     \textcolor{keywordtype}{integer} :: i,j,iw,lw,liw,lldwc,numroc}
+\DoxyCodeLine{105     \textcolor{keywordtype}{double precision} :: dalpha,om}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 \textcolor{comment}{!create the DOS for the leads}}
+\DoxyCodeLine{108 \textcolor{comment}{!eps0=2.0d0}}
+\DoxyCodeLine{109 \textcolor{comment}{!sgm0=-\/1.5d0}}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 \textcolor{comment}{!call edos(context,shp,tf,npt,npw,eps0,sgm0,V,dos,descdos)}}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{114 nprocs=nprow*npcol}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 lldwc=numroc(npw,1,mycol,0,nprocs)}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 lsr=zero}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!Retarded Self-\/energy!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{121 \textcolor{keywordflow}{do} lw=1,lldwc}
+\DoxyCodeLine{122     liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{123     \textcolor{keywordflow}{do} i=1,\textcolor{keyword}{size}(lds)}
+\DoxyCodeLine{124                 \textcolor{keywordflow}{do} j=1,\textcolor{keyword}{size}(lds)}
+\DoxyCodeLine{125                 lsr(lds(i),liw+lds(j)-\/1)=-\/ci*0.5d0*(g(i)*g(j))}
+\DoxyCodeLine{126 \textcolor{keywordflow}{                end do}}
+\DoxyCodeLine{127 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{128 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 \textcolor{comment}{!Tight-\/Binding Semi-\/Infinite Leads}}
+\DoxyCodeLine{131 \textcolor{keywordflow}{if} (shp == \textcolor{stringliteral}{'tb'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 \textcolor{keywordflow}{do} lw=1,lldwc}
+\DoxyCodeLine{134     liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{135     om=-\/wm+2.d0*wm*(vw(lw)-\/1)/(npw-\/1)   }
+\DoxyCodeLine{136     \textcolor{keywordflow}{do} i=1,\textcolor{keyword}{size}(lds)}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138     \textcolor{keywordflow}{if}((om-\/ea+mu-\/v).gt.2*abs(t)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{139         lsr(lds(i),liw+lds(i)-\/1)=0.5d0*(om-\/ea+mu-\/v-\/sqrt((om-\/ea+mu-\/v)**2.d0-\/4*t**2.d0))*(g(i)**2.d0)/t**2.d0}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141     \textcolor{keywordflow}{elseif}(abs(om-\/ea+mu-\/v).le.2*abs(t)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{142         lsr(lds(i),liw+lds(i)-\/1)=0.5d0*(om-\/ea+mu-\/v-\/ci*sqrt(4*t**2.d0-\/(om-\/ea+mu-\/v)**2.d0))*(g(i)**2.d0)/t**2.d0}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{145         lsr(lds(i),liw+lds(i)-\/1)=0.5d0*(om-\/ea+mu-\/v+sqrt((om-\/ea+mu-\/v)**2.d0-\/4*t**2.d0))*(g(i)**2.d0)/t**2.d0}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{148 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{149 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 \textcolor{comment}{!Bosonic leads}}
+\DoxyCodeLine{154 \textcolor{keywordflow}{if} (shp == \textcolor{stringliteral}{'bos'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{155 lsr=zero}
+\DoxyCodeLine{156 \textcolor{keywordflow}{do} lw=1,lldwc}
+\DoxyCodeLine{157     liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{158     om=-\/wm+2.d0*wm*(vw(lw)-\/1)/(npw-\/1)   }
+\DoxyCodeLine{159     \textcolor{keywordflow}{if}(om>0.d0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{160         \textcolor{keywordflow}{do} i=1,\textcolor{keyword}{size}(lds)}
+\DoxyCodeLine{161                 \textcolor{keywordflow}{do} j=1,\textcolor{keyword}{size}(lds)}
+\DoxyCodeLine{162                 lsr(lds(i),liw+lds(j)-\/1)=-\/ci*0.5d0*(g(i)*g(j))}
+\DoxyCodeLine{163 \textcolor{keywordflow}{                end do}}
+\DoxyCodeLine{164 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{165 \textcolor{keywordflow}{        end if}}
+\DoxyCodeLine{166 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!Lesser Self-\/energy!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{174 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{175     liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{176     om=-\/wm+2*wm*(vw(lw)-\/1)/(npw-\/1)}
+\DoxyCodeLine{177         \textcolor{keywordflow}{if}(shp==\textcolor{stringliteral}{'bos'}.and.om.le.0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{178                 dalpha=0.d0}
+\DoxyCodeLine{179         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{180                 dalpha=stat*(1.0d0/(exp(bt*(om-\/mu-\/v))-\/1.0d0*stat))}
+\DoxyCodeLine{181 \textcolor{keywordflow}{        end if} }
+\DoxyCodeLine{182     lsl(1:nps,liw:liw+nps-\/1)=dalpha*(lsr(1:nps,liw:liw+nps-\/1)-\/transpose(conjg(lsr(1:nps,liw:liw+nps-\/1))))}
+\DoxyCodeLine{183 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{184 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Greater Self-\/energy!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{187 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{188     liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{189     om=-\/wm+2*wm*(vw(lw)-\/1)/(npw-\/1)}
+\DoxyCodeLine{190     \textcolor{keywordflow}{if}(shp==\textcolor{stringliteral}{'bos'}.and.om.le.0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{191                 dalpha=0.d0}
+\DoxyCodeLine{192         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{193                 dalpha=(1.d0+stat*1.0d0/(exp(bt*(om-\/mu-\/v))-\/1.0d0*stat))}
+\DoxyCodeLine{194 \textcolor{keywordflow}{        end if} }
+\DoxyCodeLine{195     lsg(1:nps,liw:liw+nps-\/1)=dalpha*(lsr(1:nps,liw:liw+nps-\/1)-\/transpose(conjg(lsr(1:nps,liw:liw+nps-\/1))))}
+\DoxyCodeLine{196 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{197 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202 }
+
+\end{DoxyCode}

@@ -22,22 +22,22 @@ subroutine \mbox{\hyperlink{inversionnew_8f90_a6d0434eb76385ae9a09d9fd909963367}
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & scm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+CM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & delta \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+L\+TA \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & a \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & A \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & desca \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+CA \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -47,3 +47,270 @@ subroutine \mbox{\hyperlink{inversionnew_8f90_a6d0434eb76385ae9a09d9fd909963367}
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 39 of file inversionnew.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{39     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{40     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{41 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{42     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{43     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{44 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{45     \textcolor{keywordtype}{character(*)} :: scm}
+\DoxyCodeLine{46     \textcolor{keywordtype}{integer} :: nps,npt}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double complex} :: delta}
+\DoxyCodeLine{48     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: w, tw}
+\DoxyCodeLine{49     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descw, desctw}
+\DoxyCodeLine{50     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: work}
+\DoxyCodeLine{51     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: iwork}
+\DoxyCodeLine{52     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: ipiv}
+\DoxyCodeLine{53 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{54     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(1:9)} :: desca}
+\DoxyCodeLine{55     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: a}
+\DoxyCodeLine{56 \textcolor{comment}{!Variables for grid query}}
+\DoxyCodeLine{57     \textcolor{keywordtype}{integer} :: context,nprow,npcol,nprocs,myrow,mycol,rsrc,csrc}
+\DoxyCodeLine{58 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{59     \textcolor{keywordtype}{integer} :: n,d,i,j,tt,ttp,ltt,lttp,lit,litp}
+\DoxyCodeLine{60     \textcolor{keywordtype}{integer} :: mb,nb,pr,pc,lldr,lldc,lldtr,lldtc}
+\DoxyCodeLine{61     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{62     \textcolor{keywordtype}{integer} :: info1,info2,info,dwork,diwork,dimipiv}
+\DoxyCodeLine{63     \textcolor{keywordtype}{double precision} :: dalpha}
+\DoxyCodeLine{64     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtt, vttp}
+\DoxyCodeLine{65     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(1:9)} :: desct}
+\DoxyCodeLine{66     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} , \textcolor{keywordtype}{allocatable}:: ta}
+\DoxyCodeLine{67     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} , \textcolor{keywordtype}{allocatable}:: ia}
+\DoxyCodeLine{68         \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} , \textcolor{keywordtype}{allocatable}:: tia}
+\DoxyCodeLine{69     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)}, \textcolor{keywordtype}{allocatable} :: iad}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 context = desca(2)}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 n=nps*npt}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 mb = desca(5)}
+\DoxyCodeLine{78 nb = desca(6)}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 lldr=numroc(n,mb,myrow,0,nprow)}
+\DoxyCodeLine{82 lldc=numroc(n,nb,mycol,0,npcol)}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 \textcolor{keyword}{allocate}(ia(lldr,lldc),tia(lldr,lldc))}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 lldtr=numroc(npt,1,myrow,0,nprow)}
+\DoxyCodeLine{87 lldtc=numroc(npt,1,mycol,0,npcol)}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 \textcolor{keyword}{allocate}(vtt(lldtr),vttp(lldtc))}
+\DoxyCodeLine{90 \textcolor{keyword}{allocate}(iad(lldtr,nps,nps),ta(nps,nps))}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 \textcolor{keyword}{call }descinit(desct,npt,npt,1,1,0,0,context,lldtr,info)}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94 vtt=0}
+\DoxyCodeLine{95 vttp=0}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 i=0}
+\DoxyCodeLine{98 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{99 pr=mod(floor(real(tt-\/1)),nprow)}
+\DoxyCodeLine{100 \textcolor{keywordflow}{if}(myrow==pr) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{101 i=i+1}
+\DoxyCodeLine{102 vtt(i)=tt}
+\DoxyCodeLine{103 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{104 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 i=0}
+\DoxyCodeLine{107 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{108 pc=mod(floor(real(tt-\/1)),npcol)}
+\DoxyCodeLine{109 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{110 i=i+1}
+\DoxyCodeLine{111 vttp(i)=tt}
+\DoxyCodeLine{112 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{113 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 ia = zero}
+\DoxyCodeLine{116 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{117 \textcolor{comment}{!!!!!!!     Inversa sulla diagonale temporale}}
+\DoxyCodeLine{118 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{119 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{120 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 \textcolor{keywordflow}{if} (vtt(tt)==vttp(ttp)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124     lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{125     litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127     ia(lit:lit+nps-\/1,litp:litp+nps-\/1) = a(lit:lit+nps-\/1,litp:litp+nps-\/1)}
+\DoxyCodeLine{128     \textcolor{keyword}{call }\mbox{\hyperlink{dyson-freq_2src_2locinv_8f90_a3812907bd0a363733044779bb75b9a5b}{locinv}}(nps,ia(lit:lit+nps-\/1,litp:litp+nps-\/1))}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 \textcolor{comment}{!!!!!!  ia(lit:lit+nps-\/1,litp:litp+nps-\/1) = ta}}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134 \textcolor{comment}{!        ta=matmul(ia(lit:lit+nps-\/1,litp:litp+nps-\/1),a(lit:lit+nps-\/1,litp:litp+nps-\/1))}}
+\DoxyCodeLine{135 \textcolor{comment}{!        if (myrow==3.and.mycol==1) then}}
+\DoxyCodeLine{136 \textcolor{comment}{!                print*, ta(1,1), ta(1,2)}}
+\DoxyCodeLine{137 \textcolor{comment}{!                print*, ta(2,1), ta(2,2)}}
+\DoxyCodeLine{138 \textcolor{comment}{!                print*, '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/'}}
+\DoxyCodeLine{139 \textcolor{comment}{!        end if}}
+\DoxyCodeLine{140 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{144 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{145 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{148 \textcolor{comment}{!Distribuzione inversa diagonale a tutti i processi per riga}}
+\DoxyCodeLine{149 \textcolor{comment}{!Serve per non fare l'ultima moltiplicazione globale ma locale}}
+\DoxyCodeLine{150 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{151 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{152     \textcolor{keyword}{call }infog2l(tt,tt,desct,nprow,npcol,myrow,mycol,ltt,lttp,rsrc,csrc)}
+\DoxyCodeLine{153     lit= (ltt-\/1)*nps+1}
+\DoxyCodeLine{154     litp=(lttp-\/1)*nps+1}
+\DoxyCodeLine{155     \textcolor{keywordflow}{if} (myrow==rsrc.and.mycol==csrc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{156         iad(ltt,1:nps,1:nps)=ia(lit:lit+nps-\/1,litp:litp+nps-\/1)}
+\DoxyCodeLine{157         \textcolor{keyword}{call }zgebs2d(context,\textcolor{stringliteral}{'R'},\textcolor{stringliteral}{'i-\/ring'},nps,nps,iad(ltt,1:nps,1:nps),nps)}
+\DoxyCodeLine{158     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (myrow==rsrc.and.mycol.ne.csrc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{159         \textcolor{keyword}{call }zgebr2d(context,\textcolor{stringliteral}{'R'},\textcolor{stringliteral}{'i-\/ring'},nps,nps,iad(ltt,1:nps,1:nps),nps,rsrc,csrc)}
+\DoxyCodeLine{160 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{161 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{162 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{166 \textcolor{comment}{!!!!!!!!!CALCOLO ALTRI TERMINI INVERSA}}
+\DoxyCodeLine{167 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169 \textcolor{comment}{!DO SULLE DIAGONALI SECONDARIE}}
+\DoxyCodeLine{170 \textcolor{keywordflow}{do} d=1,npt-\/1}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173 \textcolor{comment}{!DO LUNGO GLI ELEMENTI DELLA DIAGONALE CHE DISTA d DA QUELLA PRINCIPALE}}
+\DoxyCodeLine{174 \textcolor{keywordflow}{do} tt=1, npt-\/d}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 \textcolor{comment}{!!!!!!!!!!!!!!C(IC:IC+M-\/1,JC:JC+N-\/1) =  A(IA:IA+M-\/1,JA:JA+K-\/1)*B(IB:IB+K-\/1,JB:JB+N-\/1)}}
+\DoxyCodeLine{177 \textcolor{comment}{!!!!!!!call pzgemm('N','N',M,N,K,uno,a,IA,JA,desca,ia,IB,JB,desca,uno,ia,IC,JC,desca)}}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180 \textcolor{comment}{!***********************************************************************************************}}
+\DoxyCodeLine{181 \textcolor{comment}{!***********************************************************************************************}}
+\DoxyCodeLine{182 \textcolor{comment}{!       PARTE CRITICA E' troppo SEQUENZIALE}}
+\DoxyCodeLine{183 \textcolor{comment}{!***********************************************************************************************}}
+\DoxyCodeLine{184 \textcolor{comment}{!***********************************************************************************************}}
+\DoxyCodeLine{185     \textcolor{keyword}{call }pzgemm(\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{'N'},nps,nps,d*nps,-\/uno,a,(tt+d-\/1)*nps+1,(tt-\/1)*nps+1,desca,\&}
+\DoxyCodeLine{186                 \&ia,(tt-\/1)*nps+1,(tt-\/1)*nps+1,desca,zero,tia,(tt+d-\/1)*nps+1,(tt-\/1)*nps+1,desca)}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188 \textcolor{comment}{!***********************************************************************************************}}
+\DoxyCodeLine{189 \textcolor{comment}{!***********************************************************************************************}}
+\DoxyCodeLine{190 \textcolor{comment}{!       PARTE CRITICA E' troppo SEQUENZIALE}}
+\DoxyCodeLine{191 \textcolor{comment}{!***********************************************************************************************}}
+\DoxyCodeLine{192 \textcolor{comment}{!***********************************************************************************************}}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 \textcolor{comment}{!if (myrow==0.and.mycol==0) then}}
+\DoxyCodeLine{195  \textcolor{comment}{!       ta=ia(lit:lit+nps-\/1,litp:litp+nps-\/1)}}
+\DoxyCodeLine{196   \textcolor{comment}{!              print*, ta(1,1), ta(1,2)}}
+\DoxyCodeLine{197    \textcolor{comment}{!             print*, ta(2,1), ta(2,2)}}
+\DoxyCodeLine{198     \textcolor{comment}{!            print*, '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/'}}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 \textcolor{comment}{!end if}}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202     \textcolor{keyword}{call }infog2l(tt+d,tt,desct,nprow,npcol,myrow,mycol,ltt,lttp,rsrc,csrc)}
+\DoxyCodeLine{203     lit= (ltt-\/1)*nps+1}
+\DoxyCodeLine{204     litp=(lttp-\/1)*nps+1}
+\DoxyCodeLine{205     \textcolor{keywordflow}{if} (myrow==rsrc.and.mycol==csrc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{206         ta=tia(lit:lit+nps-\/1,litp:litp+nps-\/1)}
+\DoxyCodeLine{207         ia(lit:lit+nps-\/1,litp:litp+nps-\/1)=matmul(iad(ltt,1:nps,1:nps),ta)}
+\DoxyCodeLine{208 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213 \textcolor{comment}{!!!!!!!!!!!!!!!!MOLTIPLICO PER LE INVERSE SULLA DIAGONALE E ASSEGNO ALL'INVRSA!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{214 \textcolor{comment}{!do tt=1,npt-\/d}}
+\DoxyCodeLine{215 \textcolor{comment}{!end do}}
+\DoxyCodeLine{216 \textcolor{comment}{!!!!!!!!!!!!!!}}
+\DoxyCodeLine{217 }
+\DoxyCodeLine{218 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{219 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{223 }
+\DoxyCodeLine{224 \textcolor{comment}{!tia=a}}
+\DoxyCodeLine{225 \textcolor{comment}{!call inversion(scm,delta,nps,npt,tia,desca)}}
+\DoxyCodeLine{226 }
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228 \textcolor{comment}{!if (myrow==0.and.mycol==0) then }}
+\DoxyCodeLine{229 \textcolor{comment}{!print*, 'suca'}}
+\DoxyCodeLine{230 \textcolor{comment}{!end if}}
+\DoxyCodeLine{231 \textcolor{comment}{!call checksym(n,'ragl',tia,desca,ia,desca,zero*a,desca)}}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233 \textcolor{comment}{!if (myrow==0.and.mycol==0) then }}
+\DoxyCodeLine{234 \textcolor{comment}{!print*, 'sucato!'}}
+\DoxyCodeLine{235 \textcolor{comment}{!end if}}
+\DoxyCodeLine{236 }
+\DoxyCodeLine{237 \textcolor{comment}{!call pzgemm('N','N',n,n,n,uno,ia,1,1,desca,\&}}
+\DoxyCodeLine{238  \textcolor{comment}{!           \&a,1,1,desca,zero,tia,1,1,desca)}}
+\DoxyCodeLine{239 }
+\DoxyCodeLine{240 }
+\DoxyCodeLine{241 \textcolor{comment}{!call checksym(n,'ragl',tia,desca,zero*a,desca,zero*a,desca)}}
+\DoxyCodeLine{242 }
+\DoxyCodeLine{243 \textcolor{comment}{!tt=1}}
+\DoxyCodeLine{244 \textcolor{comment}{!ttp=2}}
+\DoxyCodeLine{245 }
+\DoxyCodeLine{246 \textcolor{comment}{!!do tt=1, lldtr}}
+\DoxyCodeLine{247 \textcolor{comment}{!!do ttp=1,lldtc}}
+\DoxyCodeLine{248 }
+\DoxyCodeLine{249 \textcolor{comment}{!lit=(tt-\/1)*nps+1}}
+\DoxyCodeLine{250 \textcolor{comment}{!litp=(ttp-\/1)*nps+1}}
+\DoxyCodeLine{251 \textcolor{comment}{!ta=matmul(ia(lit:lit+nps-\/1,litp:litp+nps-\/1),a(lit:lit+nps-\/1,litp:litp+nps-\/1))}}
+\DoxyCodeLine{252 }
+\DoxyCodeLine{253 \textcolor{comment}{!!dalpha=maxval(abs(ta))}}
+\DoxyCodeLine{254 \textcolor{comment}{!!if(dalpha.ne.0.d0.and.vtt(tt)==vttp(ttp)) then}}
+\DoxyCodeLine{255 \textcolor{comment}{!!print*, dalpha,vtt(tt), vttp(ttp)}}
+\DoxyCodeLine{256 \textcolor{comment}{!!end if}}
+\DoxyCodeLine{257 }
+\DoxyCodeLine{258 }
+\DoxyCodeLine{259 }
+\DoxyCodeLine{260 \textcolor{comment}{!if (myrow==2.and.mycol==0) then}}
+\DoxyCodeLine{261 \textcolor{comment}{!   print*, vtt(tt), vttp(ttp)  }}
+\DoxyCodeLine{262 \textcolor{comment}{!   print*, ta(1,1), ta(1,2)}}
+\DoxyCodeLine{263 \textcolor{comment}{!   print*, ta(2,1), ta(2,2)}}
+\DoxyCodeLine{264 \textcolor{comment}{!   print*, '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ '}}
+\DoxyCodeLine{265 \textcolor{comment}{!end if}}
+\DoxyCodeLine{266 }
+\DoxyCodeLine{267 \textcolor{comment}{!end do}}
+\DoxyCodeLine{268 \textcolor{comment}{!end do}}
+\DoxyCodeLine{269 }
+\DoxyCodeLine{270 a=ia/(delta*delta)}
+\DoxyCodeLine{271 }
+\DoxyCodeLine{272 }
+\DoxyCodeLine{273 }
+\DoxyCodeLine{274 \textcolor{keyword}{allocate}(w(lldtr,lldtc))}
+\DoxyCodeLine{275 \textcolor{keyword}{call }descinit(descw,npt,npt,1,1,0,0,context,lldtr,info)}
+\DoxyCodeLine{276 }
+\DoxyCodeLine{277 \textcolor{keyword}{call }\mbox{\hyperlink{weights_8f90_a594689ef0872066cbc84bbe582e1b2f0}{weights}}(context,scm,npt,1,w)}
+\DoxyCodeLine{278 }
+\DoxyCodeLine{279 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{280 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{281 }
+\DoxyCodeLine{282 lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{283 litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{284 }
+\DoxyCodeLine{285 }
+\DoxyCodeLine{286 \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{287 \textcolor{keywordflow}{do} j=1, nps}
+\DoxyCodeLine{288 \textcolor{keywordflow}{if} (vtt(tt).ge.vttp(ttp)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{289     a(lit+i-\/1,litp+j-\/1) = a(lit+i-\/1,litp+j-\/1)/w(tt,ttp)}
+\DoxyCodeLine{290 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{291 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{292 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{293 }
+\DoxyCodeLine{294 }
+\DoxyCodeLine{295 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{296 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{297 }
+
+\end{DoxyCode}

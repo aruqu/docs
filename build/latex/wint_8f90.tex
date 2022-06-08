@@ -22,25 +22,25 @@ subroutine \mbox{\hyperlink{wint_8f90_a9f702255e0af5953e65e9a6a035f6259}{wint}} 
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & wm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & WM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & la \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & LA \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & desca \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+CA \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & inta \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & I\+N\+TA \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -50,3 +50,97 @@ subroutine \mbox{\hyperlink{wint_8f90_a9f702255e0af5953e65e9a6a035f6259}{wint}} 
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 43 of file wint.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{43     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{44     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{45 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{46     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{48     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = dacos(-\/1.0d0)       \textcolor{comment}{! Pi greco}}
+\DoxyCodeLine{49 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{50     \textcolor{keywordtype}{integer} :: nps,npw}
+\DoxyCodeLine{51     \textcolor{keywordtype}{double precision} :: wm}
+\DoxyCodeLine{52     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vw}
+\DoxyCodeLine{53     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: desca}
+\DoxyCodeLine{54     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension (:,:)} :: la}
+\DoxyCodeLine{55 \textcolor{comment}{!Output variables}}
+\DoxyCodeLine{56     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension (:,:)} :: inta}
+\DoxyCodeLine{57 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{58     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol,rsrc,csrc}
+\DoxyCodeLine{59 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{60     \textcolor{keywordtype}{integer} :: n,i,lw,iw,liw}
+\DoxyCodeLine{61     \textcolor{keywordtype}{integer} :: mb,nb,pr,pc,lldr,lldc,lldwc,numroc}
+\DoxyCodeLine{62     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension (:,:)}, \textcolor{keywordtype}{allocatable} :: one}
+\DoxyCodeLine{63     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension (1:nps,1:nps)} :: ltmp}
+\DoxyCodeLine{64     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(9)} :: desctmp}
+\DoxyCodeLine{65     \textcolor{keywordtype}{double precision} :: dw}
+\DoxyCodeLine{66     \textcolor{keywordtype}{double complex} :: zalpha}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{69 nprocs=nprow*npcol}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 mb = desca(5)}
+\DoxyCodeLine{72 nb = desca(6)}
+\DoxyCodeLine{73 n=nps*npw}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 lldr=numroc(nps,mb,myrow,0,1)}
+\DoxyCodeLine{76 lldc=numroc(n,nb,mycol,0,nprocs)}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 lldwc=numroc(npw,1,mycol,0,nprocs)}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{keyword}{call }descinit(desctmp,nps,nps,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{keyword}{allocate}(one(lldr,lldc))}
+\DoxyCodeLine{83 \textcolor{keyword}{allocate}(vw(lldwc))}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 liw=0}
+\DoxyCodeLine{88 \textcolor{keywordflow}{do} iw=1, npw}
+\DoxyCodeLine{89 pc=mod(floor(real(iw-\/1)),nprocs)}
+\DoxyCodeLine{90 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{91 liw=liw+1}
+\DoxyCodeLine{92 vw(liw)=iw}
+\DoxyCodeLine{93 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{94 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 one=zero}
+\DoxyCodeLine{99 \textcolor{keywordflow}{do} lw = 1, lldwc}
+\DoxyCodeLine{100 liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 \textcolor{comment}{!if(vw(lw)==1.or.vw(lw)==npw) then }}
+\DoxyCodeLine{103 \textcolor{comment}{!   zalpha = uno/3.0d0}}
+\DoxyCodeLine{104 \textcolor{comment}{!   else if(mod(vw(lw),2)==0) then}}
+\DoxyCodeLine{105 \textcolor{comment}{!   zalpha = 4.d0*uno/3.0d0}}
+\DoxyCodeLine{106 \textcolor{comment}{!   else if(mod(vw(lw),2)==1) then}}
+\DoxyCodeLine{107 \textcolor{comment}{!   zalpha = 2.d0*uno/3.0d0}}
+\DoxyCodeLine{108 \textcolor{comment}{!end if}}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 zalpha=uno}
+\DoxyCodeLine{111 \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{112     one(i,liw+i-\/1) = zalpha }
+\DoxyCodeLine{113 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{114 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 dw=2.d0*wm/(npw-\/1)}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 ltmp=zero}
+\DoxyCodeLine{119 \textcolor{keyword}{call }pzgemm (\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{'T'},nps,nps,n,dw*uno/(2.0d0*pi),la,1,1,desca,one,1,1,desca,zero,ltmp,1,1,desctmp)}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 inta=zero}
+\DoxyCodeLine{122 \textcolor{keywordflow}{if} (myrow==0.and.mycol==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{123     inta = ltmp}
+\DoxyCodeLine{124     \textcolor{keyword}{call }zgebs2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},nps,nps,inta,nps)}
+\DoxyCodeLine{125 \textcolor{keywordflow}{else}}
+\DoxyCodeLine{126     \textcolor{keyword}{call }zgebr2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},nps,nps,inta,nps,0,0)}
+\DoxyCodeLine{127 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{128 }
+
+\end{DoxyCode}

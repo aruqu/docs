@@ -22,34 +22,34 @@ subroutine \mbox{\hyperlink{edos_8f90_a37ae09d016ccfdca20634833d8045e16}{edos}} 
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & shp \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+HP \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & tf \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & TF \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & eps0 \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & E\+P\+S0 \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & sgm0 \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+G\+M0 \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
 {\em \mbox{[}$\,$\mbox{]}} & V \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & embdos \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & E\+M\+B\+D\+OS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descembdos \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+E\+M\+B\+D\+OS \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -59,3 +59,219 @@ subroutine \mbox{\hyperlink{edos_8f90_a37ae09d016ccfdca20634833d8045e16}{edos}} 
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 55 of file edos.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{55     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{56     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{57 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{58     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = dacos(-\/1.0d0)       \textcolor{comment}{! Pi greco}}
+\DoxyCodeLine{59 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{60     \textcolor{keywordtype}{character(*)} :: shp}
+\DoxyCodeLine{61     \textcolor{keywordtype}{integer} :: npt,npw}
+\DoxyCodeLine{62     \textcolor{keywordtype}{double precision} :: tf,eps0,sgm0}
+\DoxyCodeLine{63     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension (:)} :: V}
+\DoxyCodeLine{64 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{65     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension (:,:)} :: embdos}
+\DoxyCodeLine{66     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descembdos}
+\DoxyCodeLine{67     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: lone}
+\DoxyCodeLine{68     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descone}
+\DoxyCodeLine{69     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: lndos}
+\DoxyCodeLine{70     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descndos}
+\DoxyCodeLine{71 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{72     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{73 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{74     \textcolor{keywordtype}{integer} :: n,i,j,tt,ttp,it,itp,lit,litp}
+\DoxyCodeLine{75     \textcolor{keywordtype}{integer} :: mb,nb,pr,pc,lldr,lldc,lldtr,lldtc}
+\DoxyCodeLine{76     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{77     \textcolor{keywordtype}{double precision} :: dt,eps,epsmin,epsmax,deps}
+\DoxyCodeLine{78     \textcolor{keywordtype}{double precision} :: dalpha}
+\DoxyCodeLine{79     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtt, vttp}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 lldtr=numroc(npw,1,myrow,0,nprow)}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{keyword}{allocate}(lone(lldtr,1))}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 \textcolor{keyword}{call }descinit(descone,npw,1,1,1,0,0,context,lldtr,info)}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 lldtr=numroc(npt,1,myrow,0,nprow)}
+\DoxyCodeLine{91 lldtc=numroc(npw,1,mycol,0,npcol)}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{keyword}{call }descinit(descembdos,npt,npw,1,1,0,0,context,lldtr,info)}
+\DoxyCodeLine{94 \textcolor{keyword}{call }descinit(descndos,npt,1,1,1,0,0,context,lldtr,info)}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 \textcolor{keyword}{allocate}(lndos(lldtr,1))}
+\DoxyCodeLine{97 \textcolor{keyword}{allocate}(vtt(lldtr),vttp(lldtc))}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 vtt=0}
+\DoxyCodeLine{100 vttp=0}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 i=0}
+\DoxyCodeLine{103 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{104 pr=mod(floor(real(tt-\/1)),nprow)}
+\DoxyCodeLine{105 \textcolor{keywordflow}{if}(myrow==pr) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{106 i=i+1}
+\DoxyCodeLine{107 vtt(i)=tt}
+\DoxyCodeLine{108 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{109 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 i=0}
+\DoxyCodeLine{112 \textcolor{keywordflow}{do} ttp=1, npw}
+\DoxyCodeLine{113 pc=mod(floor(real(ttp-\/1)),npcol)}
+\DoxyCodeLine{114 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{115 i=i+1}
+\DoxyCodeLine{116 vttp(i)=ttp}
+\DoxyCodeLine{117 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{118 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 embdos=0.d0}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 dt=tf/(npt-\/1)}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 epsmin=-\/0.5d0*pi/dt}
+\DoxyCodeLine{125 epsmax=0.5d0*pi/dt}
+\DoxyCodeLine{126 deps=(epsmax-\/epsmin)/(npw-\/1)}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 \textcolor{comment}{!"Lorentzian DOS"}}
+\DoxyCodeLine{130 \textcolor{keywordflow}{if} (shp == \textcolor{stringliteral}{'l'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132     \textcolor{keywordflow}{do} tt = 1, lldtr}
+\DoxyCodeLine{133     \textcolor{keywordflow}{do} ttp = 1, lldtc}
+\DoxyCodeLine{134         eps=epsmin+(vttp(ttp)-\/1)*deps}
+\DoxyCodeLine{135         embdos(tt,ttp) = (sgm0*sgm0/(sgm0*sgm0+(eps-\/eps0)**2))}
+\DoxyCodeLine{136 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{137 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 \textcolor{comment}{!"Gaussian DOS"}}
+\DoxyCodeLine{140 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (shp == \textcolor{stringliteral}{'g'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142     \textcolor{keywordflow}{do} tt = 1, lldtr}
+\DoxyCodeLine{143     \textcolor{keywordflow}{do} ttp = 1, lldtc}
+\DoxyCodeLine{144         eps=epsmin+(vttp(ttp)-\/1)*deps}
+\DoxyCodeLine{145         embdos(tt,ttp) = exp(-\/(((eps-\/eps0)/sgm0)**2)/2.0d0)}
+\DoxyCodeLine{146 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{147 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 \textcolor{comment}{!"Product of two arctan DOS"}}
+\DoxyCodeLine{151 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (shp == \textcolor{stringliteral}{'a'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153     \textcolor{keywordflow}{do} tt = 1, lldtr}
+\DoxyCodeLine{154     \textcolor{keywordflow}{do} ttp = 1, lldtc}
+\DoxyCodeLine{155         eps=epsmin+(vttp(ttp)-\/1)*deps}
+\DoxyCodeLine{156         embdos(tt,ttp) = (pi/2.0d0 + atan((eps-\/(eps0-\/sgm0))))*(pi/2 + atan((-\/(eps-\/(eps0+sgm0)))))/pi**2}
+\DoxyCodeLine{157 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{158 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 \textcolor{comment}{!Hyberbolic tanh}}
+\DoxyCodeLine{162 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (shp == \textcolor{stringliteral}{'t'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164     \textcolor{keywordflow}{do} tt = 1, lldtr}
+\DoxyCodeLine{165     \textcolor{keywordflow}{do} ttp = 1, lldtc}
+\DoxyCodeLine{166         eps=epsmin+(vttp(ttp)-\/1)*deps}
+\DoxyCodeLine{167         embdos(tt,ttp) = (1.0d0 + tanh((eps-\/(eps0-\/sgm0))))*(1.0d0 + tanh((-\/(eps-\/(eps0+sgm0)))))/2.0d0**2}
+\DoxyCodeLine{168 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{169 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 \textcolor{comment}{!Tight binding}}
+\DoxyCodeLine{172 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (shp == \textcolor{stringliteral}{'tb'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174     \textcolor{keywordflow}{do} tt = 1, lldtr}
+\DoxyCodeLine{175     \textcolor{keywordflow}{do} ttp = 1, lldtc}
+\DoxyCodeLine{176         eps=epsmin+(vttp(ttp)-\/1)*deps}
+\DoxyCodeLine{177         \textcolor{keywordflow}{if} (sgm0*sgm0-\/(eps-\/eps0)**2.ge.0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{178             embdos(tt,ttp) = sqrt((sgm0*sgm0-\/(eps-\/eps0)**2))}
+\DoxyCodeLine{179         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{180             embdos(tt,ttp) = 0.d0}
+\DoxyCodeLine{181 \textcolor{keywordflow}{        end if}}
+\DoxyCodeLine{182 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{183 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185 \textcolor{comment}{!Linear, for the energy current}}
+\DoxyCodeLine{186 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (shp == \textcolor{stringliteral}{'lin'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188     \textcolor{keywordflow}{do} tt = 1, lldtr}
+\DoxyCodeLine{189     \textcolor{keywordflow}{do} ttp = 1, lldtc}
+\DoxyCodeLine{190         eps=epsmin+(vttp(ttp)-\/1)*deps}
+\DoxyCodeLine{191         embdos(tt,ttp) =eps\textcolor{comment}{!*(5.d-\/1+5.d-\/1*(1.d0-\/2.d0/(exp((eps+eps0)/sgm0)+1.d0))*(1.d0-\/2.d0/(exp(-\/(eps-\/eps0)/sgm0)+1.d0)))}}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{194 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{195     }
+\DoxyCodeLine{196 \textcolor{comment}{!"WBLA DOS"}}
+\DoxyCodeLine{197 \textcolor{comment}{!if shp is not w=WBLA, l=Lorentzian, g=Gaussian, a=Arctan, t=Tanh then it is assumed to be WBLA}}
+\DoxyCodeLine{198 \textcolor{keywordflow}{else} }
+\DoxyCodeLine{199     \textcolor{keywordflow}{do} tt = 1, lldtr}
+\DoxyCodeLine{200     \textcolor{keywordflow}{do} ttp = 1, lldtc}
+\DoxyCodeLine{201         eps=epsmin+(vttp(ttp)-\/1)*deps}
+\DoxyCodeLine{202         embdos(tt,ttp) =1.d0\textcolor{comment}{!5.d-\/1+5.d-\/1*(1.d0-\/2.d0/(exp((eps+eps0)/sgm0)+1.d0))*(1.d0-\/2.d0/(exp(-\/(eps-\/eps0)/sgm0)+1.d0))}}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{205 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211 \textcolor{comment}{!Normalizing the DOS of the left LEAD}}
+\DoxyCodeLine{212 \textcolor{comment}{!lone = 1.0d0}}
+\DoxyCodeLine{213 \textcolor{comment}{!lndos = 0.0d0}}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215 \textcolor{comment}{!call pdgemv('N',npt,npw,1.0d0,embdos,1,1,descembdos,lone,1,1,descone,1,0.d0,lndos,1,1,descndos,1)}}
+\DoxyCodeLine{216 }
+\DoxyCodeLine{217 \textcolor{comment}{!lldtr=numroc(npt,1,myrow,0,nprow)}}
+\DoxyCodeLine{218 \textcolor{comment}{!lldtc=numroc(npw,1,mycol,0,npcol)}}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220 \textcolor{comment}{!call blacs\_barrier(context, 'A') }}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222 \textcolor{comment}{!if (mycol==0.and.myrow==0) then}}
+\DoxyCodeLine{223 \textcolor{comment}{!   dalpha = lndos(1,1)}}
+\DoxyCodeLine{224 \textcolor{comment}{!   call dgebs2d(context,'A','i-\/ring',1, 1,dalpha,1)}}
+\DoxyCodeLine{225 \textcolor{comment}{!else}}
+\DoxyCodeLine{226 \textcolor{comment}{!   call dgebr2d(context,'A','i-\/ring',1, 1,dalpha,1,0,0)}}
+\DoxyCodeLine{227 \textcolor{comment}{!end if}}
+\DoxyCodeLine{228 }
+\DoxyCodeLine{229 \textcolor{comment}{!call blacs\_barrier(context, 'A')}}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231 \textcolor{comment}{!embdos = embdos*npw/dalpha}}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233 \textcolor{keyword}{call }blacs\_barrier(context, \textcolor{stringliteral}{'A'}) }
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235 }
+\DoxyCodeLine{236 }
+\DoxyCodeLine{237 \textcolor{comment}{!if (myrow==0.and.mycol==0) then}}
+\DoxyCodeLine{238 \textcolor{comment}{!open(unit=21,file='embdos.dat',access = 'sequential',status='unknown')}}
+\DoxyCodeLine{239 \textcolor{comment}{!end if}}
+\DoxyCodeLine{240 }
+\DoxyCodeLine{241 \textcolor{comment}{!do tt=1,npt}}
+\DoxyCodeLine{242 \textcolor{comment}{!do ttp = 1, npw}}
+\DoxyCodeLine{243 \textcolor{comment}{!   call infog2l(tt,ttp,descembdos,nprow,npcol,myrow,mycol,li,lip,rsrc,csrc)}}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{245 \textcolor{comment}{!   if (myrow==rsrc.and.mycol==csrc) then}}
+\DoxyCodeLine{246 \textcolor{comment}{!       dalpha = embdos(li,lip)}}
+\DoxyCodeLine{247 \textcolor{comment}{!       call zgebs2d(context,'A','i-\/ring',1, 1,dalpha,1)}}
+\DoxyCodeLine{248 \textcolor{comment}{!   else}}
+\DoxyCodeLine{249 \textcolor{comment}{!       call zgebr2d(context,'A','i-\/ring',1, 1,dalpha,1,rsrc,csrc)}}
+\DoxyCodeLine{250 \textcolor{comment}{!   end if}}
+\DoxyCodeLine{251 }
+\DoxyCodeLine{252 \textcolor{comment}{!   if (myrow==0.and.mycol==0) then}}
+\DoxyCodeLine{253 \textcolor{comment}{!       write(21,*) dalpha}}
+\DoxyCodeLine{254 \textcolor{comment}{!   end if}}
+\DoxyCodeLine{255 \textcolor{comment}{!end do}}
+\DoxyCodeLine{256 \textcolor{comment}{!end do}}
+\DoxyCodeLine{257 }
+\DoxyCodeLine{258 \textcolor{comment}{!if (myrow==0.and.mycol==0) then}}
+\DoxyCodeLine{259 \textcolor{comment}{!close(21)}}
+\DoxyCodeLine{260 \textcolor{comment}{!end if}}
+\DoxyCodeLine{261 }
+\DoxyCodeLine{262 }
+
+\end{DoxyCode}

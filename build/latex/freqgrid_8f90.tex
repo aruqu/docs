@@ -22,16 +22,16 @@ subroutine \mbox{\hyperlink{freqgrid_8f90_a779dba651c5b7e9e4e44599a99be2f20}{fre
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & npt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & tf \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & TF \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & ttime \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & T\+T\+I\+ME \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & filenameout \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & F\+I\+L\+E\+N\+A\+M\+E\+O\+UT \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -41,3 +41,41 @@ subroutine \mbox{\hyperlink{freqgrid_8f90_a779dba651c5b7e9e4e44599a99be2f20}{fre
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 31 of file freqgrid.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{31     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{32 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{33     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = dacos(-\/1.0d0)       \textcolor{comment}{! Pi greco}}
+\DoxyCodeLine{34 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{35     \textcolor{keywordtype}{character(*)} :: filenameout}
+\DoxyCodeLine{36     \textcolor{keywordtype}{integer} :: npt,ttime}
+\DoxyCodeLine{37     \textcolor{keywordtype}{double precision} :: tf}
+\DoxyCodeLine{38 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{39     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{40 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{41     \textcolor{keywordtype}{integer} :: tt,nnpt,npw,tmax}
+\DoxyCodeLine{42     \textcolor{keywordtype}{double precision} :: dt,dtau,deps,epsmin,epsmax}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{keywordflow}{if} (ttime.le.npt) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{45     npw=ttime-\/1}
+\DoxyCodeLine{46 \textcolor{keywordflow}{else}}
+\DoxyCodeLine{47     npw=2*npt-\/ttime+1}
+\DoxyCodeLine{48 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 dt=tf/(npt-\/1)}
+\DoxyCodeLine{51 epsmin=-\/pi/(2.0d0*dt)}
+\DoxyCodeLine{52 epsmax=pi/(2.d0*dt)}
+\DoxyCodeLine{53 deps=(epsmax-\/epsmin)/npw}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{keyword}{open}(unit=21,file=filenameout//\textcolor{stringliteral}{'.dat'},access = \textcolor{stringliteral}{'sequential'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{56 \textcolor{keywordflow}{do} tt=1, npw}
+\DoxyCodeLine{57     \textcolor{keyword}{write}(21,*) epsmin+(tt-\/1)*deps}
+\DoxyCodeLine{58 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{59 \textcolor{keyword}{close}(21)}
+\DoxyCodeLine{60 }
+
+\end{DoxyCode}

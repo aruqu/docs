@@ -22,46 +22,46 @@ subroutine \mbox{\hyperlink{winbse_8f90_a0eef0aa3a16dab1fba814516c36984c5}{winbs
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & wm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & WM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & vw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & VW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & g \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & G \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lnegl \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+N\+E\+GL \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lnegg \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+N\+E\+GG \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lnegr \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+N\+E\+GR \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & desc \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+SC \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsl \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SL \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsg \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SG \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsr \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SR \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descld \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+LD \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -71,3 +71,92 @@ subroutine \mbox{\hyperlink{winbse_8f90_a0eef0aa3a16dab1fba814516c36984c5}{winbs
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 71 of file winbse.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{71     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{72     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{73 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{74     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = dacos(-\/1.0d0)       \textcolor{comment}{! Pi greco}}
+\DoxyCodeLine{75     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{76     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{77     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{78 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{79     \textcolor{keywordtype}{integer} :: nps,npw}
+\DoxyCodeLine{80     \textcolor{keywordtype}{double precision} :: wm }
+\DoxyCodeLine{81     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: vw,desc,descld}
+\DoxyCodeLine{82     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension (:)} :: g}
+\DoxyCodeLine{83     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegl}
+\DoxyCodeLine{84     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegg}
+\DoxyCodeLine{85     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegr}
+\DoxyCodeLine{86 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{87     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsl}
+\DoxyCodeLine{88     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsg}
+\DoxyCodeLine{89     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsr}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{92     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol,rsrc,csrc}
+\DoxyCodeLine{93 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{94     \textcolor{keywordtype}{integer} :: n,i,j,lw,liw,mb,nb,lldc,lldr,lldwc,lldwr, numroc}
+\DoxyCodeLine{95     \textcolor{keywordtype}{double precision} :: t,dt,tm}
+\DoxyCodeLine{96     \textcolor{keywordtype}{double complex} :: zalpha}
+\DoxyCodeLine{97     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(nps,nps)} :: intg, tmpa, cv}
+\DoxyCodeLine{98     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(1,1)} :: tmp}
+\DoxyCodeLine{99     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: ltmpr, ltmpl, ltmpg, ltmp,lpa, lpr, lpl, lpg, lwr, lwl, lwg }
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{102 nprocs=nprow*npcol}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 mb = desc(5)}
+\DoxyCodeLine{105 nb = desc(6)}
+\DoxyCodeLine{106 n=nps*npw}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 lldr=numroc(nps,mb,myrow,0,1)}
+\DoxyCodeLine{109 lldc=numroc(n,nb,mycol,0,nprocs)}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 lldwr=numroc(1,1,myrow,0,1)}
+\DoxyCodeLine{112 lldwc=numroc(npw,1,mycol,0,nprocs)}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 \textcolor{keyword}{allocate}(ltmpr(lldr,lldc),ltmpl(lldr,lldc),ltmpg(lldr,lldc),ltmp(lldwr,lldwc))}
+\DoxyCodeLine{115 \textcolor{keyword}{allocate}(lwr(lldr,lldc),lwl(lldr,lldc),lwg(lldr,lldc))}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!RETARDED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 lsr=zero}
+\DoxyCodeLine{123 tmp=zero}
+\DoxyCodeLine{124 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{125     liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{126     tmp=0.5d0*matmul(reshape(g,(/1,\textcolor{keyword}{size}(g)/)), matmul(lnegr(1:nps,liw:liw+nps-\/1),reshape(g,(/\textcolor{keyword}{size}(g),1/)) ) )}
+\DoxyCodeLine{127     lsr(1,lw) = tmp(1,1)}
+\DoxyCodeLine{128 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!LESSER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 lsl=zero}
+\DoxyCodeLine{133 tmp=zero}
+\DoxyCodeLine{134 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{135     liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{136     tmp=matmul(reshape(g,(/1,\textcolor{keyword}{size}(g)/)), matmul(lnegl(1:nps,liw:liw+nps-\/1),reshape(g,(/\textcolor{keyword}{size}(g),1/)) ) )}
+\DoxyCodeLine{137     lsl(1,lw) = tmp(1,1)}
+\DoxyCodeLine{138 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!GREATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 lsg=zero}
+\DoxyCodeLine{143 tmp=zero}
+\DoxyCodeLine{144 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{145     liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{146     tmp=matmul(reshape(g,(/1,\textcolor{keyword}{size}(g)/)), matmul(lnegg(1:nps,liw:liw+nps-\/1), reshape(g,(/\textcolor{keyword}{size}(g),1/))) )}
+\DoxyCodeLine{147     lsg(1,lw) = tmp(1,1)}
+\DoxyCodeLine{148 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151 }
+
+\end{DoxyCode}

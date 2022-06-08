@@ -22,28 +22,28 @@ subroutine \mbox{\hyperlink{fourierwt__good_8f90_a8773eafbc57db1e5719b182c268755
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & wm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & WM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & dir \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+IR \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & la \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & LA \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & desca \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+CA \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lat \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+AT \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -53,3 +53,96 @@ subroutine \mbox{\hyperlink{fourierwt__good_8f90_a8773eafbc57db1e5719b182c268755
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 47 of file fourierwt\+\_\+good.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{47     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{48     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{49 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{50     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{51     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{52     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{53     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = dacos(-\/1.0d0)       \textcolor{comment}{! Pi greco}}
+\DoxyCodeLine{54 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{55     \textcolor{keywordtype}{integer} :: nps,npw,dir}
+\DoxyCodeLine{56     \textcolor{keywordtype}{double precision} :: wm}
+\DoxyCodeLine{57     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: desca}
+\DoxyCodeLine{58     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension (:,:)} :: la}
+\DoxyCodeLine{59 \textcolor{comment}{!Output variables}}
+\DoxyCodeLine{60     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension (:,:)} :: lat}
+\DoxyCodeLine{61 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{62     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol,rsrc,csrc}
+\DoxyCodeLine{63 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{64     \textcolor{keywordtype}{integer} :: n,i,iw,lr,lc,lir,lic}
+\DoxyCodeLine{65     \textcolor{keywordtype}{integer} :: mb,nb,pr,pc,lldr,lldc,lldwr,lldwc,numroc}
+\DoxyCodeLine{66     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)}, \textcolor{keywordtype}{allocatable} :: vr,vc}
+\DoxyCodeLine{67     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension (:,:)}, \textcolor{keywordtype}{allocatable} :: lexp}
+\DoxyCodeLine{68     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(9)} :: descexp}
+\DoxyCodeLine{69     \textcolor{keywordtype}{double precision} :: om,tm,dt,t,dw}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{72 nprocs=nprow*npcol}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 mb = desca(5)}
+\DoxyCodeLine{75 nb = desca(6)}
+\DoxyCodeLine{76 n=nps*npw}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 lldr=numroc(n,mb,myrow,0,1)}
+\DoxyCodeLine{79 lldc=numroc(n,nb,mycol,0,nprocs)}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 lldwr=numroc(npw,1,myrow,0,1)}
+\DoxyCodeLine{82 lldwc=numroc(npw,1,mycol,0,nprocs)}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 \textcolor{keyword}{allocate}(lexp(lldr,lldc))}
+\DoxyCodeLine{85 lexp=zero}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 \textcolor{keyword}{call }descinit(descexp,n,n,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 dw=2.d0*wm/(npw-\/1)}
+\DoxyCodeLine{90 tm=pi*(npw-\/1)/(2.d0*wm)}
+\DoxyCodeLine{91 dt=pi/wm}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{keyword}{allocate}(vr(lldwr),vc(lldwc))}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 lr=0}
+\DoxyCodeLine{96 \textcolor{keywordflow}{do} iw=1, npw}
+\DoxyCodeLine{97 pr=mod(floor(real(iw-\/1)),1)}
+\DoxyCodeLine{98 \textcolor{keywordflow}{if}(myrow==pr) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{99 lr=lr+1}
+\DoxyCodeLine{100 vr(lr)=iw}
+\DoxyCodeLine{101 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{102 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 lc=0}
+\DoxyCodeLine{105 \textcolor{keywordflow}{do} iw=1, npw}
+\DoxyCodeLine{106 pc=mod(floor(real(iw-\/1)),nprocs)}
+\DoxyCodeLine{107 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{108 lc=lc+1}
+\DoxyCodeLine{109 vc(lc)=iw}
+\DoxyCodeLine{110 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{111 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 \textcolor{keywordflow}{do} lr = 1, lldwr}
+\DoxyCodeLine{115 \textcolor{keywordflow}{do} lc = 1, lldwc}
+\DoxyCodeLine{116     lir=(lr-\/1)*nps+1}
+\DoxyCodeLine{117     lic=(lc-\/1)*nps+1}
+\DoxyCodeLine{118     om = -\/wm+(vr(lr)-\/1)*dw}
+\DoxyCodeLine{119     t = -\/tm+(vc(lc)-\/1)*dt}
+\DoxyCodeLine{120     \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{121         lexp(lir+i-\/1,lic+i-\/1) = exp(-\/ci*om*t)}
+\DoxyCodeLine{122 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{123 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{124 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 \textcolor{keywordflow}{if} (dir==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{127     \textcolor{keyword}{call }pzgemm (\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{'N'},nps,n,n,dw*uno/(2.0d0*pi),la,1,1,desca,lexp,1,1,descexp,zero,lat,1,1,desca)}
+\DoxyCodeLine{128 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (dir ==-\/1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{129     \textcolor{keyword}{call }pzgemm (\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{'C'},nps,n,n,dt*uno,la,1,1,desca,lexp,1,1,descexp,zero,lat,1,1,desca)}
+\DoxyCodeLine{130 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{131 }
+
+\end{DoxyCode}

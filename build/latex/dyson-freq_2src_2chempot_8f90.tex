@@ -22,25 +22,25 @@ subroutine \mbox{\hyperlink{dyson-freq_2src_2chempot_8f90_ac219e488f102349a098ab
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & n \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & w \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & W \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & bt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & BT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & numpart \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+U\+M\+P\+A\+RT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & stat \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+T\+AT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & mu \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & MU \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -50,3 +50,89 @@ subroutine \mbox{\hyperlink{dyson-freq_2src_2chempot_8f90_ac219e488f102349a098ab
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 43 of file chempot.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{43     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{44     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{45 \textcolor{comment}{!Input varibles}}
+\DoxyCodeLine{46     \textcolor{keywordtype}{integer} :: n,stat}
+\DoxyCodeLine{47     \textcolor{keywordtype}{integer} :: context}
+\DoxyCodeLine{48     \textcolor{keywordtype}{double precision} :: bt}
+\DoxyCodeLine{49     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: w}
+\DoxyCodeLine{50 \textcolor{comment}{!Input/output variables}}
+\DoxyCodeLine{51     \textcolor{keywordtype}{double precision} :: numpart,mu}
+\DoxyCodeLine{52 \textcolor{comment}{!Variable for grid query}}
+\DoxyCodeLine{53     \textcolor{keywordtype}{integer} :: info,nprow,npcol,myrow,mycol}
+\DoxyCodeLine{54 \textcolor{comment}{!Dummy varibales}}
+\DoxyCodeLine{55     \textcolor{keywordtype}{integer} :: i,j,nsteps}
+\DoxyCodeLine{56     \textcolor{keywordtype}{double precision} :: tnpart, dmu}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 mu=0.d0}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{comment}{!Only process (0,0) process finds the chemical potential}}
+\DoxyCodeLine{63 \textcolor{keywordflow}{if}(myrow==0.and.mycol==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{64     tnpart=1.0d10}
+\DoxyCodeLine{65 \textcolor{comment}{!Sets the initial chemical potential to be above the highest energy allowed}}
+\DoxyCodeLine{66     \textcolor{keywordflow}{if}(w(n)>0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{67         mu=2*w(n)}
+\DoxyCodeLine{68     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (w(n).le.0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{69         mu=2.d0}
+\DoxyCodeLine{70 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72     dmu=1.d0}
+\DoxyCodeLine{73     nsteps=1}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75     \textcolor{keywordflow}{do} \textcolor{keywordflow}{while} ((abs(tnpart-\/numpart)>=1.0e-\/14.and.nsteps<500000))}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77         tnpart=0.0d0}
+\DoxyCodeLine{78         \textcolor{keywordflow}{do} i=1,n}
+\DoxyCodeLine{79             tnpart=tnpart+1.0d0/(exp(bt*(w(i)-\/mu))-\/1.d0*stat)}
+\DoxyCodeLine{80 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82         \textcolor{keywordflow}{if} (tnpart>numpart) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{83             mu=mu-\/dmu}
+\DoxyCodeLine{84         \textcolor{keywordflow}{else} }
+\DoxyCodeLine{85             mu=mu+dmu}
+\DoxyCodeLine{86             dmu=dmu*0.5d0}
+\DoxyCodeLine{87 \textcolor{keywordflow}{        end if}}
+\DoxyCodeLine{88         }
+\DoxyCodeLine{89         \textcolor{keywordflow}{if} (tnpart<0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{90             mu=0.5d0*(w(int(numpart)+1)+w(int(numpart)))}
+\DoxyCodeLine{91             dmu=dmu*0.5d0}
+\DoxyCodeLine{92             print*, \textcolor{stringliteral}{'Particle number is negative npart= '}, tnpart, \textcolor{stringliteral}{'nsteps = '}, nsteps}
+\DoxyCodeLine{93 \textcolor{keywordflow}{        end if}}
+\DoxyCodeLine{94             nsteps=nsteps+1}
+\DoxyCodeLine{95         tnpart=0.0d0}
+\DoxyCodeLine{96         \textcolor{keywordflow}{do} i=1,n}
+\DoxyCodeLine{97             tnpart=tnpart+1.0d0/(exp(bt*(w(i)-\/mu))-\/1.d0*stat)}
+\DoxyCodeLine{98 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{99 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{100         tnpart=0.0d0}
+\DoxyCodeLine{101         \textcolor{keywordflow}{do} i=1,n}
+\DoxyCodeLine{102             tnpart=tnpart+1.0d0/(exp(bt*(w(i)-\/mu))-\/1.d0*stat)}
+\DoxyCodeLine{103 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 \textcolor{comment}{!Process (0,0) sends the calculated chemical potential to all other processes}}
+\DoxyCodeLine{108 \textcolor{keywordflow}{if}(myrow==0.and.mycol==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{109     \textcolor{keyword}{call }dgebs2d(context,\textcolor{stringliteral}{'All'},\textcolor{stringliteral}{'i-\/ring'},1, 1,mu,1)}
+\DoxyCodeLine{110 \textcolor{keywordflow}{else}}
+\DoxyCodeLine{111     \textcolor{keyword}{call }dgebr2d(context,\textcolor{stringliteral}{'All'},\textcolor{stringliteral}{'i-\/ring'},1, 1,mu,1,0,0)}
+\DoxyCodeLine{112 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{113 \textcolor{keyword}{call }blacs\_barrier(context,\textcolor{stringliteral}{'A'})}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 \textcolor{comment}{!Computes the total number of particles with mu}}
+\DoxyCodeLine{116 numpart=0.d0}
+\DoxyCodeLine{117 \textcolor{keywordflow}{do} i=1,n}
+\DoxyCodeLine{118     numpart=numpart+1.0d0/(exp(bt*(w(i)-\/mu))-\/1.d0*stat)}
+\DoxyCodeLine{119 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{120 }
+
+\end{DoxyCode}

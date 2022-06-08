@@ -26,3 +26,235 @@ subroutine \mbox{\hyperlink{GW_8f90_a233e446a46e9812537574c06d2353b3c}{gw}} (scm
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 16 of file G\+W.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{16     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{17     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{18 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{19     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{20     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)    \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{21     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{22 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{23     \textcolor{keywordtype}{character(*)} :: scm}
+\DoxyCodeLine{24     \textcolor{keywordtype}{integer} :: nps,npt}
+\DoxyCodeLine{25     \textcolor{keywordtype}{double precision} :: tf}
+\DoxyCodeLine{26     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: v}
+\DoxyCodeLine{27     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descnegl,descnegg,descnegr}
+\DoxyCodeLine{28     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegl,lnegg,lnegr}
+\DoxyCodeLine{29 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{30     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descsl,descsg,descsr}
+\DoxyCodeLine{31     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}:: lsl,lsg,lsr}
+\DoxyCodeLine{32 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{33     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{34 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{35     \textcolor{keywordtype}{integer} :: n,i,j,tt,ttp,it,itp,lit,litp}
+\DoxyCodeLine{36     \textcolor{keywordtype}{integer} :: mb,nb,pr,pc,lldr,lldc,lldtr,lldtc}
+\DoxyCodeLine{37     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{38     \textcolor{keywordtype}{double precision} :: dt,start,finish}
+\DoxyCodeLine{39     \textcolor{keywordtype}{double precision} :: epsmax, pzlange}
+\DoxyCodeLine{40     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descpr,descpl}
+\DoxyCodeLine{41     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: lpr,lpl}
+\DoxyCodeLine{42     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descwr,descwl}
+\DoxyCodeLine{43     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: lwr,lwl}
+\DoxyCodeLine{44     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: descvpr}
+\DoxyCodeLine{45     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: lvpr}
+\DoxyCodeLine{46     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (1:9)} :: desctmp1}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: ltmp1}
+\DoxyCodeLine{48     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtt, vttp}
+\DoxyCodeLine{49     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(1:10)} :: work}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 context = descnegl(2)}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 n=nps*npt}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 mb = descnegl(5)}
+\DoxyCodeLine{58 nb = descnegl(6)}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 lldr=numroc(n,mb,myrow,0,nprow)}
+\DoxyCodeLine{61 lldc=numroc(n,nb,mycol,0,npcol)}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{keyword}{allocate}(lpr(lldr,lldc),lpl(lldr,lldc))}
+\DoxyCodeLine{64 \textcolor{keyword}{allocate}(lwr(lldr,lldc),lwl(lldr,lldc))}
+\DoxyCodeLine{65 \textcolor{keyword}{allocate}(lvpr(lldr,lldc))}
+\DoxyCodeLine{66 \textcolor{keyword}{allocate}(ltmp1(lldr,lldc))}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{keyword}{call }descinit(descpr,n,n,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{69 \textcolor{keyword}{call }descinit(descpl,n,n,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{70 \textcolor{keyword}{call }descinit(descwr,n,n,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{71 \textcolor{keyword}{call }descinit(descwl,n,n,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 \textcolor{keyword}{call }descinit(desctmp1,n,n,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{74 \textcolor{keyword}{call }descinit(descvpr,n,n,mb,nb,0,0,context,lldr,info)}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 ltmp1=zero}
+\DoxyCodeLine{77 lvpr=zero}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 lldtr=numroc(npt,1,myrow,0,nprow)}
+\DoxyCodeLine{80 lldtc=numroc(npt,1,mycol,0,npcol)}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{keyword}{allocate}(vtt(lldtr),vttp(lldtc))}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 vtt=0}
+\DoxyCodeLine{85 vttp=0}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 i=0}
+\DoxyCodeLine{88 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{89 pr=mod(floor(real(tt-\/1)),nprow)}
+\DoxyCodeLine{90 \textcolor{keywordflow}{if}(myrow==pr) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{91 i=i+1}
+\DoxyCodeLine{92 vtt(i)=tt}
+\DoxyCodeLine{93 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{94 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 i=0}
+\DoxyCodeLine{97 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{98 pc=mod(floor(real(tt-\/1)),npcol)}
+\DoxyCodeLine{99 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{100 i=i+1}
+\DoxyCodeLine{101 vttp(i)=tt}
+\DoxyCodeLine{102 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{103 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 dt = tf/(npt-\/1)}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 \textcolor{comment}{!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{111 \textcolor{comment}{!+++++++++++++++++++++++++++Polarization diagrams++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{112 \textcolor{comment}{!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{113 lpr=zero}
+\DoxyCodeLine{114 lpl=zero}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117 \textcolor{comment}{!lesser component}}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 \textcolor{keywordflow}{do} it=1, lldr}
+\DoxyCodeLine{120 \textcolor{keywordflow}{do} itp=1, lldc}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122     lpl(it,itp)=ci*conjg(lnegg(it,itp))*lnegl(it,itp)}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{125 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \textcolor{comment}{!greater component}}
+\DoxyCodeLine{128 \textcolor{keyword}{call }pzgeadd(\textcolor{stringliteral}{'T'},n,n,uno,lpl,1,1,descpl,zero,ltmp1,1,1,desctmp1)}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 \textcolor{keyword}{call }blacs\_barrier(context,\textcolor{stringliteral}{'A'})}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 \textcolor{comment}{!Retarded component}}
+\DoxyCodeLine{133 \textcolor{keyword}{call }\mbox{\hyperlink{retarded_8f90_a579e26fa0d64b221db3043253dd8d567}{retarded}}(nps,npt,lpl,descpl,ltmp1,desctmp1,0.5d0,0,lpr,descpr)}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 \textcolor{keyword}{call }blacs\_barrier(context,\textcolor{stringliteral}{'A'})}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 \textcolor{comment}{!-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{138 \textcolor{comment}{!-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/Polarization diagrams-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{139 \textcolor{comment}{!-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 \textcolor{comment}{!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{145 \textcolor{comment}{!+++++++++++++++Bethe-\/Salpeter for the dressed interaction+++++++++++++++++++++}}
+\DoxyCodeLine{146 \textcolor{comment}{!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{147 lwr=zero}
+\DoxyCodeLine{148 lwl=zero}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!! RETARDED COMPONENT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{151 \textcolor{comment}{! retarded solver }}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 \textcolor{comment}{!v*Pr}}
+\DoxyCodeLine{154 lvpr=zero}
+\DoxyCodeLine{155 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{156 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{159 litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 lvpr(lit:lit+nps-\/1,litp:litp+nps-\/1) = matmul(v,lpr(lit:lit+nps-\/1,litp:litp+nps-\/1))}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{164 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167 \textcolor{comment}{!Id-\/v*Pr}}
+\DoxyCodeLine{168 \textcolor{keyword}{call }\mbox{\hyperlink{kernel_8f90_aada3471c9191926bca31a739e48739fb}{kernel}}(scm,uno*dt,nps,npt,lvpr,descvpr)}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 \textcolor{keyword}{call }blacs\_barrier(context,\textcolor{stringliteral}{'A'})}
+\DoxyCodeLine{172 \textcolor{keyword}{call }\mbox{\hyperlink{inversion_8f90_a1ae6106c92ee3b3e7913123c63905ce9}{inversion}}(scm,uno*dt,nps,npt,lvpr,descvpr)}
+\DoxyCodeLine{173 \textcolor{keyword}{call }blacs\_barrier(context,\textcolor{stringliteral}{'A'})}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{176 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178 lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{179 litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181 lwr(lit:lit+nps-\/1,litp:litp+nps-\/1) = matmul(lvpr(lit:lit+nps-\/1,litp:litp+nps-\/1),v)}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{184 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!! LESSER COMPONENT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{191 ltmp1=zero}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193 \textcolor{comment}{!pl*wa*dt (wa is given by transpose(wr))}}
+\DoxyCodeLine{194 \textcolor{keyword}{call }pzgemm (\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{'T'},n,n,n,dt*uno,lpl,1,1,descpl,lwr,1,1,descwr,zero,ltmp1,1,1,desctmp1)}
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196 \textcolor{comment}{!wr*pl*wa*dt}}
+\DoxyCodeLine{197 \textcolor{keyword}{call }pzgemm (\textcolor{stringliteral}{'N'},\textcolor{stringliteral}{'N'},n,n,n,dt*uno,lwr,1,1,descwr,ltmp1,1,1,desctmp1,zero,lwl,1,1,descwl)}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{199 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202 \textcolor{comment}{!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{203 \textcolor{comment}{!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{204 \textcolor{comment}{!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{205 }
+\DoxyCodeLine{206 \textcolor{keyword}{call }blacs\_barrier(context,\textcolor{stringliteral}{'A'})}
+\DoxyCodeLine{207 }
+\DoxyCodeLine{208 \textcolor{comment}{!++++++++++++++++++++++++++++++++Self energy+++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{209 \textcolor{comment}{! lesser component}}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211 \textcolor{keywordflow}{do} it=1, lldr}
+\DoxyCodeLine{212 \textcolor{keywordflow}{do} itp=1, lldc}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214     lsl(it,itp) = ci*lnegl(it,itp)*lwl(it,itp)}
+\DoxyCodeLine{215 }
+\DoxyCodeLine{216 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{217 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{218 }
+\DoxyCodeLine{219 \textcolor{comment}{!greater component wg=transpose(wl)}}
+\DoxyCodeLine{220 \textcolor{keyword}{call }pzgeadd(\textcolor{stringliteral}{'T'},n,n,uno,lwl,1,1,descwl,zero,ltmp1,1,1,desctmp1)}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222 \textcolor{comment}{! greater component}}
+\DoxyCodeLine{223 \textcolor{keywordflow}{do} it=1, lldr}
+\DoxyCodeLine{224 \textcolor{keywordflow}{do} itp=1, lldc}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{226     lsg(it,itp) = ci*lnegg(it,itp)*ltmp1(it,itp)}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{229 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231 \textcolor{keyword}{call }\mbox{\hyperlink{retarded_8f90_a579e26fa0d64b221db3043253dd8d567}{retarded}}(nps,npt,lsl,descsl,lsg,descsg,0.5d0,1,lsr,descsr)}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233 \textcolor{comment}{!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235 \textcolor{keyword}{deallocate}(lpr,lpl)}
+\DoxyCodeLine{236 \textcolor{keyword}{deallocate}(lwr,lwl)}
+\DoxyCodeLine{237 \textcolor{keyword}{deallocate}(lvpr)}
+\DoxyCodeLine{238 \textcolor{keyword}{deallocate}(ltmp1)}
+\DoxyCodeLine{239 }
+
+\end{DoxyCode}

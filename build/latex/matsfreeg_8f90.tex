@@ -22,31 +22,31 @@ subroutine \mbox{\hyperlink{matsfreeg_8f90_a9c917db857409472158d3966ddb408c9}{ma
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & w \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & W \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & bt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & BT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & s \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & mu \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & MU \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & stat \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+T\+AT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lg0m \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+G0M \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descg0m \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+G0M \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -56,3 +56,161 @@ subroutine \mbox{\hyperlink{matsfreeg_8f90_a9c917db857409472158d3966ddb408c9}{ma
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 51 of file matsfreeg.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{51     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{52     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{53 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{54     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{55 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{56     \textcolor{keywordtype}{integer} :: nps,npt,stat}
+\DoxyCodeLine{57     \textcolor{keywordtype}{double precision} :: mu,bt,dbt}
+\DoxyCodeLine{58     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: w}
+\DoxyCodeLine{59     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: s}
+\DoxyCodeLine{60 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{61     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descg0m}
+\DoxyCodeLine{62     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lg0m}
+\DoxyCodeLine{63 \textcolor{comment}{!Variables for grid query}}
+\DoxyCodeLine{64     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{65 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{66     \textcolor{keywordtype}{integer} :: i,j,ip,tt,ttp,lit,litp}
+\DoxyCodeLine{67     \textcolor{keywordtype}{double precision} :: dt}
+\DoxyCodeLine{68     \textcolor{keywordtype}{double precision} :: dalpha}
+\DoxyCodeLine{69     \textcolor{keywordtype}{double complex} :: zalpha,zbeta}
+\DoxyCodeLine{70     \textcolor{keywordtype}{integer} :: pc,pr,lldtr,lldtc}
+\DoxyCodeLine{71     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{72     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtt, vttp}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 context = descg0m(2)}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 lldtr=numroc(npt,1,myrow,0,nprow)}
+\DoxyCodeLine{79 lldtc=numroc(npt,1,mycol,0,npcol)}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{keyword}{allocate}(vtt(lldtr),vttp(lldtc))}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 vtt=0}
+\DoxyCodeLine{84 vttp=0}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 i=0}
+\DoxyCodeLine{87 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{88 pr=mod(floor(real(tt-\/1)),nprow)}
+\DoxyCodeLine{89 \textcolor{keywordflow}{if}(myrow==pr) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{90 i=i+1}
+\DoxyCodeLine{91 vtt(i)=tt}
+\DoxyCodeLine{92 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{93 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 i=0}
+\DoxyCodeLine{96 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{97 pc=mod(floor(real(tt-\/1)),npcol)}
+\DoxyCodeLine{98 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{99 i=i+1}
+\DoxyCodeLine{100 vttp(i)=tt}
+\DoxyCodeLine{101 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{102 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 lg0m=ci*0.d0}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \textcolor{comment}{!Delta for the integral on the imaginary time}}
+\DoxyCodeLine{107 dbt=bt/(npt-\/1)}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!Matsubara Green's function!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{110 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{111 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 lit=(tt-\/1)*nps+1}
+\DoxyCodeLine{114 litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 \textcolor{keywordflow}{if}(vtt(tt)<vttp(ttp)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118     \textcolor{keywordflow}{if} ((vtt(tt)==1).and.(vttp(ttp)==npt)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{119     \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{120     \textcolor{keywordflow}{do} ip=1,nps}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122         \textcolor{keywordflow}{do} j=1,nps}
+\DoxyCodeLine{123             zalpha=stat*ci*(1.0d0/(exp(bt*(w(j)-\/mu))-\/1.0d0*stat))}
+\DoxyCodeLine{124             lg0m(lit+i-\/1,litp+ip-\/1)=lg0m(lit+i-\/1,litp+ip-\/1)+s(i,j)*zalpha*s(ip,j)}
+\DoxyCodeLine{125 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \textcolor{keywordflow}{    end do} }
+\DoxyCodeLine{128 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130     \textcolor{keywordflow}{else} }
+\DoxyCodeLine{131     \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{132     \textcolor{keywordflow}{do} ip=1,nps}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134         \textcolor{keywordflow}{do} j=1,nps}
+\DoxyCodeLine{135             zalpha=-\/stat*ci*(1.0d0/(exp(bt*(w(j)-\/mu))-\/1.0d0*stat))}
+\DoxyCodeLine{136             dalpha=exp(-\/(w(j)-\/mu)*dbt*(vtt(tt)-\/vttp(ttp)))}
+\DoxyCodeLine{137             lg0m(lit+i-\/1,litp+ip-\/1)=lg0m(lit+i-\/1,litp+ip-\/1)+s(i,j)*zalpha*dalpha*s(ip,j)}
+\DoxyCodeLine{138 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{139 \textcolor{keywordflow}{    end do} }
+\DoxyCodeLine{140 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (vtt(tt)>vttp(ttp)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146     }
+\DoxyCodeLine{147 \textcolor{keywordflow}{if} ((vtt(tt)==npt).and.(vttp(ttp)==1)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{148     \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{149     \textcolor{keywordflow}{do} ip=1,nps}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151         \textcolor{keywordflow}{do} j=1,nps}
+\DoxyCodeLine{152             zalpha= stat*ci*(1.0d0/(exp(bt*(w(j)-\/mu))-\/1.0d0*stat))}
+\DoxyCodeLine{153             lg0m(lit+i-\/1,litp+ip-\/1)=lg0m(lit+i-\/1,litp+ip-\/1)+s(i,j)*zalpha*s(ip,j)}
+\DoxyCodeLine{154 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{157 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159     \textcolor{keywordflow}{else} }
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161     \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{162     \textcolor{keywordflow}{do} ip=1,nps}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164         \textcolor{keywordflow}{do} j=1,nps}
+\DoxyCodeLine{165             zalpha=-\/ci*(exp(bt*(w(j)-\/mu))/(exp(bt*(w(j)-\/mu))-\/1.0d0*stat))}
+\DoxyCodeLine{166             dalpha=exp(-\/(w(j)-\/mu)*dbt*(vtt(tt)-\/vttp(ttp)))}
+\DoxyCodeLine{167             lg0m(lit+i-\/1,litp+ip-\/1)=lg0m(lit+i-\/1,litp+ip-\/1)+s(i,j)*zalpha*dalpha*s(ip,j)}
+\DoxyCodeLine{168 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170 \textcolor{keywordflow}{    end do} }
+\DoxyCodeLine{171 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{172     }
+\DoxyCodeLine{173 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (vtt(tt)==vttp(ttp)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{176 \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{177 \textcolor{keywordflow}{do} ip=1,nps}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179 \textcolor{keywordflow}{if}((vtt(tt).ne.1).and.(vtt(tt).ne.npt)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{180 \textcolor{keywordflow}{do} j=1,nps}
+\DoxyCodeLine{181     zalpha=-\/stat*ci*(1.0d0/(exp(bt*(w(j)-\/mu))-\/1.0d0*stat))}
+\DoxyCodeLine{182     lg0m(lit+i-\/1,litp+ip-\/1)=lg0m(lit+i-\/1,litp+ip-\/1)+s(i,j)*zalpha*s(ip,j)}
+\DoxyCodeLine{183 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{184 \textcolor{keywordflow}{else} }
+\DoxyCodeLine{185 \textcolor{keywordflow}{do} j=1,nps}
+\DoxyCodeLine{186     zalpha=-\/stat*ci*(1.0d0/(exp(bt*(w(j)-\/mu))-\/1.0d0*stat))}
+\DoxyCodeLine{187     lg0m(lit+i-\/1,litp+ip-\/1)=lg0m(lit+i-\/1,litp+ip-\/1)+s(i,j)*zalpha*s(ip,j)}
+\DoxyCodeLine{188 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192 \textcolor{keywordflow}{end do} }
+\DoxyCodeLine{193 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197 \textcolor{keywordflow}{end do} }
+\DoxyCodeLine{198 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{199 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{200 }
+
+\end{DoxyCode}

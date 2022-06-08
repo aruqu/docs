@@ -22,16 +22,16 @@ subroutine \mbox{\hyperlink{wsolver_8f90_aa7fa301b664326f8b3c3533f4b92df3c}{wsol
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lg0 \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+G0 \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & ls \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & LS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lg0s \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+G0S \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -41,3 +41,43 @@ subroutine \mbox{\hyperlink{wsolver_8f90_aa7fa301b664326f8b3c3533f4b92df3c}{wsol
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 31 of file wsolver.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{31     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{32     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{33 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{34     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{35     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{36 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{37     \textcolor{keywordtype}{integer} :: nps}
+\DoxyCodeLine{38     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lg0}
+\DoxyCodeLine{39     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}:: ls}
+\DoxyCodeLine{40 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{41     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lg0s}
+\DoxyCodeLine{42 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{43     \textcolor{keywordtype}{integer} :: i}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{comment}{!+++++++++++++++++++++++++++++++++Kernel+++++++++++++++++++++++++++++++++++++++}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{comment}{!g0*s*delta}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 lg0s=matmul(lg0,ls)}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 lg0s = -\/lg0s}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!Identity-\/Ker!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{54 \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{55     lg0s(i,i) = uno + lg0s(i,i)}
+\DoxyCodeLine{56 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{57 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \textcolor{comment}{!-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{keyword}{call }\mbox{\hyperlink{dyson-freq_2src_2locinv_8f90_a3812907bd0a363733044779bb75b9a5b}{locinv}}(nps,lg0s)}
+\DoxyCodeLine{62 }
+
+\end{DoxyCode}

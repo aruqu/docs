@@ -48,3 +48,81 @@ subroutine \mbox{\hyperlink{gkba_2src_2diagsy_8f90_a473616b0374a043ba98d1698f1ca
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 36 of file diagsy.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{38 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{39     \textcolor{keywordtype}{character(*)}, \textcolor{keywordtype}{optional}, \textcolor{keywordtype}{intent(in)} :: SUFX}
+\DoxyCodeLine{40     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{intent(in)} :: A}
+\DoxyCodeLine{41 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{42     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{intent(out)} :: W}
+\DoxyCodeLine{43     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{intent(out)} :: S}
+\DoxyCodeLine{44 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{45     \textcolor{keywordtype}{double precision} :: dalpha}
+\DoxyCodeLine{46     \textcolor{keywordtype}{integer} :: i,j,nps}
+\DoxyCodeLine{47     \textcolor{keywordtype}{integer} :: info1,info2,dwork,diwork}
+\DoxyCodeLine{48     \textcolor{keywordtype}{integer} , \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{49     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: iwork}
+\DoxyCodeLine{50     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: work}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 d=shape(a)}
+\DoxyCodeLine{53 nps=d(1)}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 s=a}
+\DoxyCodeLine{56 w=0.d0}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{allocate} (work(1),iwork(1))}
+\DoxyCodeLine{59 work=0.d0}
+\DoxyCodeLine{60 iwork=0}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{keyword}{call }dsyevd(\textcolor{stringliteral}{'V'},\textcolor{stringliteral}{'U'},nps,s,nps,w,work,-\/1,iwork,-\/1,info1)}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 dwork=max(1,int(work(1)))}
+\DoxyCodeLine{65 diwork=max(1,int(iwork(1)))}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 s=a}
+\DoxyCodeLine{68 \textcolor{keyword}{deallocate}(work,iwork)}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 \textcolor{keywordflow}{if} (info1==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{73     w=0.0d0}
+\DoxyCodeLine{74     \textcolor{keyword}{allocate}(work(dwork),iwork(diwork))}
+\DoxyCodeLine{75     \textcolor{keyword}{call }dsyevd(\textcolor{stringliteral}{'V'},\textcolor{stringliteral}{'U'},nps,s,nps,w,work,dwork,iwork,diwork,info2)}
+\DoxyCodeLine{76     \textcolor{keyword}{deallocate}(work)}
+\DoxyCodeLine{77 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (info1/=0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{78     \textcolor{keyword}{write}(*,*) \textcolor{stringliteral}{'ERROR 1, info1=  '}, info1}
+\DoxyCodeLine{79         stop}
+\DoxyCodeLine{80 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{keywordflow}{if} (info2/=0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{83     \textcolor{keyword}{write}(*,*) \textcolor{stringliteral}{'ERROR 2, info2= '}, info2}
+\DoxyCodeLine{84     stop}
+\DoxyCodeLine{85 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 \textcolor{comment}{!Print eigenvalues}}
+\DoxyCodeLine{88 \textcolor{keywordflow}{if} (\textcolor{keyword}{present}(sufx)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{89     \textcolor{keyword}{open} (unit=22,file=\textcolor{stringliteral}{'eval'}//trim(sufx)//\textcolor{stringliteral}{'.dat'}, status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{90     \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{91         \textcolor{keyword}{write}(22,*) w(i)}
+\DoxyCodeLine{92 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{93     \textcolor{keyword}{close}(22)}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 \textcolor{comment}{!Print eigenvectors}}
+\DoxyCodeLine{96     \textcolor{keyword}{open} (unit=22,file=\textcolor{stringliteral}{'evec'}//trim(sufx)//\textcolor{stringliteral}{'.dat'}, status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{97     \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{98         \textcolor{keywordflow}{do} j=1,nps}
+\DoxyCodeLine{99             \textcolor{keyword}{write}(22,*) s(i,j)}
+\DoxyCodeLine{100 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{101 \textcolor{keywordflow}{    end do}}
+\DoxyCodeLine{102     \textcolor{keyword}{close}(22)}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{105 }
+
+\end{DoxyCode}

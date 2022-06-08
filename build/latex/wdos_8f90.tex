@@ -22,19 +22,19 @@ subroutine \mbox{\hyperlink{wdos_8f90_a5e3adeceaaa24506ab7d359347e69c5e}{wdos}} 
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lgr \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+GR \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & dos \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+OS \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -44,3 +44,78 @@ subroutine \mbox{\hyperlink{wdos_8f90_a5e3adeceaaa24506ab7d359347e69c5e}{wdos}} 
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 35 of file wdos.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{35     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{36     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{37 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{38     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = dacos(-\/1.0d0)       \textcolor{comment}{! Pi greco}}
+\DoxyCodeLine{39     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{40     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{41     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{42 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{43 \textcolor{comment}{!   character(*) :: filenameout}}
+\DoxyCodeLine{44     \textcolor{keywordtype}{integer} :: nps,npw}
+\DoxyCodeLine{45     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lgr}
+\DoxyCodeLine{46 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{47     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol,rsrc,csrc}
+\DoxyCodeLine{48 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{49     \textcolor{keywordtype}{integer} :: i,iw,lw,lwp,liw,liwp}
+\DoxyCodeLine{50     \textcolor{keywordtype}{integer} :: nb,mb,pr,pc,lldr,lldc,lldwr,lldwc,numroc}
+\DoxyCodeLine{51     \textcolor{keywordtype}{double precision} :: dalpha}
+\DoxyCodeLine{52     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (9)} :: descw}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(1:npw)} :: dos}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{57 nprocs=nprow*npcol}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \textcolor{comment}{!mb = desc(5)}}
+\DoxyCodeLine{60 \textcolor{comment}{!nb = desc(6)}}
+\DoxyCodeLine{61 \textcolor{comment}{!n=nps*npw}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{comment}{!lldr=numroc(nps,mb,myrow,0,1)}}
+\DoxyCodeLine{64 \textcolor{comment}{!lldc=numroc(n,nb,mycol,0,nprocs)}}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 lldwr=numroc(npw,1,myrow,0,1)}
+\DoxyCodeLine{67 lldwc=numroc(npw,1,mycol,0,nprocs)}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{keyword}{call }descinit(descw,1,npw,1,1,0,0,context,lldwr,info)}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 \textcolor{comment}{!if(myrow==0.and.mycol==0) then}}
+\DoxyCodeLine{72 \textcolor{comment}{!       open(unit=21,file=filenameout//'.dat',position='append',status='unknown')}}
+\DoxyCodeLine{73 \textcolor{comment}{!end if}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \mbox{\hyperlink{dos_8f90_ab636288c9d52ce1d9f82c8a26f4bc91b}{dos}}=0.0d0}
+\DoxyCodeLine{77 \textcolor{keywordflow}{do} iw=1, npw}
+\DoxyCodeLine{78     \textcolor{keyword}{call }infog2l(1,iw,descw,1,nprocs,myrow,mycol,lw,lwp,rsrc,csrc)}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80     \textcolor{keywordflow}{if} (myrow==rsrc.and.mycol==csrc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{81         liwp=(lwp-\/1)*nps+1}
+\DoxyCodeLine{82         dalpha=0.d0}
+\DoxyCodeLine{83         \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{84             dalpha = dalpha-\/aimag(lgr(i,liwp+i-\/1))/pi}
+\DoxyCodeLine{85 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{86         \textcolor{keyword}{call }dgebs2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},1, 1,dalpha,1)}
+\DoxyCodeLine{87     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{88         \textcolor{keyword}{call }dgebr2d(context,\textcolor{stringliteral}{'A'},\textcolor{stringliteral}{'i-\/ring'},1,1,dalpha,1,rsrc,csrc)}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92     \textcolor{keywordflow}{if}(myrow==0.and.mycol==0) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{93         \mbox{\hyperlink{dos_8f90_ab636288c9d52ce1d9f82c8a26f4bc91b}{dos}}(iw)=\mbox{\hyperlink{dos_8f90_ab636288c9d52ce1d9f82c8a26f4bc91b}{dos}}(iw)+dalpha}
+\DoxyCodeLine{94 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 \textcolor{comment}{!if(myrow==0.and.mycol==0) then}}
+\DoxyCodeLine{99 \textcolor{comment}{!close(21)}}
+\DoxyCodeLine{100 \textcolor{comment}{!end if}}
+\DoxyCodeLine{101 }
+
+\end{DoxyCode}

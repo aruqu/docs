@@ -50,3 +50,415 @@ subroutine \mbox{\hyperlink{gkba_2src_2tbham2d_8f90_a147355058abbedc370687aeec17
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 59 of file tbham2d.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{59 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{60     \textcolor{keywordtype}{character (*)} :: GMT}
+\DoxyCodeLine{61     \textcolor{keywordtype}{integer} :: NPX, NPY}
+\DoxyCodeLine{62     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{optional} :: BCX, BCY}
+\DoxyCodeLine{63     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: ONSITE}
+\DoxyCodeLine{64 \textcolor{comment}{!Output variables}}
+\DoxyCodeLine{65     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: HAM}
+\DoxyCodeLine{66 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{67     \textcolor{keywordtype}{integer} :: ix,iy,i,j}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 ham=0.0d0}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 \textcolor{keywordflow}{if} (gmt==\textcolor{stringliteral}{'sq'}.or.gmt==\textcolor{stringliteral}{'tr'}.or.gmt==\textcolor{stringliteral}{'grp'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{72 \textcolor{comment}{!Diagonal elements}}
+\DoxyCodeLine{73 \textcolor{keywordflow}{do} ix=1, npx}
+\DoxyCodeLine{74 \textcolor{keywordflow}{do} iy=1, npy}
+\DoxyCodeLine{75     i=ix+npx*(iy-\/1)}
+\DoxyCodeLine{76     ham(i,i) = 0.d0\textcolor{comment}{!ONSITE(i)}}
+\DoxyCodeLine{77 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{78 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{comment}{!Nearest Neighbour along x (ix,iy) <-\/> (ix+1,iy)}}
+\DoxyCodeLine{81 \textcolor{keywordflow}{do} ix=1, npx-\/1}
+\DoxyCodeLine{82 \textcolor{keywordflow}{do} iy=1,npy}
+\DoxyCodeLine{83     i=ix+npx*(iy-\/1)}
+\DoxyCodeLine{84     ham(i,i+1) = -\/0.5d0\textcolor{comment}{!nnhop(i)}}
+\DoxyCodeLine{85     ham(i+1,i) = -\/0.5d0\textcolor{comment}{!nnhop(i)}}
+\DoxyCodeLine{86 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{87 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 \textcolor{comment}{!Nearest Neighbour along y (ix,iy) <-\/> (ix,iy+1)}}
+\DoxyCodeLine{90 \textcolor{keywordflow}{do} ix=1, npx}
+\DoxyCodeLine{91 \textcolor{keywordflow}{do} iy=1,npy-\/1}
+\DoxyCodeLine{92     i=ix+npx*(iy-\/1)}
+\DoxyCodeLine{93     ham(i,i+npx) = -\/0.5d0\textcolor{comment}{!nnhop(i)}}
+\DoxyCodeLine{94     ham(i+npx,i) = -\/0.5d0\textcolor{comment}{!nnhop(i)}}
+\DoxyCodeLine{95 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{96 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 \textcolor{comment}{!Periodic boundary conditions along x (NPX,iy) <-\/> (1,iy)}}
+\DoxyCodeLine{99 \textcolor{keywordflow}{if}(bcx==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{100 \textcolor{keywordflow}{do} iy=1, npy}
+\DoxyCodeLine{101     i=1+npx*(iy-\/1)}
+\DoxyCodeLine{102     j=npx+npx*(iy-\/1)}
+\DoxyCodeLine{103     ham(j,i) = -\/0.5d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{104     ham(i,j) = -\/0.5d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{105 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{106 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 \textcolor{comment}{!Periodic boundary conditions along y (ix,NPY) <-\/> (ix,1)}}
+\DoxyCodeLine{110 \textcolor{keywordflow}{if}(bcy==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{111 \textcolor{keywordflow}{do} ix=1, npx}
+\DoxyCodeLine{112     i=ix}
+\DoxyCodeLine{113     j=ix+npx*(npy-\/1)}
+\DoxyCodeLine{114     ham(j,i) = -\/0.5d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{115     ham(i,j) = -\/0.5d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{116 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{117 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TRIANGULAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 \textcolor{comment}{!!To add the exagonal structure to the square one (ix,iy) <-\/> (ix-\/1,iy+1) }}
+\DoxyCodeLine{127 \textcolor{comment}{!!Basically this adds the triangles (\(\backslash\)) to a "square lattice" (-\/ , |)}}
+\DoxyCodeLine{128 \textcolor{comment}{!!Vista QUADRATO (aiuta per gli indici)}}
+\DoxyCodeLine{129 \textcolor{comment}{!!iy=6  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{130 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{131 \textcolor{comment}{!!iy=5  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{132 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{133 \textcolor{comment}{!!iy=4  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{134 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{135 \textcolor{comment}{!!iy=3  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{136 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{137 \textcolor{comment}{!!iy=2  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{138 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{139 \textcolor{comment}{!!iy=1  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{140 \textcolor{comment}{!!}}
+\DoxyCodeLine{141 \textcolor{comment}{!!ix=    1   2   3   4   5   6}}
+\DoxyCodeLine{142 \textcolor{comment}{!!}}
+\DoxyCodeLine{143 \textcolor{comment}{!!Vista ESAGONI (shifti le rige alternate)}}
+\DoxyCodeLine{144 \textcolor{comment}{!!iy=6    o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{145 \textcolor{comment}{!!   / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) /}}
+\DoxyCodeLine{146 \textcolor{comment}{!!iy=5  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{147 \textcolor{comment}{!!        \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) /}}
+\DoxyCodeLine{148 \textcolor{comment}{!!iy=4    o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{149 \textcolor{comment}{!!   / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) /}}
+\DoxyCodeLine{150 \textcolor{comment}{!!iy=3  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{151 \textcolor{comment}{!!        \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) /}}
+\DoxyCodeLine{152 \textcolor{comment}{!!iy=2    o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{153 \textcolor{comment}{!!   / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) / \(\backslash\) /}}
+\DoxyCodeLine{154 \textcolor{comment}{!!iy=1  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{155 \textcolor{comment}{!!}}
+\DoxyCodeLine{156 \textcolor{comment}{!!ix=    1   2   3   4   5   6}}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 \textcolor{comment}{!if (GMT=='tr') then}}
+\DoxyCodeLine{159 \textcolor{comment}{!do ix=2, NPX}}
+\DoxyCodeLine{160 \textcolor{comment}{!do iy=1,NPY-\/1}}
+\DoxyCodeLine{161 \textcolor{comment}{!   i=ix+NPX*(iy-\/1)}}
+\DoxyCodeLine{162 \textcolor{comment}{!   j=ix-\/1+NPX*(iy-\/1+1)}}
+\DoxyCodeLine{163 \textcolor{comment}{!   HAM(i,j) = -\/0.5d0!nnhop(i)}}
+\DoxyCodeLine{164 \textcolor{comment}{!   HAM(j,i) = -\/0.5d0!nnhop(i)}}
+\DoxyCodeLine{165 \textcolor{comment}{!end do}}
+\DoxyCodeLine{166 \textcolor{comment}{!end do}}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168 \textcolor{comment}{!!Periodic boundary conditions along x (1,iy) <-\/> (NPX,iy+1)}}
+\DoxyCodeLine{169 \textcolor{comment}{!!Vista QUADRATO}}
+\DoxyCodeLine{170 \textcolor{comment}{!!iy=6  -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{171 \textcolor{comment}{!!  \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\)}}
+\DoxyCodeLine{172 \textcolor{comment}{!!iy=5  -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{173 \textcolor{comment}{!!  \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\)}}
+\DoxyCodeLine{174 \textcolor{comment}{!!iy=4  -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{175 \textcolor{comment}{!!  \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\)}}
+\DoxyCodeLine{176 \textcolor{comment}{!!iy=3  -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{177 \textcolor{comment}{!!  \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\)}}
+\DoxyCodeLine{178 \textcolor{comment}{!!iy=2  -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{179 \textcolor{comment}{!!  \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\)}}
+\DoxyCodeLine{180 \textcolor{comment}{!!iy=1  -\/ o -\/ o -\/ o -\/ o -\/ o -\/ o -\/}}
+\DoxyCodeLine{181 \textcolor{comment}{!!}}
+\DoxyCodeLine{182 \textcolor{comment}{!!ix=      4   5   6   1   2   3}}
+\DoxyCodeLine{183 \textcolor{comment}{!if(BCX==1) then}}
+\DoxyCodeLine{184 \textcolor{comment}{!do iy=1, NPY-\/1}}
+\DoxyCodeLine{185 \textcolor{comment}{!   i=1+NPX*(iy-\/1)}}
+\DoxyCodeLine{186 \textcolor{comment}{!   j=NPX+NPX*(iy-\/1+1)}}
+\DoxyCodeLine{187 \textcolor{comment}{!   HAM(j,i) = -\/0.5d0!nnhop(1)}}
+\DoxyCodeLine{188 \textcolor{comment}{!   HAM(i,j) = -\/0.5d0!nnhop(1)}}
+\DoxyCodeLine{189 \textcolor{comment}{!end do}}
+\DoxyCodeLine{190 \textcolor{comment}{!end if}}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192 \textcolor{comment}{!!Periodic boundary conditions along y (ix,NPY) <-\/> (ix-\/1,1)}}
+\DoxyCodeLine{193 \textcolor{comment}{!!Vista QUADRATO}}
+\DoxyCodeLine{194 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{195 \textcolor{comment}{!!iy=3  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{196 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{197 \textcolor{comment}{!!iy=2  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{198 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{199 \textcolor{comment}{!!iy=1  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{200 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{201 \textcolor{comment}{!!iy=6  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{202 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{203 \textcolor{comment}{!!iy=5  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{204 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{205 \textcolor{comment}{!!iy=4  o -\/ o -\/ o -\/ o -\/ o -\/ o}}
+\DoxyCodeLine{206 \textcolor{comment}{!!  | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) | \(\backslash\) |}}
+\DoxyCodeLine{207 \textcolor{comment}{!!}}
+\DoxyCodeLine{208 \textcolor{comment}{!!ix=    1   2   3   4   5   6}}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210 \textcolor{comment}{!if(BCY==1) then}}
+\DoxyCodeLine{211 \textcolor{comment}{!do ix=2, NPX}}
+\DoxyCodeLine{212 \textcolor{comment}{!   i=ix+NPX*(NPY-\/1)}}
+\DoxyCodeLine{213 \textcolor{comment}{!   j=ix-\/1}}
+\DoxyCodeLine{214 \textcolor{comment}{!   HAM(j,i) = -\/0.5d0!nnhop(1)}}
+\DoxyCodeLine{215 \textcolor{comment}{!   HAM(i,j) = -\/0.5d0!nnhop(1)}}
+\DoxyCodeLine{216 \textcolor{comment}{!end do}}
+\DoxyCodeLine{217 \textcolor{comment}{!end if}}
+\DoxyCodeLine{218 }
+\DoxyCodeLine{219 \textcolor{comment}{!end if}}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222 }
+\DoxyCodeLine{223 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!GRAPHENE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{224 \textcolor{comment}{!To do the graphene we start from a square lattice and remove some links}}
+\DoxyCodeLine{225 \textcolor{comment}{!In the example below 8 and 8 sites are shown}}
+\DoxyCodeLine{226 \textcolor{comment}{!iy=8   o     o-\/o     o-\/o     o-\/o     o}}
+\DoxyCodeLine{227 \textcolor{comment}{!    \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   / }}
+\DoxyCodeLine{228 \textcolor{comment}{!iy=7     o-\/o     o-\/o     o-\/o     o-\/o}}
+\DoxyCodeLine{229 \textcolor{comment}{!        /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\) }}
+\DoxyCodeLine{230 \textcolor{comment}{!iy=6   o     o-\/o     o-\/o     o-\/o     o}}
+\DoxyCodeLine{231 \textcolor{comment}{!    \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   / }}
+\DoxyCodeLine{232 \textcolor{comment}{!iy=5     o-\/o     o-\/o     o-\/o     o-\/o}}
+\DoxyCodeLine{233 \textcolor{comment}{!        /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\) }}
+\DoxyCodeLine{234 \textcolor{comment}{!iy=4   o     o-\/o     o-\/o     o-\/o     o}}
+\DoxyCodeLine{235 \textcolor{comment}{!    \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   / }}
+\DoxyCodeLine{236 \textcolor{comment}{!iy=3     o-\/o     o-\/o     o-\/o     o-\/o}}
+\DoxyCodeLine{237 \textcolor{comment}{!        /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\) }}
+\DoxyCodeLine{238 \textcolor{comment}{!iy=2   o     o-\/o     o-\/o     o-\/o     o}}
+\DoxyCodeLine{239 \textcolor{comment}{!    \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   /   \(\backslash\)   / }}
+\DoxyCodeLine{240 \textcolor{comment}{!iy=1     o-\/o     o-\/o     o-\/o     o-\/o}}
+\DoxyCodeLine{241 \textcolor{comment}{!}}
+\DoxyCodeLine{242 \textcolor{comment}{!ix=      1 2     3 4     5 6     7 8}}
+\DoxyCodeLine{243 \textcolor{comment}{!SQUARE VIEW}}
+\DoxyCodeLine{244 \textcolor{comment}{!iy=8   o o-\/o o-\/o o-\/o o}}
+\DoxyCodeLine{245 \textcolor{comment}{!   | | | | | | | |}}
+\DoxyCodeLine{246 \textcolor{comment}{!iy=7   o-\/o o-\/o o-\/o o-\/o}}
+\DoxyCodeLine{247 \textcolor{comment}{!       | | | | | | | |}}
+\DoxyCodeLine{248 \textcolor{comment}{!iy=6   o o-\/o o-\/o o-\/o o}}
+\DoxyCodeLine{249 \textcolor{comment}{!   | | | | | | | |}}
+\DoxyCodeLine{250 \textcolor{comment}{!iy=5   o-\/o o-\/o o-\/o o-\/o}}
+\DoxyCodeLine{251 \textcolor{comment}{!       | | | | | | | |}}
+\DoxyCodeLine{252 \textcolor{comment}{!iy=4   o o-\/o o-\/o o-\/o o}}
+\DoxyCodeLine{253 \textcolor{comment}{!   | | | | | | | |}}
+\DoxyCodeLine{254 \textcolor{comment}{!iy=3   o-\/o o-\/o o-\/o o-\/o}}
+\DoxyCodeLine{255 \textcolor{comment}{!       | | | | | | | |}}
+\DoxyCodeLine{256 \textcolor{comment}{!iy=2   o o-\/o o-\/o o-\/o o}}
+\DoxyCodeLine{257 \textcolor{comment}{!   | | | | | | | |}}
+\DoxyCodeLine{258 \textcolor{comment}{!iy=1   o-\/o o-\/o o-\/o o-\/o}}
+\DoxyCodeLine{259 \textcolor{comment}{!}}
+\DoxyCodeLine{260 \textcolor{comment}{!ix=    1 2 3 4 5 6 7 8}}
+\DoxyCodeLine{261 }
+\DoxyCodeLine{262 \textcolor{keywordflow}{if} (gmt==\textcolor{stringliteral}{'grp'}) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{263 }
+\DoxyCodeLine{264 \textcolor{comment}{!Nearest Neighbour along x (ix,iy) <-\/> (ix+1,iy) if ix=2*m-\/1 and iy=2*l-\/1}}
+\DoxyCodeLine{265 \textcolor{comment}{!iy=3   o-\/o o-\/o o-\/o o-\/o}}
+\DoxyCodeLine{266 \textcolor{comment}{!   | | | | | | | |}}
+\DoxyCodeLine{267 \textcolor{comment}{!iy=2   o o-\/o o-\/o o-\/o o}}
+\DoxyCodeLine{268 \textcolor{comment}{!   | | | | | | | | }}
+\DoxyCodeLine{269 \textcolor{comment}{!iy=1   o-\/o o-\/o o-\/o o-\/o}}
+\DoxyCodeLine{270 \textcolor{comment}{!}}
+\DoxyCodeLine{271 \textcolor{comment}{!ix=    1 2 3 4 5 6 7 8}}
+\DoxyCodeLine{272 \textcolor{keywordflow}{do} iy=1,npy}
+\DoxyCodeLine{273 \textcolor{keywordflow}{do} ix=1, npx-\/1,2}
+\DoxyCodeLine{274 \textcolor{comment}{!   i=local coordinate along x + number of sites on the odd iy * position of the odd iy +}}
+\DoxyCodeLine{275 \textcolor{comment}{!   number of sites along the even iy * position of the even iy}}
+\DoxyCodeLine{276     i=ix+mod(iy,2)+npx*(iy-\/1)}
+\DoxyCodeLine{277 \textcolor{comment}{!   print*, "(ix,iy)= ", ix,iy, " (i,j )", i,i+1}}
+\DoxyCodeLine{278     ham(i,i+1) = 0.d0}
+\DoxyCodeLine{279     ham(i+1,i) = 0.d0}
+\DoxyCodeLine{280 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{281 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{282 }
+\DoxyCodeLine{283 \textcolor{comment}{!Periodic boundary conditions along x (NPX,iy) <-\/> (1,iy)}}
+\DoxyCodeLine{284 \textcolor{comment}{!consistently with the broken bonds}}
+\DoxyCodeLine{285 \textcolor{keywordflow}{if}(bcx==1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{286 \textcolor{keywordflow}{do} iy=1, npy,2}
+\DoxyCodeLine{287     i=1+mod(iy-\/1,2)+npx*(iy-\/1)}
+\DoxyCodeLine{288     j=npx+mod(iy-\/1,2)+npx*(iy-\/1)}
+\DoxyCodeLine{289     \textcolor{comment}{!print*, "(ix,iy)= ", 1,iy, " (i,j )", i,j}}
+\DoxyCodeLine{290     ham(j,i) = 0.d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{291     ham(i,j) = 0.d0\textcolor{comment}{!nnhop(1)}}
+\DoxyCodeLine{292 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{293 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{294 }
+\DoxyCodeLine{295 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{296 }
+\DoxyCodeLine{297 }
+\DoxyCodeLine{298 }
+\DoxyCodeLine{299 \textcolor{comment}{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!EXAGONS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}}
+\DoxyCodeLine{300 \textcolor{comment}{!!    TO  BE CHECKED!!!}}
+\DoxyCodeLine{301 \textcolor{comment}{!!The exagon is slightly more complicated,}}
+\DoxyCodeLine{302 \textcolor{comment}{!!but it's structure can be recovered by assuming a stack of two different }}
+\DoxyCodeLine{303 \textcolor{comment}{!!chains with n\_x and Ceiling(n\_x/2) sites.}}
+\DoxyCodeLine{304 \textcolor{comment}{!!In the example below 8 and 5 sites are shown}}
+\DoxyCodeLine{305 \textcolor{comment}{!!iy=8  o     o     o     o     o}}
+\DoxyCodeLine{306 \textcolor{comment}{!!   \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / }}
+\DoxyCodeLine{307 \textcolor{comment}{!!iy=7    o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{308 \textcolor{comment}{!!        /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) }}
+\DoxyCodeLine{309 \textcolor{comment}{!!iy=6  o     o     o     o     o}}
+\DoxyCodeLine{310 \textcolor{comment}{!!   \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / }}
+\DoxyCodeLine{311 \textcolor{comment}{!!iy=5    o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{312 \textcolor{comment}{!!        /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) }}
+\DoxyCodeLine{313 \textcolor{comment}{!!iy=4  o     o     o     o     o}}
+\DoxyCodeLine{314 \textcolor{comment}{!!   \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / }}
+\DoxyCodeLine{315 \textcolor{comment}{!!iy=3    o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{316 \textcolor{comment}{!!        /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) /   \(\backslash\) }}
+\DoxyCodeLine{317 \textcolor{comment}{!!iy=2  o     o     o     o     o}}
+\DoxyCodeLine{318 \textcolor{comment}{!!   \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / \(\backslash\)   / }}
+\DoxyCodeLine{319 \textcolor{comment}{!!iy=1    o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{320 \textcolor{comment}{!!}}
+\DoxyCodeLine{321 \textcolor{comment}{!!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{322 }
+\DoxyCodeLine{323 \textcolor{comment}{!if (GMT=='ex') then}}
+\DoxyCodeLine{324 \textcolor{comment}{!!Diagonal elements}}
+\DoxyCodeLine{325 \textcolor{comment}{!do ix=1, NPX}}
+\DoxyCodeLine{326 \textcolor{comment}{!do iy=1, NPY}}
+\DoxyCodeLine{327 \textcolor{comment}{!   i=ix+NPX*(Ceiling(iy/2.d0)-\/1)+Ceiling(NPX/2.d0)*(Floor(iy/2.d0)-\/1)}}
+\DoxyCodeLine{328 \textcolor{comment}{!   HAM(i,i) = ONSITE(ix)}}
+\DoxyCodeLine{329 \textcolor{comment}{!end do}}
+\DoxyCodeLine{330 \textcolor{comment}{!end do}}
+\DoxyCodeLine{331 }
+\DoxyCodeLine{332 \textcolor{comment}{!!Nearest Neighbour along x (ix,iy) <-\/> (ix+1,iy) if ix=2*m-\/1 and iy=2*l-\/1}}
+\DoxyCodeLine{333 \textcolor{comment}{!!iy=3    o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{334 \textcolor{comment}{!!}}
+\DoxyCodeLine{335 \textcolor{comment}{!!iy=2  o     o     o     o     o}}
+\DoxyCodeLine{336 \textcolor{comment}{!!}}
+\DoxyCodeLine{337 \textcolor{comment}{!!iy=1    o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{338 \textcolor{comment}{!!}}
+\DoxyCodeLine{339 \textcolor{comment}{!!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{340 \textcolor{comment}{!do iy=1,NPY,2}}
+\DoxyCodeLine{341 \textcolor{comment}{!do ix=1, NPX-\/1,2}}
+\DoxyCodeLine{342 \textcolor{comment}{!!  i=local coordinate along x + number of sites on the odd iy * position of the odd iy +}}
+\DoxyCodeLine{343 \textcolor{comment}{!!  number of sites along the even iy * position of the even iy}}
+\DoxyCodeLine{344 \textcolor{comment}{!   i=ix+NPX*(Ceiling(iy/2.d0)-\/1)+(Floor(NPX/2.d0)+1)*(Ceiling(iy/2.d0)-\/1)}}
+\DoxyCodeLine{345 \textcolor{comment}{!   HAM(i,i+1) = -\/0.5d0!*mod(ix,2)!nnhop(i)}}
+\DoxyCodeLine{346 \textcolor{comment}{!   HAM(i+1,i) = -\/0.5d0!*mod(ix,2)!nnhop(i)}}
+\DoxyCodeLine{347 \textcolor{comment}{!end do}}
+\DoxyCodeLine{348 \textcolor{comment}{!end do}}
+\DoxyCodeLine{349 }
+\DoxyCodeLine{350 \textcolor{comment}{!!Nearest Neighbour along y}}
+\DoxyCodeLine{351 \textcolor{comment}{!!iy=3    o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{352 \textcolor{comment}{!!}}
+\DoxyCodeLine{353 \textcolor{comment}{!!iy=2  o     o     o     o     o}}
+\DoxyCodeLine{354 \textcolor{comment}{!!   \(\backslash\)     \(\backslash\)     \(\backslash\)     \(\backslash\)     }}
+\DoxyCodeLine{355 \textcolor{comment}{!!iy=1    o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{356 \textcolor{comment}{!!}}
+\DoxyCodeLine{357 \textcolor{comment}{!!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{358 }
+\DoxyCodeLine{359 \textcolor{comment}{!do iy=2,NPY,2}}
+\DoxyCodeLine{360 \textcolor{comment}{!do ix=1, Ceiling(NPX/2.d0)-\/1}}
+\DoxyCodeLine{361 \textcolor{comment}{!   i=ix+NPX*(Ceiling(iy/2.d0)-\/1)+(Floor(NPX/2.d0)+1)*(Ceiling(iy/2.d0)-\/1)}}
+\DoxyCodeLine{362 \textcolor{comment}{!   j=2*ix-\/1+NPX*(Ceiling((iy-\/1)/2.d0)-\/1)+(Floor(NPX/2.d0)+1)*(Ceiling((iy-\/1)/2.d0)-\/1)}}
+\DoxyCodeLine{363 \textcolor{comment}{!   print*, "(ix,iy)= ", ix,iy, " (i,j )", i,j}}
+\DoxyCodeLine{364 \textcolor{comment}{!   HAM(i,j) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{365 \textcolor{comment}{!   HAM(j,i) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{366 \textcolor{comment}{!end do}}
+\DoxyCodeLine{367 \textcolor{comment}{!end do}}
+\DoxyCodeLine{368 }
+\DoxyCodeLine{369 }
+\DoxyCodeLine{370 \textcolor{comment}{!!!iy=3   o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{371 \textcolor{comment}{!!!}}
+\DoxyCodeLine{372 \textcolor{comment}{!!!iy=2 o     o     o     o     o}}
+\DoxyCodeLine{373 \textcolor{comment}{!!!      /     /     /     / }}
+\DoxyCodeLine{374 \textcolor{comment}{!!!iy=1   o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{375 \textcolor{comment}{!!!}}
+\DoxyCodeLine{376 \textcolor{comment}{!!!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{377 }
+\DoxyCodeLine{378 }
+\DoxyCodeLine{379 \textcolor{comment}{!!do iy=2,NPY,2}}
+\DoxyCodeLine{380 \textcolor{comment}{!!do ix=2, Ceiling(NPX/2.d0)}}
+\DoxyCodeLine{381 \textcolor{comment}{!!  i=ix+NPX*(Ceiling(iy/2.d0)-\/1)+Ceiling(NPX/2.d0)*(Floor(iy/2.d0)-\/1)}}
+\DoxyCodeLine{382 \textcolor{comment}{!!  j=2*ix+NPX*(Ceiling((iy-\/1)/2.d0)-\/1)+Ceiling(NPX/2.d0)*(Floor((iy-\/1)/2.d0)-\/1)}}
+\DoxyCodeLine{383 \textcolor{comment}{!!  HAM(i,j) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{384 \textcolor{comment}{!!  HAM(j,i) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{385 \textcolor{comment}{!!end do}}
+\DoxyCodeLine{386 \textcolor{comment}{!!end do}}
+\DoxyCodeLine{387 }
+\DoxyCodeLine{388 }
+\DoxyCodeLine{389 \textcolor{comment}{!!!iy=3   o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{390 \textcolor{comment}{!!!        /     /     /     /     }}
+\DoxyCodeLine{391 \textcolor{comment}{!!!iy=2 o     o     o     o     o}}
+\DoxyCodeLine{392 \textcolor{comment}{!!!}}
+\DoxyCodeLine{393 \textcolor{comment}{!!!iy=1   o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{394 \textcolor{comment}{!!!}}
+\DoxyCodeLine{395 \textcolor{comment}{!!!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{396 }
+\DoxyCodeLine{397 \textcolor{comment}{!!do iy=2,NPY-\/2,2}}
+\DoxyCodeLine{398 \textcolor{comment}{!!do ix=1, Ceiling(NPX/2.d0)-\/1}}
+\DoxyCodeLine{399 \textcolor{comment}{!!  i=ix+NPX*(Ceiling(iy/2.d0)-\/1)+Ceiling(NPX/2.d0)*(Floor(iy/2.d0)-\/1)}}
+\DoxyCodeLine{400 \textcolor{comment}{!!  j=2*ix-\/1+NPX*(Ceiling((iy+1)/2.d0)-\/1)+Ceiling(NPX/2.d0)*(Floor((iy+1)/2.d0)-\/1)}}
+\DoxyCodeLine{401 \textcolor{comment}{!!  HAM(i,j) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{402 \textcolor{comment}{!!  HAM(j,i) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{403 \textcolor{comment}{!!end do}}
+\DoxyCodeLine{404 \textcolor{comment}{!!end do}}
+\DoxyCodeLine{405 }
+\DoxyCodeLine{406 }
+\DoxyCodeLine{407 }
+\DoxyCodeLine{408 \textcolor{comment}{!!!iy=3   o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{409 \textcolor{comment}{!!!            \(\backslash\)     \(\backslash\)     \(\backslash\)     \(\backslash\) }}
+\DoxyCodeLine{410 \textcolor{comment}{!!!iy=2 o     o     o     o     o}}
+\DoxyCodeLine{411 \textcolor{comment}{!!!}}
+\DoxyCodeLine{412 \textcolor{comment}{!!!iy=1   o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{413 \textcolor{comment}{!!!}}
+\DoxyCodeLine{414 \textcolor{comment}{!!!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{415 }
+\DoxyCodeLine{416 \textcolor{comment}{!!do iy=2,NPY-\/2,2}}
+\DoxyCodeLine{417 \textcolor{comment}{!!do ix=2, Ceiling(NPX/2.d0)}}
+\DoxyCodeLine{418 \textcolor{comment}{!!  i=ix+NPX*(Ceiling(iy/2.d0)-\/1)+Ceiling(NPX/2.d0)*(Floor(iy/2.d0)-\/1)}}
+\DoxyCodeLine{419 \textcolor{comment}{!!  j=2*ix+NPX*(Ceiling((iy+1)/2.d0)-\/1)+Ceiling(NPX/2.d0)*(Floor((iy+1)/2.d0)-\/1)}}
+\DoxyCodeLine{420 \textcolor{comment}{!!  HAM(i,j) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{421 \textcolor{comment}{!!  HAM(j,i) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{422 \textcolor{comment}{!!end do}}
+\DoxyCodeLine{423 \textcolor{comment}{!!end do}}
+\DoxyCodeLine{424 }
+\DoxyCodeLine{425 }
+\DoxyCodeLine{426 \textcolor{comment}{!!if (BCY==1) then }}
+\DoxyCodeLine{427 \textcolor{comment}{!!!Boundary conditions along y}}
+\DoxyCodeLine{428 \textcolor{comment}{!!!iy=1   o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{429 \textcolor{comment}{!!!        /     /     /     /     }}
+\DoxyCodeLine{430 \textcolor{comment}{!!!iy=8 o     o     o     o     o}}
+\DoxyCodeLine{431 \textcolor{comment}{!!!}}
+\DoxyCodeLine{432 \textcolor{comment}{!!!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{433 }
+\DoxyCodeLine{434 }
+\DoxyCodeLine{435 \textcolor{comment}{!!do ix=1, Ceiling(NPX/2.d0)-\/1}}
+\DoxyCodeLine{436 \textcolor{comment}{!!  i=ix+NPX*(Ceiling(NPY/2.d0)-\/1)+Ceiling(NPX/2.d0)*(Floor(NPY/2.d0)-\/1)}}
+\DoxyCodeLine{437 \textcolor{comment}{!!  j=2*ix-\/1}}
+\DoxyCodeLine{438 \textcolor{comment}{!!  HAM(i,j) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{439 \textcolor{comment}{!!  HAM(j,i) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{440 \textcolor{comment}{!!end do}}
+\DoxyCodeLine{441 }
+\DoxyCodeLine{442 }
+\DoxyCodeLine{443 \textcolor{comment}{!!!iy=1   o-\/o   o-\/o   o-\/o   o-\/o}}
+\DoxyCodeLine{444 \textcolor{comment}{!!!            \(\backslash\)     \(\backslash\)     \(\backslash\)     \(\backslash\) }}
+\DoxyCodeLine{445 \textcolor{comment}{!!!iy=8 o     o     o     o     o}}
+\DoxyCodeLine{446 \textcolor{comment}{!!!}}
+\DoxyCodeLine{447 \textcolor{comment}{!!!ix=      1 2   3 4   5 6   7 8}}
+\DoxyCodeLine{448 }
+\DoxyCodeLine{449 }
+\DoxyCodeLine{450 \textcolor{comment}{!!do ix=2, Ceiling(NPX/2.d0)}}
+\DoxyCodeLine{451 \textcolor{comment}{!!  i=ix+NPX*(Ceiling(NPY/2.d0)-\/1)+Ceiling(NPX/2.d0)*(Floor(NPY/2.d0)-\/1)}}
+\DoxyCodeLine{452 \textcolor{comment}{!!  j=2*ix}}
+\DoxyCodeLine{453 \textcolor{comment}{!!  HAM(i,j) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{454 \textcolor{comment}{!!  HAM(j,i) = -\/0.5d0!*mod(ix,2)*mod(iy,2)!nnhop(i)}}
+\DoxyCodeLine{455 \textcolor{comment}{!!end do}}
+\DoxyCodeLine{456 \textcolor{comment}{!!end if}}
+\DoxyCodeLine{457 }
+\DoxyCodeLine{458 }
+\DoxyCodeLine{459 \textcolor{comment}{!end if}}
+\DoxyCodeLine{460 }
+\DoxyCodeLine{461 }
+\DoxyCodeLine{462 }
+
+\end{DoxyCode}

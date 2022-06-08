@@ -55,3 +55,140 @@ subroutine \mbox{\hyperlink{wrt__rdm_8f90_a77afed56d093bfa30ff9fde5c72dad50}{wrt
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 44 of file wrt\+\_\+rdm.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{46     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{intent(in)}, \textcolor{keywordtype}{optional} :: AIN1}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:,:)}, \textcolor{keywordtype}{intent(in)}, \textcolor{keywordtype}{optional} :: AIN3}
+\DoxyCodeLine{48     \textcolor{keywordtype}{character(*)}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{intent(in)}, \textcolor{keywordtype}{optional} :: FILENAME}
+\DoxyCodeLine{49     \textcolor{keywordtype}{character(*)}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{intent(in)}, \textcolor{keywordtype}{optional} :: OP}
+\DoxyCodeLine{50     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{intent(in)} :: TIME}
+\DoxyCodeLine{51     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(3)} :: d}
+\DoxyCodeLine{52     \textcolor{keywordtype}{logical}:: real1, compl1, diag3, all3}
+\DoxyCodeLine{53     \textcolor{keywordtype}{character(len=200)} :: fn\_r1, fn\_c1, fn\_d3, fn\_a3}
+\DoxyCodeLine{54     \textcolor{keywordtype}{integer} :: nop, ns}
+\DoxyCodeLine{55     \textcolor{keywordtype}{integer} :: i,j,ierr}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 real1=.false.}
+\DoxyCodeLine{60 compl1=.false.}
+\DoxyCodeLine{61 fn\_r1=\textcolor{stringliteral}{'undef'}}
+\DoxyCodeLine{62 fn\_c1=\textcolor{stringliteral}{'undef'}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 diag3=.false.}
+\DoxyCodeLine{65 all3=.false.}
+\DoxyCodeLine{66 fn\_d3=\textcolor{stringliteral}{'undef'}}
+\DoxyCodeLine{67 fn\_a3=\textcolor{stringliteral}{'undef'}}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 \textcolor{comment}{!Selects the conditions}}
+\DoxyCodeLine{71 \textcolor{keywordflow}{if} (\textcolor{keyword}{present}(ain1)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{72     \textcolor{keywordflow}{if} (\textcolor{keyword}{present}(op)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{73         nop=\textcolor{keyword}{size}(op)}
+\DoxyCodeLine{74         \textcolor{keywordflow}{do} i=1,nop}
+\DoxyCodeLine{75             real1 =real1.or.(op(i)==\textcolor{stringliteral}{'r'})}
+\DoxyCodeLine{76             compl1=compl1.or.(op(i)==\textcolor{stringliteral}{'c'})}
+\DoxyCodeLine{77             \textcolor{keywordflow}{if} (op(i)==\textcolor{stringliteral}{'r'}) fn\_r1=trim(filename(i))}
+\DoxyCodeLine{78             \textcolor{keywordflow}{if} (op(i)==\textcolor{stringliteral}{'c'}) fn\_c1=trim(filename(i))}
+\DoxyCodeLine{79 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81         \textcolor{keywordflow}{if} ((real1 .or. compl1) .eqv. .false.) print*, \textcolor{stringliteral}{'No valid option provided'}}
+\DoxyCodeLine{82     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{83         real1= .true.}
+\DoxyCodeLine{84         fn\_r1=\textcolor{stringliteral}{'real\_part'}}
+\DoxyCodeLine{85         }
+\DoxyCodeLine{86 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88     \textcolor{comment}{!rdmc.f90}}
+\DoxyCodeLine{89     \textcolor{keywordflow}{if}(real1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{90         \textcolor{keyword}{open}(unit=21,file=trim(fn\_r1)//\textcolor{stringliteral}{'.dat'},\&}
+\DoxyCodeLine{91         \&access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{92             \textcolor{keyword}{write}(21,\textcolor{stringliteral}{'(F12.6)'}) real(ain1(time))}
+\DoxyCodeLine{93         \textcolor{keyword}{close}(21)}
+\DoxyCodeLine{94 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{95     }
+\DoxyCodeLine{96     \textcolor{comment}{!rdms.f90}}
+\DoxyCodeLine{97     \textcolor{keywordflow}{if}(compl1) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{98         \textcolor{keyword}{open}(unit=21,file=trim(fn\_c1)//\textcolor{stringliteral}{'\_r.dat'},\&}
+\DoxyCodeLine{99         access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{100         \textcolor{keyword}{open}(unit=22,file=trim(fn\_c1)//\textcolor{stringliteral}{'\_i.dat'},\&}
+\DoxyCodeLine{101         access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{102         \textcolor{keyword}{call }fseek(21, 0, 2, ierr)}
+\DoxyCodeLine{103         \textcolor{keyword}{call }fseek(22, 0, 2, ierr)}
+\DoxyCodeLine{104         \textcolor{keyword}{write}(21,\textcolor{stringliteral}{'(F12.6)'}) real(ain1(time))}
+\DoxyCodeLine{105         \textcolor{keyword}{write}(22,\textcolor{stringliteral}{'(F12.6)'}) aimag(ain1(time))}
+\DoxyCodeLine{106         \textcolor{keyword}{close}(21)}
+\DoxyCodeLine{107         \textcolor{keyword}{close}(22)}
+\DoxyCodeLine{108 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\textcolor{keyword}{present}(ain3)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{111     \textcolor{keywordflow}{if} (\textcolor{keyword}{present}(op)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{112                 nop=\textcolor{keyword}{size}(op)}
+\DoxyCodeLine{113         \textcolor{keywordflow}{do} i=1,nop}
+\DoxyCodeLine{114             diag3 =diag3.or.(op(i)==\textcolor{stringliteral}{'d'})}
+\DoxyCodeLine{115             all3  =all3 .or.(op(i)==\textcolor{stringliteral}{'a'})}
+\DoxyCodeLine{116             \textcolor{keywordflow}{if} (op(i)==\textcolor{stringliteral}{'d'}) fn\_d3=trim(filename(i))}
+\DoxyCodeLine{117             \textcolor{keywordflow}{if} (op(i)==\textcolor{stringliteral}{'a'})  fn\_a3=trim(filename(i))}
+\DoxyCodeLine{118 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120         \textcolor{keywordflow}{if} ((diag3 .or. all3) .eqv. .false.) print*, \textcolor{stringliteral}{'No valid option provided'}}
+\DoxyCodeLine{121     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{122         diag3= .true.}
+\DoxyCodeLine{123         fn\_d3=\textcolor{stringliteral}{'diagonal'}}
+\DoxyCodeLine{124 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126     \textcolor{comment}{!rdmp.f90}}
+\DoxyCodeLine{127     \textcolor{keywordflow}{if} (diag3) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{128         d=shape(ain3)}
+\DoxyCodeLine{129         ns=d(2)}
+\DoxyCodeLine{130         \textcolor{keyword}{open}(unit=25,file=trim(fn\_d3)//\textcolor{stringliteral}{'\_r.dat'},\&}
+\DoxyCodeLine{131         access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{132         \textcolor{keyword}{open}(unit=26,file=trim(fn\_d3)//\textcolor{stringliteral}{'\_i.dat'},\&}
+\DoxyCodeLine{133         access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{134         \textcolor{keyword}{call }fseek(25, 0, 2, ierr)}
+\DoxyCodeLine{135         \textcolor{keyword}{call }fseek(26, 0, 2, ierr)}
+\DoxyCodeLine{136     }
+\DoxyCodeLine{137         \textcolor{keywordflow}{do} i=1, ns}
+\DoxyCodeLine{138             \textcolor{keyword}{write}(25,\textcolor{stringliteral}{'(F12.6)'}) real(ain3(time,i,i))}
+\DoxyCodeLine{139             \textcolor{keyword}{write}(26,\textcolor{stringliteral}{'(F12.6)'}) aimag(ain3(time,i,i))}
+\DoxyCodeLine{140 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{141         \textcolor{comment}{!write(25,*)}}
+\DoxyCodeLine{142         \textcolor{comment}{!write(26,*)}}
+\DoxyCodeLine{143         \textcolor{keyword}{close}(25)}
+\DoxyCodeLine{144         \textcolor{keyword}{close}(26)}
+\DoxyCodeLine{145 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{146     }
+\DoxyCodeLine{147     \textcolor{comment}{!rdm.f90}}
+\DoxyCodeLine{148     \textcolor{keywordflow}{if}(all3) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{149         d=shape(ain3)}
+\DoxyCodeLine{150         ns=d(2)}
+\DoxyCodeLine{151         \textcolor{keyword}{open}(unit=25,file=trim(fn\_a3)//\textcolor{stringliteral}{'\_r.dat'},\&}
+\DoxyCodeLine{152         access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{153         \textcolor{keyword}{open}(unit=26,file=trim(fn\_a3)//\textcolor{stringliteral}{'\_i.dat'},\&}
+\DoxyCodeLine{154         access = \textcolor{stringliteral}{'append'},status=\textcolor{stringliteral}{'unknown'})}
+\DoxyCodeLine{155         \textcolor{keyword}{call }fseek(25, 0, 2, ierr)}
+\DoxyCodeLine{156         \textcolor{keyword}{call }fseek(26, 0, 2, ierr)}
+\DoxyCodeLine{157         \textcolor{keywordflow}{do} i=1, ns}
+\DoxyCodeLine{158         \textcolor{keywordflow}{do} j=1, ns}
+\DoxyCodeLine{159             \textcolor{keyword}{write}(25,*) real(ain3(time,i,j))}
+\DoxyCodeLine{160             \textcolor{keyword}{write}(26,*) aimag(ain3(time,i,j))}
+\DoxyCodeLine{161 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{162 \textcolor{keywordflow}{        end do}}
+\DoxyCodeLine{163         \textcolor{comment}{!write(25,*)}}
+\DoxyCodeLine{164         \textcolor{comment}{!write(26,*)}}
+\DoxyCodeLine{165         \textcolor{keyword}{close}(25)}
+\DoxyCodeLine{166         \textcolor{keyword}{close}(26)}
+\DoxyCodeLine{167 \textcolor{keywordflow}{    end if}}
+\DoxyCodeLine{168     }
+\DoxyCodeLine{169 \textcolor{keywordflow}{else} }
+\DoxyCodeLine{170     print*, \textcolor{stringliteral}{'Please provide at least one array to write'}}
+\DoxyCodeLine{171 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{172 }
+
+\end{DoxyCode}

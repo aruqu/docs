@@ -22,22 +22,22 @@ subroutine \mbox{\hyperlink{wdysonlg_8f90_a3795492f52c0bff1509621f524e32052}{wdy
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & ls \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & LS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lnegr \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+N\+E\+GR \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lneg \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+N\+EG \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -47,3 +47,47 @@ subroutine \mbox{\hyperlink{wdysonlg_8f90_a3795492f52c0bff1509621f524e32052}{wdy
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 39 of file wdysonlg.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{39     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{40     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{41 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{42     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{43     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{44 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{45     \textcolor{keywordtype}{integer} :: nps,npt}
+\DoxyCodeLine{46     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegr}
+\DoxyCodeLine{47 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{48     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lneg}
+\DoxyCodeLine{49     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: ls}
+\DoxyCodeLine{50 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{51     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{52 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{53     \textcolor{keywordtype}{integer} :: n,npw,iw,lw,liw,lldwc,numroc}
+\DoxyCodeLine{54     \textcolor{keywordtype}{double precision} :: dalpha,om}
+\DoxyCodeLine{55     \textcolor{keywordtype}{double complex} :: zalpha}
+\DoxyCodeLine{56     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: lnegtmp}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{59 nprocs=nprow*npcol}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{keyword}{allocate}(lnegtmp(nps,nps))}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 lnegtmp=zero}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 lldwc=numroc(npw,1,mycol,0,nprocs)}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{68     liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{69     lnegtmp(1:nps,1:nps) = conjg(transpose(lnegr(1:nps,liw:liw+nps-\/1)))}
+\DoxyCodeLine{70     lneg(1:nps,liw:liw+nps-\/1) = matmul(lnegr(1:nps,liw:liw+nps-\/1),matmul(ls(1:nps,liw:liw+nps-\/1),lnegtmp(1:nps,1:nps)))}
+\DoxyCodeLine{71 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 \textcolor{keyword}{call }blacs\_barrier(context,\textcolor{stringliteral}{'A'})}
+\DoxyCodeLine{74 }
+
+\end{DoxyCode}

@@ -22,31 +22,31 @@ subroutine \mbox{\hyperlink{wenrgl_8f90_a9292a0e2131bb5c0e2dcb0b0f1f5c27b}{wenrg
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & context \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & C\+O\+N\+T\+E\+XT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & wm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & WM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & vw \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & VW \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & stat \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+T\+AT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lgr \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+GR \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & desc \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+SC \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & enrg \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & E\+N\+RG \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -56,3 +56,67 @@ subroutine \mbox{\hyperlink{wenrgl_8f90_a9292a0e2131bb5c0e2dcb0b0f1f5c27b}{wenrg
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 51 of file wenrgl.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{51     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{52     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{53 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{54     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{parameter} :: pi = dacos(-\/1.0d0)       \textcolor{comment}{! Pi greco}}
+\DoxyCodeLine{55     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)         \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{56     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: uno = (1.0d0,0.0d0)        \textcolor{comment}{! Complex one}}
+\DoxyCodeLine{57     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)       \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{58 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{59     \textcolor{keywordtype}{integer} :: nps,npw, stat}
+\DoxyCodeLine{60     \textcolor{keywordtype}{double precision} :: wm}
+\DoxyCodeLine{61     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)} :: vw}
+\DoxyCodeLine{62     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: desc}
+\DoxyCodeLine{63     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lgr}
+\DoxyCodeLine{64 \textcolor{comment}{!Output variables}}
+\DoxyCodeLine{65     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)} :: enrg}
+\DoxyCodeLine{66 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{67     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol,rsrc,csrc}
+\DoxyCodeLine{68 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{69     \textcolor{keywordtype}{integer} :: n,i,iw,lw,lwp,liw,liwp}
+\DoxyCodeLine{70     \textcolor{keywordtype}{integer} :: nb,mb,pr,pc,lldr,lldc,lldwr,lldwc,numroc}
+\DoxyCodeLine{71     \textcolor{keywordtype}{double precision} :: dalpha,dw,w}
+\DoxyCodeLine{72     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (9)} :: descw}
+\DoxyCodeLine{73     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(nps,nps)} :: intg}
+\DoxyCodeLine{74     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{allocatable} :: ltmp}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{77 nprocs=nprow*npcol}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 mb = desc(5)}
+\DoxyCodeLine{80 nb = desc(6)}
+\DoxyCodeLine{81 n=nps*npw}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 lldr=numroc(nps,mb,myrow,0,1)}
+\DoxyCodeLine{84 lldc=numroc(n,nb,mycol,0,nprocs)}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 lldwr=numroc(npw,1,myrow,0,1)}
+\DoxyCodeLine{87 lldwc=numroc(npw,1,mycol,0,nprocs)}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 \textcolor{keyword}{allocate}(ltmp(lldr,lldc))}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 dw=2*wm/(npw-\/1)}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{keywordflow}{do} lw=1, lldwc}
+\DoxyCodeLine{94     liw=(lw-\/1)*nps+1}
+\DoxyCodeLine{95         w=-\/wm+(vw(lw)-\/1)*dw}
+\DoxyCodeLine{96     ltmp(1:nps,liw:liw+nps-\/1) = w*lgr(1:nps,liw:liw+nps-\/1)}
+\DoxyCodeLine{97 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 \textcolor{keyword}{call }descinit(descw,1,npw,1,1,0,0,context,lldwr,info)}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 intg=zero}
+\DoxyCodeLine{102 \textcolor{keyword}{call }\mbox{\hyperlink{wint_8f90_a9f702255e0af5953e65e9a6a035f6259}{wint}}(context,nps,npw,wm,ltmp,desc,intg)}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104     \textcolor{keywordflow}{do} i=1,nps}
+\DoxyCodeLine{105         \mbox{\hyperlink{enrg_8f90_abf75adc31c0064f2bf9ecf5f96592180}{enrg}}(i)= stat*aimag(intg(i,i))}
+\DoxyCodeLine{106 \textcolor{keywordflow}{    end do}}
+
+\end{DoxyCode}

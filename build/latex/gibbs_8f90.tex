@@ -57,3 +57,46 @@ subroutine \mbox{\hyperlink{gibbs_8f90_a07e55a904f026496cb339a4d34a79366}{gibbs}
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 48 of file gibbs.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{48     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{49 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{50     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{51 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{52     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{intent(in)} :: STAT}
+\DoxyCodeLine{53     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{intent(in)} :: MU, BETA}
+\DoxyCodeLine{54     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{intent(in)} :: W}
+\DoxyCodeLine{55     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{optional}, \textcolor{keywordtype}{intent(in)} :: S}
+\DoxyCodeLine{56 \textcolor{comment}{!Output variables}}
+\DoxyCodeLine{57     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)}, \textcolor{keywordtype}{intent(out)} :: RO\_G}
+\DoxyCodeLine{58 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{59     \textcolor{keywordtype}{integer} :: i,j}
+\DoxyCodeLine{60     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(2)} :: d}
+\DoxyCodeLine{61     \textcolor{keywordtype}{double complex} :: alpha}
+\DoxyCodeLine{62     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} , \textcolor{keywordtype}{allocatable} :: rotmp}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 d=shape(s)}
+\DoxyCodeLine{65 \textcolor{keyword}{allocate}(rotmp(d(1),d(2)))}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \textcolor{comment}{!Initial density matrix}}
+\DoxyCodeLine{68 rotmp=zero}
+\DoxyCodeLine{69 ro\_g=zero}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 \textcolor{keywordflow}{do} i=1, d(1)}
+\DoxyCodeLine{72     rotmp(i,i)=1.0d0/(exp(beta*(w(i)-\/mu))-\/stat)}
+\DoxyCodeLine{73 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 \textcolor{keywordflow}{if}(\textcolor{keyword}{present}(s)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{76     ro\_g=matmul(s,matmul(rotmp,transpose(s)))}
+\DoxyCodeLine{77 \textcolor{keywordflow}{else}}
+\DoxyCodeLine{78     ro\_g=rotmp}
+\DoxyCodeLine{79 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{keyword}{deallocate}(rotmp)}
+\DoxyCodeLine{82 }
+
+\end{DoxyCode}

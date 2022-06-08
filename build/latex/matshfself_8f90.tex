@@ -22,34 +22,34 @@ subroutine \mbox{\hyperlink{matshfself_8f90_a7e7d2a9d2eaa23a527adfbcb150adf23}{m
 \end{DoxyParagraph}
 
 \begin{DoxyParams}{Parameters}
-{\em \mbox{[}$\,$\mbox{]}} & scm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+CM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & bt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & BT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & nps \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PS \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & npt \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & N\+PT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & v \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & V \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lnegm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+N\+E\+GM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descnegm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+N\+E\+GM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & stat \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & S\+T\+AT \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & lsm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & L\+SM \begin{DoxyVerb} \end{DoxyVerb}
  \\
 \hline
-{\em \mbox{[}$\,$\mbox{]}} & descsm \begin{DoxyVerb} \end{DoxyVerb}
+{\em \mbox{[}$\,$\mbox{]}} & D\+E\+S\+C\+SM \begin{DoxyVerb} \end{DoxyVerb}
 \\
 \hline
 \end{DoxyParams}
@@ -59,3 +59,128 @@ subroutine \mbox{\hyperlink{matshfself_8f90_a7e7d2a9d2eaa23a527adfbcb150adf23}{m
 \begin{DoxyAuthor}{Authors}
 Cosco F., Lo Gullo N., Talarico W. 
 \end{DoxyAuthor}
+
+
+Definition at line 55 of file matshfself.\+f90.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{55     \textcolor{keywordtype}{use }mpi}
+\DoxyCodeLine{56     \textcolor{keywordtype}{implicit none}}
+\DoxyCodeLine{57 \textcolor{comment}{!Useful numerical parameters}}
+\DoxyCodeLine{58     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: zero = (0.0d0,0.0d0)   \textcolor{comment}{! Complex zero}}
+\DoxyCodeLine{59     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{parameter} :: ci = (0.0d0,1.0d0)     \textcolor{comment}{! Imaginary unit}}
+\DoxyCodeLine{60 \textcolor{comment}{!Input variables}}
+\DoxyCodeLine{61     \textcolor{keywordtype}{character(*)} :: scm}
+\DoxyCodeLine{62     \textcolor{keywordtype}{integer} :: nps,npt,stat}
+\DoxyCodeLine{63     \textcolor{keywordtype}{double precision} :: bt}
+\DoxyCodeLine{64     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension(:,:)} :: v}
+\DoxyCodeLine{65     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descnegm}
+\DoxyCodeLine{66     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lnegm}
+\DoxyCodeLine{67 \textcolor{comment}{!Input/Output variables}}
+\DoxyCodeLine{68     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension (:)} :: descsm}
+\DoxyCodeLine{69     \textcolor{keywordtype}{double complex}, \textcolor{keywordtype}{dimension(:,:)} :: lsm}
+\DoxyCodeLine{70 \textcolor{comment}{!Varibles for grid query}}
+\DoxyCodeLine{71     \textcolor{keywordtype}{integer} :: context,info,nprow,npcol,nprocs,myrow,mycol}
+\DoxyCodeLine{72 \textcolor{comment}{!Dummy variables}}
+\DoxyCodeLine{73     \textcolor{keywordtype}{integer} :: n,i,j,tt,ttp,lit,litp}
+\DoxyCodeLine{74     \textcolor{keywordtype}{integer} :: mb,nb,pr,pc,lldr,lldc,lldtr,lldtc}
+\DoxyCodeLine{75     \textcolor{keywordtype}{integer} :: numroc}
+\DoxyCodeLine{76     \textcolor{keywordtype}{double precision} :: dbt}
+\DoxyCodeLine{77     \textcolor{keywordtype}{double precision}, \textcolor{keywordtype}{dimension (:,:)}, \textcolor{keywordtype}{allocatable} :: w}
+\DoxyCodeLine{78     \textcolor{keywordtype}{integer}, \textcolor{keywordtype}{dimension(:)}, \textcolor{keywordtype}{allocatable} :: vtt, vttp}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 context = descnegm(2)}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{keyword}{call }blacs\_gridinfo(context,nprow,npcol,myrow,mycol)}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 n=nps*npt}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 mb = descnegm(5)}
+\DoxyCodeLine{87 nb = descnegm(6)}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 lldr=numroc(n,mb,myrow,0,nprow)}
+\DoxyCodeLine{90 lldc=numroc(n,nb,mycol,0,npcol)}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 lldtr=numroc(npt,1,myrow,0,nprow)}
+\DoxyCodeLine{93 lldtc=numroc(npt,1,mycol,0,npcol)}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 \textcolor{keyword}{allocate}(vtt(lldtr),vttp(lldtc))}
+\DoxyCodeLine{96 \textcolor{keyword}{allocate}(w(lldtr,lldtc))}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 vtt=0}
+\DoxyCodeLine{99 vttp=0}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 i=0}
+\DoxyCodeLine{102 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{103 pr=mod(floor(real(tt-\/1)),nprow)}
+\DoxyCodeLine{104 \textcolor{keywordflow}{if}(myrow==pr) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{105 i=i+1}
+\DoxyCodeLine{106 vtt(i)=tt}
+\DoxyCodeLine{107 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{108 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 i=0}
+\DoxyCodeLine{111 \textcolor{keywordflow}{do} tt=1, npt}
+\DoxyCodeLine{112 pc=mod(floor(real(tt-\/1)),npcol)}
+\DoxyCodeLine{113 \textcolor{keywordflow}{if}(mycol==pc) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{114 i=i+1}
+\DoxyCodeLine{115 vttp(i)=tt}
+\DoxyCodeLine{116 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{117 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 \textcolor{keyword}{call }\mbox{\hyperlink{weights_8f90_a594689ef0872066cbc84bbe582e1b2f0}{weights}}(context,scm,npt,1,w)}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 dbt= bt/(npt-\/1)}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 lsm=zero}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 \textcolor{comment}{!Hartree}}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{128 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 \textcolor{keywordflow}{if}(vtt(tt)==vttp(ttp)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{133 litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 \textcolor{keywordflow}{do} i=1, nps}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 \textcolor{keywordflow}{do} j=1, nps}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139     lsm(lit+i-\/1,litp+i-\/1)=lsm(lit+i-\/1,litp+i-\/1)+stat*ci*v(i,j)*lnegm(lit+j-\/1,litp+j-\/1)/(-\/ci*dbt*w(tt,ttp))}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{146 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{147 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 \textcolor{comment}{!Fock}}
+\DoxyCodeLine{150 \textcolor{keywordflow}{do} tt=1, lldtr}
+\DoxyCodeLine{151 \textcolor{keywordflow}{do} ttp=1, lldtc}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 \textcolor{keywordflow}{if}(vtt(tt)==vttp(ttp)) \textcolor{keywordflow}{then}}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155 lit =(tt-\/1)*nps+1}
+\DoxyCodeLine{156 litp=(ttp-\/1)*nps+1}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159 \textcolor{keywordflow}{do} i = 1, nps}
+\DoxyCodeLine{160 \textcolor{keywordflow}{do} j = 1, nps}
+\DoxyCodeLine{161     lsm(lit+i-\/1,litp+j-\/1)=lsm(lit+i-\/1,litp+j-\/1)+ci*v(i,j)*lnegm(lit+i-\/1,litp+j-\/1)/(-\/ci*dbt*w(tt,ttp))}
+\DoxyCodeLine{162 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{163 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166 \textcolor{keywordflow}{end if}}
+\DoxyCodeLine{167 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{168 \textcolor{keywordflow}{end do}}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 }
+
+\end{DoxyCode}
